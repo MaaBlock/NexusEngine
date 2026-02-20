@@ -1,0 +1,22 @@
+[2026-02-20 23:20:08.243] [NEXUS] [info] NexusEngine Test Suite Starting...
+[2026-02-20 23:20:08.269] [NEXUS] [info] SDL Initialized successfully
+[2026-02-20 23:20:08.547] [NEXUS] [info] SDL Window created: Test Window (800x600)
+[2026-02-20 23:20:08.565] [NEXUS] [info] SDL Initialized successfully
+[2026-02-20 23:20:08.619] [NEXUS] [info] SDL Window created: Async Test Window (800x600)
+[2026-02-20 23:20:08.867] [NEXUS] [info] Vulkan Instance created successfully
+[2026-02-20 23:20:08.881] [NEXUS] [info] SDL Initialized successfully
+[2026-02-20 23:20:08.909] [NEXUS] [info] SDL Window created: Safety Test Window (800x600)
+[2026-02-20 23:20:08.977] [NEXUS] [info] Vulkan Instance created successfully
+[2026-02-20 23:20:08.979] [NEXUS] [info] Attempting to load MuJoCo model from: G:\nexus_workspace\NexusEngine\Data\Scenes\test_scene.xml (Current CWD: G:\nexus_workspace\NexusEngine)
+[2026-02-20 23:20:08.995] [NEXUS] [info] MuJoCo Physics System Initialized with model: Data/Scenes/test_scene.xml
+[2026-02-20 23:20:08.996] [NEXUS] [info] MuJoCo Physics System Shutdown
+[2026-02-20 23:20:08.997] [NEXUS] [info] Attempting to load MuJoCo model from: G:\nexus_workspace\NexusEngine\Data\Scenes\test_scene.xml (Current CWD: G:\nexus_workspace\NexusEngine)
+[2026-02-20 23:20:09.012] [NEXUS] [info] MuJoCo Physics System Initialized with model: Data/Scenes/test_scene.xml
+[2026-02-20 23:20:09.014] [NEXUS] [info] MuJoCo Physics System Shutdown
+[2026-02-20 23:20:09.014] [NEXUS] [info] MuJoCo Physics System Shutdown
+[2026-02-20 23:20:09.025] [NEXUS] [info] Vulkan Instance created successfully
+[2026-02-20 23:20:09.083] [NEXUS] [info] Vulkan Logical Device created successfully (Graphics Family: 0)
+[2026-02-20 23:20:09.084] [NEXUS] [warning] Vulkan Validation: Validation Error: [ VUID-VkDescriptorSetLayoutBindingFlagsCreateInfo-descriptorBindingUniformBufferUpdateAfterBind-03005 ] | MessageID = 0x308a0ba7 | vkCreateDescriptorSetLayout(): pCreateInfo->pNext<VkDescriptorSetLayoutBindingFlagsCreateInfo>.pBindingFlags[0] includes VK_DESCRIPTOR_BINDING_UPDATE_AFTER_BIND_BIT but pBindings[0].descriptorType is VK_DESCRIPTOR_BINDING_UPDATE_AFTER_BIND_BIT but descriptorBindingUniformBufferUpdateAfterBind was not enabled.
+The Vulkan spec states: If VkPhysicalDeviceDescriptorIndexingFeatures::descriptorBindingUniformBufferUpdateAfterBind is not enabled, all bindings with descriptor type VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER must not use VK_DESCRIPTOR_BINDING_UPDATE_AFTER_BIND_BIT (https://vulkan.lunarg.com/doc/view/1.4.304.1/windows/antora/spec/latest/chapters/descriptorsets.html#VUID-VkDescriptorSetLayoutBindingFlagsCreateInfo-descriptorBindingUniformBufferUpdateAfterBind-03005)
+[2026-02-20 23:20:09.114] [NEXUS] [info] Vulkan Instance created successfully
+[2026-02-20 23:20:09.148] [NEXUS] [info] Vulkan Logical Device created successfully (Graphics Family: 0)

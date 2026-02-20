@@ -1,5 +1,7 @@
 #include "MuJoCo_PhysicsSystem.h"
 #include "Log.h"
+#include <filesystem>
+#include <iostream>
 
 namespace Nexus {
 
@@ -13,11 +15,11 @@ Status MuJoCo_PhysicsSystem::initialize() {
     char error[1000] = "Could not load binary model";
     
     // For now, use the hardcoded test scene path. In a real scenario, this would be passed in.
-    const char* modelPath = "NexusEngine/src/Bridge/MuJoCo/models/test_scene.xml";
-
+    const char* modelPath = "Data/Scenes/test_scene.xml";
+    
     m_model = mj_loadXML(modelPath, nullptr, error, 1000);
     if (!m_model) {
-        NX_CORE_ERROR("Failed to load MuJoCo model: {}", error);
+        NX_CORE_ERROR("Failed to load MuJoCo model: {} (Error: {})", modelPath, error);
         return InternalError(std::string("Failed to load MuJoCo model: ") + error);
     }
 
