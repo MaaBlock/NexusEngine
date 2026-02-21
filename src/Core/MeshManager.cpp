@@ -1,10 +1,9 @@
 #include "MeshManager.h"
-#include "Vk/VK_Buffer.h"
 
 namespace Nexus {
 namespace Core {
 
-MeshManager::MeshManager(VK_Context* context) : m_context(context) {
+MeshManager::MeshManager(IContext* context) : m_context(context) {
 }
 
 MeshManager::~MeshManager() {
@@ -14,13 +13,12 @@ MeshManager::~MeshManager() {
  * @brief 初始化全局网格缓冲区
  */
 Status MeshManager::initialize() {
-    m_vertexBuffer = std::make_unique<VK_Buffer>(m_context);
-    NX_ASSERT(m_vertexBuffer, "Vertex buffer creation failed");
-    m_indexBuffer = std::make_unique<VK_Buffer>(m_context);
-    NX_ASSERT(m_indexBuffer, "Index buffer creation failed");
-    // 预分配一些空间 (16MB)
-    NX_RETURN_IF_ERROR(m_vertexBuffer->create(16 * 1024 * 1024, vk::BufferUsageFlagBits::eVertexBuffer | vk::BufferUsageFlagBits::eTransferDst, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent));
-    NX_RETURN_IF_ERROR(m_indexBuffer->create(16 * 1024 * 1024, vk::BufferUsageFlagBits::eIndexBuffer | vk::BufferUsageFlagBits::eTransferDst, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent));
+    NX_ASSERT(m_context, "Context must be valid");
+    // VertexBuffer (0x00000080) | TransferDst (0x00000002)
+    // IndexBuffer (0x00000040) | TransferDst (0x00000002)
+    // HostVisible (0x00000002) | HostCoherent (0x00000004)
+    m_vertexBuffer = m_context->createBuffer(16 * 1024 * 1024, 0x0082, 0x0006);
+    m_indexBuffer = m_context->createBuffer(16 * 1024 * 1024, 0x0042, 0x0006);
     return OkStatus();
 }
 

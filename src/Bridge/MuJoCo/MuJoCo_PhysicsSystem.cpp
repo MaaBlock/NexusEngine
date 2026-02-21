@@ -15,7 +15,7 @@ Status MuJoCo_PhysicsSystem::initialize() {
     char error[1000] = "Could not load binary model";
     
     // For now, use the hardcoded test scene path. In a real scenario, this would be passed in.
-    const char* modelPath = "Data/Scenes/test_scene.xml";
+    const char* modelPath = "Data/test_scene.xml";
     
     m_model = mj_loadXML(modelPath, nullptr, error, 1000);
     if (!m_model) {
