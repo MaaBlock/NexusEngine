@@ -379,12 +379,18 @@ Status VK_Renderer::onResize(uint32_t width, uint32_t height) {
     if (width == 0 || height == 0) return OkStatus();
     NX_CORE_INFO("VK_Renderer: Window resized to {}x{}", width, height);
     
+    NX_CORE_INFO("VK_Renderer: Waiting for device idle...");
     deviceWaitIdle();
+    
+    NX_CORE_INFO("VK_Renderer: Recreating swapchain...");
     NX_RETURN_IF_ERROR(m_swapchain->recreate(width, height));
     
+    NX_CORE_INFO("VK_Renderer: Updating UI bridge dimensions...");
     if (m_uiBridge) {
         m_uiBridge->onResize(width, height);
     }
+    
+    NX_CORE_INFO("VK_Renderer: Resize completed.");
     return OkStatus();
 }
 
@@ -394,6 +400,10 @@ void VK_Renderer::updateWindowSize(int width, int height) {
 Status VK_Renderer::renderFrame() {
 #ifdef ENABLE_RMLUI
     if (m_uiBridge) {
+        SDL_Event evt;
+        while (m_eventQueue.pop(evt)) {
+            m_uiBridge->processSdlEvent(evt);
+        }
         m_uiBridge->update();
     }
 #endif
@@ -406,9 +416,8 @@ Status VK_Renderer::renderFrame() {
 
 void VK_Renderer::processEvent(const void* event) {
 #ifdef ENABLE_RMLUI
-    if (m_uiBridge && event) {
-        // Here we just cast it. Assume it's an SDL_Event defined in SDL3
-        m_uiBridge->processSdlEvent(*static_cast<const SDL_Event*>(event));
+    if (event) {
+        m_eventQueue.push(*static_cast<const SDL_Event*>(event));
     }
 #endif
 }
