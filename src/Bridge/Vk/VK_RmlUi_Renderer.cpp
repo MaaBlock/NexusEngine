@@ -40,7 +40,7 @@ void VK_RmlUi_Renderer::updateWindowSize(int width, int height) {
     
     // Only create pipeline once or when dimensions change drastically if needed
     if (!m_pipeline) {
-        createPipeline(width, height);
+        (void)createPipeline(width, height);
     }
 }
 
@@ -127,14 +127,14 @@ Rml::CompiledGeometryHandle VK_RmlUi_Renderer::CompileGeometry(Rml::Span<const R
     // HOST_VISIBLE | HOST_COHERENT = 0x00000006
     geometry->vertexBuffer = m_context->createBuffer(vertexSize, 0x00000080, 0x00000006);
     if(geometry->vertexBuffer) {
-        geometry->vertexBuffer->uploadData(vertices.data(), vertexSize);
+        (void)geometry->vertexBuffer->uploadData(vertices.data(), vertexSize);
     }
 
     uint64_t indexSize = indices.size() * sizeof(int);
     // VK_BUFFER_USAGE_INDEX_BUFFER_BIT = 0x00000040
     geometry->indexBuffer = m_context->createBuffer(indexSize, 0x00000040, 0x00000006);
     if(geometry->indexBuffer) {
-        geometry->indexBuffer->uploadData(indices.data(), indexSize);
+        (void)geometry->indexBuffer->uploadData(indices.data(), indexSize);
     }
 
     return reinterpret_cast<Rml::CompiledGeometryHandle>(geometry);
