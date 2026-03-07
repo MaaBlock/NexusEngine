@@ -11,3 +11,7 @@
 
 // MuJoCo Physics
 #include <mujoco/mujoco.h>
+
+#ifdef ENABLE_RMLUI
+#include <RmlUi/Core.h>
+#endif

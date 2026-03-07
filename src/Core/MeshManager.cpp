@@ -16,8 +16,12 @@ Status MeshManager::initialize() {
     NX_ASSERT(m_context, "Context must be valid");
     // VertexBuffer (0x00000080) | TransferDst (0x00000002)
     // IndexBuffer (0x00000040) | TransferDst (0x00000002)
-    // HostVisible (0x00000002) | HostCoherent (0x00000004)
+    // VertexBuffer (0x00000080) | TransferDst (0x00000002) 
+    // HostVisible (0x00000002) | HostCoherent (0x00000004) -> 6
     m_vertexBuffer = m_context->createBuffer(16 * 1024 * 1024, 0x0082, 0x0006);
+
+    // IndexBuffer (0x00000040) | TransferDst (0x00000002) -> 0x0042
+    // HostVisible (0x00000002) | HostCoherent (0x00000004) -> 0x0006
     m_indexBuffer = m_context->createBuffer(16 * 1024 * 1024, 0x0042, 0x0006);
     return OkStatus();
 }

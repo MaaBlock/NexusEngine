@@ -86,6 +86,15 @@ Status VK_Renderer::initialize() {
     std::vector<DrawIndirectCommand> commands = { drawCmd };
     NX_RETURN_IF_ERROR(m_indirectBuffer->uploadDrawCommands(commands));
 
+#ifdef ENABLE_RMLUI
+    m_uiBridge = std::make_unique<VK_UIBridge>(m_context, this);
+    if (m_uiBridge->initialize(m_swapchain->getExtent().width, m_swapchain->getExtent().height)) {
+        // Just for verification
+        std::string docPath = ResourceLoader::getBasePath() + "Data/UI/demo.rml";
+        m_uiBridge->loadDocument(docPath);
+    }
+#endif
+
     return OkStatus(); 
 }
 
@@ -350,6 +359,12 @@ void VK_Renderer::recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t 
 
     commandBuffer.drawIndirect(m_indirectBuffer->getHandle(), 0, 1, sizeof(DrawIndirectCommand));
 
+#ifdef ENABLE_RMLUI
+    if (m_uiBridge) {
+        m_uiBridge->render();
+    }
+#endif
+
     commandBuffer.endRendering();
 
     barrier.srcAccessMask = vk::AccessFlagBits::eColorAttachmentWrite;
@@ -369,12 +384,27 @@ Status VK_Renderer::onResize(uint32_t width, uint32_t height) {
     return OkStatus();
 }
 Status VK_Renderer::renderFrame() {
+#ifdef ENABLE_RMLUI
+    if (m_uiBridge) {
+        m_uiBridge->update();
+    }
+#endif
     uint32_t imageIndex;
     NX_RETURN_IF_ERROR(beginFrame(imageIndex));
     recordCommandBuffer(m_commandBuffers[m_currentFrame], imageIndex);
     endFrame(imageIndex);
     return OkStatus();
 }
+
+void VK_Renderer::processEvent(const void* event) {
+#ifdef ENABLE_RMLUI
+    if (m_uiBridge && event) {
+        // Here we just cast it. Assume it's an SDL_Event defined in SDL3
+        m_uiBridge->processSdlEvent(*static_cast<const SDL_Event*>(event));
+    }
+#endif
+}
+
 Status VK_Renderer::beginFrame(uint32_t& imageIndex) {
     if (m_device.waitForFences(1, &m_inFlightFences[m_currentFrame], VK_TRUE, UINT64_MAX) != vk::Result::eSuccess) {
         return InternalError("Wait for fences failed");
