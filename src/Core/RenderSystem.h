@@ -30,7 +30,7 @@ public:
     /**
      * @brief 渲染一帧
      */
-    Status renderFrame() override;
+    Status renderFrame(Registry* registry = nullptr) override;
 
     /**
      * @brief 处理系统事件
@@ -62,6 +62,9 @@ private:
 
     // 我们暂时保留 VK_Renderer 作为 Bridge 层的原始实现
     std::unique_ptr<VK_Renderer> m_bridgeRenderer;
+
+    uint32_t m_cubeVertexOffset = 0;
+    uint32_t m_cubeIndexOffset = 0;
 };
 
 } // namespace Core

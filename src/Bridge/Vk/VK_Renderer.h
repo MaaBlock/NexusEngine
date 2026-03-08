@@ -10,6 +10,8 @@
 #include "VK_CommandBuffer.h"
 #include "VK_IndirectBuffer.h"
 #include "VK_UIBridge.h"
+#include "../ECS.h"
+#include "../../Core/Components.h"
 // #include "../../Editor/EditorUIManager.h" // Removed to break circular dependency
 
 namespace Nexus {
@@ -28,9 +30,9 @@ public:
     Status initialize();
 
     /**
-     * @brief 执行渲染一帧 (Legacy)
+     * @brief 执行渲染一帧 (传入 Registry 用于 ECS 渲染)
      */
-    Status renderFrame() override;
+    Status renderFrame(Registry* registry = nullptr) override;
 
     /**
      * @brief 处理系统事件
@@ -74,7 +76,7 @@ private:
     Status createGraphicsPipeline();
     Status createCommandBuffers();
     Status createSyncObjects();
-    void recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex);
+    void recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex, Registry* registry);
 
     VK_Context* m_context;
     VK_Swapchain* m_swapchain;
@@ -104,6 +106,9 @@ private:
     struct BindlessConstants {
         uint32_t textureIndex;
         uint32_t samplerIndex;
+        uint32_t padding0;
+        uint32_t padding1;
+        std::array<float, 16> mvp;
     };
 
     uint32_t m_currentFrame = 0;

@@ -26,6 +26,10 @@ public:
     virtual std::unique_ptr<IBuffer> createBuffer(uint64_t size, uint32_t usage, uint32_t properties) = 0;
     virtual std::unique_ptr<ITexture> createTexture(const ImageData& imageData, TextureUsage usage) = 0;
     virtual std::unique_ptr<ITexture> createTexture(uint32_t width, uint32_t height, TextureFormat format, TextureUsage usage) = 0;
+
+    // Temporary: Global mesh buffers for the Bridge to access
+    virtual IBuffer* getGlobalVertexBuffer() const { return nullptr; }
+    virtual IBuffer* getGlobalIndexBuffer() const { return nullptr; }
 };
 
 /**
@@ -103,6 +107,8 @@ public:
     virtual TextureFormat getFormat() const = 0;
 };
 
+class Registry;
+
 /**
  * @brief 渲染器接口
  */
@@ -110,7 +116,7 @@ class IRenderer {
 public:
     virtual ~IRenderer() = default;
     virtual Status initialize() = 0;
-    virtual Status renderFrame() = 0;
+    virtual Status renderFrame(Registry* registry = nullptr) = 0;
     virtual void processEvent(const void* event) = 0;
     virtual Status onResize(uint32_t width, uint32_t height) = 0;
     virtual ICommandBuffer* getCurrentCommandBuffer() = 0;
