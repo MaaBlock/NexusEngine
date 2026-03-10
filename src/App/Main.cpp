@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "PhysicsThread.h"
 #include "ResourceLoader.h"
+#include <cmath>
 
 #if ENABLE_VULKAN
 #include "Vk/VK_Context.h"
@@ -41,6 +42,61 @@ std::unique_ptr<Scene> g_scene;
 
 struct Position { float x, y; };
 
+struct InputState {
+    std::atomic<bool> w{false}, a{false}, s{false}, d{false}, q{false}, e{false};
+    std::atomic<bool> mouseRightDown{false};
+    std::atomic<float> mouseDeltaX{0.0f}, mouseDeltaY{0.0f};
+    float yaw{0.0f}, pitch{0.0f}; // 仅在主线程更新，无需原子
+} g_input;
+
+void OnWindowEvent(const void* event) {
+    const SDL_Event* sdlEvent = static_cast<const SDL_Event*>(event);
+    
+    if (g_renderer) {
+        g_renderer->processEvent(event);
+    }
+    
+    switch (sdlEvent->type) {
+        case SDL_EVENT_KEY_DOWN:
+        case SDL_EVENT_KEY_UP: {
+            bool pressed = (sdlEvent->type == SDL_EVENT_KEY_DOWN);
+            switch (sdlEvent->key.scancode) {
+                case SDL_SCANCODE_W: g_input.w = pressed; break;
+                case SDL_SCANCODE_S: g_input.s = pressed; break;
+                case SDL_SCANCODE_A: g_input.a = pressed; break;
+                case SDL_SCANCODE_D: g_input.d = pressed; break;
+                case SDL_SCANCODE_Q: g_input.q = pressed; break;
+                case SDL_SCANCODE_E: g_input.e = pressed; break;
+                default: break;
+            }
+            break;
+        }
+        case SDL_EVENT_MOUSE_BUTTON_DOWN:
+        case SDL_EVENT_MOUSE_BUTTON_UP: {
+            if (sdlEvent->button.button == SDL_BUTTON_RIGHT) {
+                bool isDown = (sdlEvent->type == SDL_EVENT_MOUSE_BUTTON_DOWN);
+                g_input.mouseRightDown = isDown;
+                // Enable relative mouse mode while holding right click for unlimited movement
+                if (g_window) {
+                    SDL_Window* sdlWin = (SDL_Window*)g_window->getNativeHandle();
+                    if (sdlWin) {
+                        SDL_SetWindowRelativeMouseMode(sdlWin, isDown);
+                    }
+                }
+            }
+            break;
+        }
+        case SDL_EVENT_MOUSE_MOTION: {
+            if (g_input.mouseRightDown) {
+                g_input.mouseDeltaX = g_input.mouseDeltaX + (float)sdlEvent->motion.xrel;
+                g_input.mouseDeltaY = g_input.mouseDeltaY + (float)sdlEvent->motion.yrel;
+            }
+            break;
+        }
+        default: break;
+    }
+}
+
 Status InitializeEngine() {
     g_ecsRegistry = std::make_unique<Registry>();
     
@@ -49,8 +105,8 @@ Status InitializeEngine() {
     
     g_windowThread = std::make_unique<WindowThread>();
     g_windowThread->startThread();
-
     NX_RETURN_IF_ERROR(g_windowThread->createWindowAsync("Nexus Engine", 1280, 720, g_window));
+    g_window->setEventCallback(OnWindowEvent);
 
     g_context = CreateContext();
     if (!g_context) return InternalError("Context creation failed");
@@ -80,28 +136,51 @@ Status InitializeEngine() {
     if (!deserializer.deserialize("Data/main_scene.bin")) {
         NX_CORE_INFO("No existing scene found, creating default entity.");
         Entity camera = g_scene->createEntity("MainCamera");
-        camera.getComponent<TransformComponent>().position = {0.0f, 0.0f, -2.0f};
+        camera.getComponent<TransformComponent>().position = {0.0f, 0.0f, 2.0f};
         camera.addComponent<CameraComponent>();
 
         Entity box = g_scene->createEntity("DefaultBox");
         box.getComponent<TransformComponent>().position = {0.0f, 0.0f, 0.0f};
-        box.addComponent<MeshComponent>();
+        box.addComponent<MeshComponent>(g_renderer->getCubeMeshComponent());
     } else {
         // Ensure camera exists even if loaded
-        bool hasCamera = false;
-        auto view = g_scene->getRegistry().view<CameraComponent>();
-        if (view.empty()) {
+        bool cameraPosFixed = false;
+        auto& registry = g_scene->getRegistry();
+        auto cameraView = registry.view<CameraComponent>();
+        if (cameraView.begin() == cameraView.end()) {
             Entity camera = g_scene->createEntity("MainCamera");
-            camera.getComponent<TransformComponent>().position = {0.0f, 0.0f, -2.0f};
+            camera.getComponent<TransformComponent>().position = {0.0f, 0.0f, 2.0f};
             camera.addComponent<CameraComponent>();
+            cameraPosFixed = true;
+        } else {
+            for (auto entity : cameraView) {
+                if (registry.has<TransformComponent>(entity)) {
+                    auto& transform = registry.get<TransformComponent>(entity);
+                    if (transform.position[2] < 1.0f) {
+                        transform.position = {0.0f, 0.0f, 2.0f};
+                        cameraPosFixed = true;
+                    }
+                }
+                break;
+            }
+        }
+        if (cameraPosFixed) {
+            NX_CORE_INFO("Camera position forced to (0,0,2) to ensure viewport visibility.");
         }
         
         // ensure at least one entity has a mesh component for rendering
-        auto boxView = g_scene->getRegistry().view<TagComponent>();
+        auto boxView = registry.view<TagComponent>();
         for (auto entity : boxView) {
-            Entity e(entity, &g_scene->getRegistry());
-            if (e.getComponent<TagComponent>().name == "DefaultBox" && !e.hasComponent<MeshComponent>()) {
-                e.addComponent<MeshComponent>();
+            Entity e(entity, &registry);
+            if (e.getComponent<TagComponent>().name == "DefaultBox") {
+                bool needsMesh = !e.hasComponent<MeshComponent>() || e.getComponent<MeshComponent>().indexCount == 0;
+                if (needsMesh) {
+                    if (e.hasComponent<MeshComponent>()) {
+                        registry.remove<MeshComponent>(entity);
+                    }
+                    e.addComponent<MeshComponent>(g_renderer->getCubeMeshComponent());
+                    NX_CORE_INFO("Restored MeshComponent for DefaultBox (indices fixed)");
+                }
                 break;
             }
         }
@@ -118,13 +197,7 @@ Status InitializeEngine() {
         g_physicsThread->startThread();
     }
 
-    g_window->setEventCallback([](const void* event) {
-#if ENABLE_VULKAN
-        if (g_renderer) {
-            g_renderer->processEvent(event);
-        }
-#endif
-    });
+
 
     return OkStatus();
 }
@@ -186,6 +259,124 @@ void RunMainLoop() {
                 cmd.width = currentWidth;
                 cmd.height = currentHeight;
                 g_rhiThread->pushCommand(cmd);
+            }
+        }
+
+        // [Note: Camera Movement] 根据键盘与鼠标状态实时更新摄像机位置与朝向
+        if (g_scene) {
+            auto& registry = g_scene->getRegistry();
+            auto view = registry.view<CameraComponent, TransformComponent>();
+            float speed = 0.05f; 
+            float sensitivity = 0.005f;
+
+            for (auto entity : view) {
+                auto& transform = registry.get<TransformComponent>(entity);
+                auto& camera = registry.get<CameraComponent>(entity);
+                
+                // 处理视角旋转 (右键长按拖动时发生)
+                if (g_input.mouseRightDown) {
+                    float dx = g_input.mouseDeltaX.exchange(0.0f);
+                    float dy = g_input.mouseDeltaY.exchange(0.0f);
+                    
+                    g_input.yaw += dx * sensitivity;
+                    g_input.pitch += dy * sensitivity;
+                    
+                    const float pitchLimit = 89.0f * (3.14159265f / 180.0f);
+                    if (g_input.pitch > pitchLimit) g_input.pitch = pitchLimit;
+                    if (g_input.pitch < -pitchLimit) g_input.pitch = -pitchLimit;
+                } else {
+                    // 没按下时清空遗留的 delta，防止刚按下时跳跃
+                    g_input.mouseDeltaX.store(0.0f);
+                    g_input.mouseDeltaY.store(0.0f);
+                }
+
+                // 基于 yaw 和 pitch 计算方向向量
+                float sf = std::sin(g_input.yaw);
+                float cf = std::cos(g_input.yaw);
+                float st = std::sin(g_input.pitch);
+                float ct = std::cos(g_input.pitch);
+
+                // UE/Godot 风格：
+                // 正前方为 -Z，右方为 X，上方为 Y (Y-up 左手或右手系投影)
+                // 这里我们假设世界坐标：向屏幕内为 -Z，向右为 +X，向上为 +Y
+                
+                // 相机的局部坐标轴向量
+                float forwardX = ct * sf;
+                float forwardY = -st;
+                float forwardZ = -ct * cf;
+                
+                // 规范化前向向量
+                float fLen = std::sqrt(forwardX*forwardX + forwardY*forwardY + forwardZ*forwardZ);
+                if (fLen > 0.0001f) {
+                    forwardX /= fLen; forwardY /= fLen; forwardZ /= fLen;
+                }
+
+                // 计算右向量 (通过与全局向上向量 (0,1,0) 叉乘)
+                // Right = Forward x Up 
+                float rightX = forwardY * 0.0f - forwardZ * 1.0f;
+                float rightY = forwardZ * 0.0f - forwardX * 0.0f;
+                float rightZ = forwardX * 1.0f - forwardY * 0.0f;
+                
+                float rLen = std::sqrt(rightX*rightX + rightY*rightY + rightZ*rightZ);
+                if (rLen > 0.0001f) {
+                    rightX /= rLen; rightY /= rLen; rightZ /= rLen;
+                }
+
+                // 计算上向量 (Up = Right x Forward)
+                float upX = rightY * forwardZ - rightZ * forwardY;
+                float upY = rightZ * forwardX - rightX * forwardZ;
+                float upZ = rightX * forwardY - rightY * forwardX;
+                
+                // 更新相机的观察目标点 (Target = Pos + Forward)
+                camera.target[0] = transform.position[0] + forwardX;
+                camera.target[1] = transform.position[1] + forwardY;
+                camera.target[2] = transform.position[2] + forwardZ;
+
+                // 更新相机的 Up 向量
+                camera.up[0] = upX;
+                camera.up[1] = upY;
+                camera.up[2] = upZ;
+                
+                if (g_input.w || g_input.s || g_input.a || g_input.d || g_input.q || g_input.e) {
+                    
+                    if (g_input.w) {
+                        transform.position[0] += forwardX * speed;
+                        transform.position[1] += forwardY * speed;
+                        transform.position[2] += forwardZ * speed;
+                    }
+                    if (g_input.s) {
+                        transform.position[0] -= forwardX * speed;
+                        transform.position[1] -= forwardY * speed;
+                        transform.position[2] -= forwardZ * speed;
+                    }
+                    if (g_input.a) {
+                        transform.position[0] -= rightX * speed;
+                        transform.position[1] -= rightY * speed;
+                        transform.position[2] -= rightZ * speed;
+                    }
+                    if (g_input.d) {
+                        transform.position[0] += rightX * speed;
+                        transform.position[1] += rightY * speed;
+                        transform.position[2] += rightZ * speed;
+                    }
+                    // Q 下降，E 上升 (直接沿局部的上向量相对世界移动)
+                    if (g_input.q) {
+                        transform.position[0] -= upX * speed;
+                        transform.position[1] -= upY * speed;
+                        transform.position[2] -= upZ * speed;
+                    }
+                    if (g_input.e) {
+                        transform.position[0] += upX * speed;
+                        transform.position[1] += upY * speed;
+                        transform.position[2] += upZ * speed;
+                    }
+                    
+                    // 同步更新 target 以避免渲染帧间抖动现象
+                    camera.target[0] = transform.position[0] + forwardX;
+                    camera.target[1] = transform.position[1] + forwardY;
+                    camera.target[2] = transform.position[2] + forwardZ;
+                }
+                break; // 仅更新第一个相机
             }
         }
 

@@ -181,7 +181,11 @@ private:
     }
 
     void pumpEvents() {
-#ifdef ENABLE_SDL
+#if ENABLE_SDL
+        static uint32_t pollCount = 0;
+        if (pollCount++ % 1000 == 0) {
+            // NX_CORE_TRACE("SDL Poll Heartbeat");
+        }
         SDL_Event event;
         while (SDL_PollEvent(&event)) {
             dispatchWindowEvent(event);

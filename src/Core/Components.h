@@ -109,19 +109,24 @@ struct CameraComponent {
     float nearPlane = 0.1f;
     float farPlane = 1000.0f;
 
+    // View variables
+    std::array<float, 3> target = {0.0f, 0.0f, -1.0f};
+    std::array<float, 3> up = {0.0f, 1.0f, 0.0f};
+
     std::array<float, 16> computeProjectionMatrix() const {
         float f = 1.0f / std::tan(fov * 0.5f * (3.1415926535f / 180.0f));
         return {
-             f / aspect, 0.0f, 0.0f, 0.0f,
-             0.0f, f, 0.0f, 0.0f,
-             0.0f, 0.0f, farPlane / (nearPlane - farPlane), -1.0f,
-             0.0f, 0.0f, -(farPlane * nearPlane) / (farPlane - nearPlane), 0.0f
+             f / aspect, 0.0f, 0.0f,                               0.0f,
+             0.0f,       f,    0.0f,                               0.0f,
+             0.0f,       0.0f, farPlane / (nearPlane - farPlane), -1.0f,
+             0.0f,       0.0f, -(farPlane * nearPlane) / (farPlane - nearPlane), 0.0f
         };
     }
 
     template<class Archive>
     void serialize(Archive& ar) {
         ar(fov, aspect, nearPlane, farPlane);
+        // Note: target 和 up 暂时不序列化，由于是引擎运行时输入控制的结果
     }
 };
 
