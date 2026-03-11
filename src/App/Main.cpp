@@ -142,7 +142,6 @@ Status InitializeEngine(const EngineConfig& config) {
         box.getComponent<TransformComponent>().position = {0.0f, 0.0f, 0.0f};
         box.addComponent<MeshComponent>(g_renderer->getCubeMeshComponent());
     } else {
-        // Ensure camera exists even if loaded
         bool cameraPosFixed = false;
         auto& registry = g_scene->getRegistry();
         auto cameraView = registry.view<CameraComponent>();
@@ -167,7 +166,6 @@ Status InitializeEngine(const EngineConfig& config) {
             NX_CORE_INFO("Camera position forced to (0,0,2) to ensure viewport visibility.");
         }
         
-        // ensure at least one entity has a mesh component for rendering
         auto boxView = registry.view<TagComponent>();
         for (auto entity : boxView) {
             Entity e(entity, &registry);
@@ -261,7 +259,6 @@ void RunMainLoop() {
             }
         }
 
-        // [Note: Camera Movement] 根据键盘与鼠标状态实时更新摄像机位置与朝向
         if (g_scene) {
             auto& registry = g_scene->getRegistry();
             auto view = registry.view<CameraComponent, TransformComponent>();
@@ -272,7 +269,6 @@ void RunMainLoop() {
                 auto& transform = registry.get<TransformComponent>(entity);
                 auto& camera = registry.get<CameraComponent>(entity);
                 
-                // 处理视角旋转 (右键长按拖动时发生)
                 if (g_input.mouseRightDown) {
                     float dx = g_input.mouseDeltaX.exchange(0.0f);
                     float dy = g_input.mouseDeltaY.exchange(0.0f);
@@ -284,34 +280,24 @@ void RunMainLoop() {
                     if (g_input.pitch > pitchLimit) g_input.pitch = pitchLimit;
                     if (g_input.pitch < -pitchLimit) g_input.pitch = -pitchLimit;
                 } else {
-                    // 没按下时清空遗留的 delta，防止刚按下时跳跃
                     g_input.mouseDeltaX.store(0.0f);
                     g_input.mouseDeltaY.store(0.0f);
                 }
 
-                // 基于 yaw 和 pitch 计算方向向量
                 float sf = std::sin(g_input.yaw);
                 float cf = std::cos(g_input.yaw);
                 float st = std::sin(g_input.pitch);
                 float ct = std::cos(g_input.pitch);
 
-                // UE/Godot 风格：
-                // 正前方为 -Z，右方为 X，上方为 Y (Y-up 左手或右手系投影)
-                // 这里我们假设世界坐标：向屏幕内为 -Z，向右为 +X，向上为 +Y
-                
-                // 相机的局部坐标轴向量
                 float forwardX = ct * sf;
                 float forwardY = -st;
                 float forwardZ = -ct * cf;
                 
-                // 规范化前向向量
                 float fLen = std::sqrt(forwardX*forwardX + forwardY*forwardY + forwardZ*forwardZ);
                 if (fLen > 0.0001f) {
                     forwardX /= fLen; forwardY /= fLen; forwardZ /= fLen;
                 }
 
-                // 计算右向量 (通过与全局向上向量 (0,1,0) 叉乘)
-                // Right = Forward x Up 
                 float rightX = forwardY * 0.0f - forwardZ * 1.0f;
                 float rightY = forwardZ * 0.0f - forwardX * 0.0f;
                 float rightZ = forwardX * 1.0f - forwardY * 0.0f;
@@ -321,17 +307,14 @@ void RunMainLoop() {
                     rightX /= rLen; rightY /= rLen; rightZ /= rLen;
                 }
 
-                // 计算上向量 (Up = Right x Forward)
                 float upX = rightY * forwardZ - rightZ * forwardY;
                 float upY = rightZ * forwardX - rightX * forwardZ;
                 float upZ = rightX * forwardY - rightY * forwardX;
                 
-                // 更新相机的观察目标点 (Target = Pos + Forward)
                 camera.target[0] = transform.position[0] + forwardX;
                 camera.target[1] = transform.position[1] + forwardY;
                 camera.target[2] = transform.position[2] + forwardZ;
 
-                // 更新相机的 Up 向量
                 camera.up[0] = upX;
                 camera.up[1] = upY;
                 camera.up[2] = upZ;
@@ -358,7 +341,6 @@ void RunMainLoop() {
                         transform.position[1] += rightY * speed;
                         transform.position[2] += rightZ * speed;
                     }
-                    // Q 下降，E 上升 (直接沿局部的上向量相对世界移动)
                     if (g_input.q) {
                         transform.position[0] -= upX * speed;
                         transform.position[1] -= upY * speed;
@@ -370,12 +352,11 @@ void RunMainLoop() {
                         transform.position[2] += upZ * speed;
                     }
                     
-                    // 同步更新 target 以避免渲染帧间抖动现象
                     camera.target[0] = transform.position[0] + forwardX;
                     camera.target[1] = transform.position[1] + forwardY;
                     camera.target[2] = transform.position[2] + forwardZ;
                 }
-                break; // 仅更新第一个相机
+                break;
             }
         }
 
