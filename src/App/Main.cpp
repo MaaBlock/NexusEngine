@@ -46,7 +46,7 @@ struct InputState {
     std::atomic<bool> w{false}, a{false}, s{false}, d{false}, q{false}, e{false};
     std::atomic<bool> mouseRightDown{false};
     std::atomic<float> mouseDeltaX{0.0f}, mouseDeltaY{0.0f};
-    float yaw{0.0f}, pitch{0.0f}; // 仅在主线程更新，无需原子
+    float yaw{0.0f}, pitch{0.0f}; 
 } g_input;
 
 void OnWindowEvent(const void* event) {
@@ -76,7 +76,6 @@ void OnWindowEvent(const void* event) {
             if (sdlEvent->button.button == SDL_BUTTON_RIGHT) {
                 bool isDown = (sdlEvent->type == SDL_EVENT_MOUSE_BUTTON_DOWN);
                 g_input.mouseRightDown = isDown;
-                // Enable relative mouse mode while holding right click for unlimited movement
                 if (g_window) {
                     SDL_Window* sdlWin = (SDL_Window*)g_window->getNativeHandle();
                     if (sdlWin) {

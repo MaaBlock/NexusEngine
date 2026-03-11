@@ -398,7 +398,6 @@ void VK_Renderer::recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t 
 
     vk::Viewport viewport;
     viewport.x = 0.0f;
-    // [Note: Viewport Y-flip] 此处执行 Viewport 坐标系翻转，将 y 设为高度，height 设为负值，适配 Vulkan NDC
     viewport.y = (float)extent.height;
     viewport.width = (float)extent.width;
     viewport.height = -(float)extent.height;
@@ -429,19 +428,15 @@ void VK_Renderer::recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t 
             
             auto proj = camera.computeProjectionMatrix();
             
-            // ---- LookAt Right-Handed (RH) Computation ----
-            // Camera looks down the -Z axis of View Space.
             float pos[3] = { transform.position[0], transform.position[1], transform.position[2] };
             float target[3] = { camera.target[0], camera.target[1], camera.target[2] };
             float upVector[3] = { camera.up[0], camera.up[1], camera.up[2] };
             
-            // fwd = normalize(target - pos)
             float fwd[3] = { target[0] - pos[0], target[1] - pos[1], target[2] - pos[2] };
             float fLen = std::sqrt(fwd[0]*fwd[0] + fwd[1]*fwd[1] + fwd[2]*fwd[2]);
             if (fLen > 1e-5f) { fwd[0]/=fLen; fwd[1]/=fLen; fwd[2]/=fLen; }
-            else { fwd[0]=0; fwd[1]=0; fwd[2]=-1; } // fallback
+            else { fwd[0]=0; fwd[1]=0; fwd[2]=-1; } 
             
-            // right = normalize(cross(fwd, upVector))
             float right[3] = {
                 fwd[1]*upVector[2] - fwd[2]*upVector[1],
                 fwd[2]*upVector[0] - fwd[0]*upVector[2],

@@ -30,34 +30,27 @@ Status RenderSystem::initialize() {
     NX_ASSERT(m_commandGenerator, "DrawCommandGenerator creation failed");
     NX_RETURN_IF_ERROR(m_commandGenerator->initialize(1024));
     
-    // Cube vertices (Pos 3D, UV 2D)
     std::vector<float> vertices = {
-        // Front face
         -0.5f, -0.5f,  0.5f,  0.0f, 1.0f,
          0.5f, -0.5f,  0.5f,  1.0f, 1.0f,
          0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
         -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        // Back face (Corrected to CCW when viewed from -Z)
          0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
         -0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
         -0.5f,  0.5f, -0.5f,  1.0f, 0.0f,
          0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
-        // Top face
         -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
          0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 0.0f,
         -0.5f,  0.5f, -0.5f,  0.0f, 0.0f,
-        // Bottom face
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
          0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
          0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
         -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        // Right face
          0.5f, -0.5f,  0.5f,  0.0f, 1.0f,
          0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
          0.5f,  0.5f, -0.5f,  1.0f, 0.0f,
          0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        // Left face
         -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
         -0.5f, -0.5f,  0.5f,  1.0f, 1.0f,
         -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
@@ -80,7 +73,6 @@ Status RenderSystem::initialize() {
         vkContext->setGlobalIndexBuffer(m_meshManager->getIndexBuffer());
     }
 
-    // The command generator won't be used for direct ECS rendering in this step, but we define it to avoid breaking changes.
     std::vector<DrawIndexedIndirectCommand> commands = { { 36, 1, m_cubeIndexOffset, static_cast<int32_t>(m_cubeVertexOffset), 0 } };
     NX_RETURN_IF_ERROR(m_commandGenerator->updateCommands(commands));
     m_bridgeRenderer = std::make_unique<VK_Renderer>(m_context, m_swapchain);
