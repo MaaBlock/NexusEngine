@@ -89,10 +89,12 @@ void SDL_Window_Wrapper::onEvent(const void* eventPtr) {
     const SDL_Event* event = static_cast<const SDL_Event*>(eventPtr);
     
     // [Note: Event Flow Debug] 记录关键事件类型
+    /*
     if (event->type == SDL_EVENT_KEY_DOWN || event->type == SDL_EVENT_KEY_UP) {
         NX_CORE_INFO("SDL_Window {} Event: Type={}, scancode={}, windowID={}", 
             (void*)this, (uint32_t)event->type, (uint32_t)event->key.scancode, event->key.windowID);
     }
+    */
 
     if (event->type == SDL_EVENT_QUIT) {
         m_shouldClose = true;
@@ -108,9 +110,9 @@ void SDL_Window_Wrapper::onEvent(const void* eventPtr) {
     }
 
     if (m_eventCallback) {
-        NX_CORE_INFO("SDL_Window {} Calling m_eventCallback now...", (void*)this);
+        // NX_CORE_INFO("SDL_Window {} Calling m_eventCallback now...", (void*)this);
         m_eventCallback(eventPtr);
-        NX_CORE_INFO("SDL_Window {} m_eventCallback execution finished.", (void*)this);
+        // NX_CORE_INFO("SDL_Window {} m_eventCallback execution finished.", (void*)this);
     } else {
         static uint32_t nullCount = 0;
         if (nullCount++ % 100 == 0) NX_CORE_WARN("SDL_Window {} NO CALLBACK REGISTERED!", (void*)this);

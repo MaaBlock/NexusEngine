@@ -1,6 +1,6 @@
 #pragma once
 
-// 第三方库统一包含
+// Unified third-party includes
 #ifdef ENABLE_SDL
 #include <SDL3/SDL.h>
 #endif
