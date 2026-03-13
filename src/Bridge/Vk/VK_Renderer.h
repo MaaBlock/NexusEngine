@@ -95,6 +95,7 @@ private:
     std::vector<vk::Fence> m_inFlightFences;
     std::vector<std::unique_ptr<VK_Texture>> m_swapchainTextures;
     Status createSwapchainTextures();
+    std::unique_ptr<VK_Texture> m_whiteTexture;
     std::unique_ptr<VK_Texture> m_testTexture;
     std::unique_ptr<VK_IndirectBuffer> m_indirectBuffer;
 
@@ -104,12 +105,21 @@ private:
 #endif
 
     struct BindlessConstants {
-        uint32_t textureIndex;
-        uint32_t samplerIndex;
-        uint32_t padding0;
-        uint32_t padding1;
-        std::array<float, 16> mvp;
-    };
+    uint32_t textureIndex; // Albedo
+    uint32_t normalIndex;
+    uint32_t metallicRoughnessIndex;
+    uint32_t occlusionIndex;
+    uint32_t emissiveIndex;
+    uint32_t samplerIndex;
+    uint32_t _pad0[2]; // Padding to align albedoFactor to 16-byte boundary
+
+    std::array<float, 4> albedoFactor;
+    float metallicFactor;
+    float roughnessFactor;
+    float _pad1[2]; // Padding to align mvp to 16-byte boundary
+
+    std::array<float, 16> mvp;
+};
 
     uint32_t m_currentFrame = 0;
     static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
