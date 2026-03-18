@@ -39,6 +39,8 @@ Status MuJoCo_PhysicsSystem::loadModel(const std::string& path) {
     }
 
     m_data = mj_makeData(m_model);
+    // 初始化前向运动学，让 xpos/xquat 在第一步之前就有正确值
+    mj_forward(m_model, m_data);
 
     // Cache actuator IDs
     for (int i = 0; i < m_model->nu; ++i) {
@@ -70,14 +72,19 @@ void MuJoCo_PhysicsSystem::shutdown() {
 
 void MuJoCo_PhysicsSystem::update(float deltaTime) {
     if (m_model && m_data) {
+        // 等到至少收到一次电机指令再开始步进，防止机器人在连接前自由倒塌
+        {
+            std::lock_guard<std::mutex> lock(m_cmdMutex);
+            if (m_pendingCommands.empty()) return;
+        }
+
         m_timeStepAccumulator += deltaTime;
         
         while (m_timeStepAccumulator >= m_model->opt.timestep) {
             {
                 std::lock_guard<std::mutex> lock(m_cmdMutex);
                 for(const auto& [actuatorId, cmd] : m_pendingCommands) {
-                    // For Unitree Go2, each actuator maps cleanly.
-                    int trnid = m_model->actuator_trnid[actuatorId * 2]; // Joint mapping
+                    int trnid = m_model->actuator_trnid[actuatorId * 2];
                     
                     float current_q = m_data->qpos[m_model->jnt_qposadr[trnid]];
                     float current_dq = m_data->qvel[m_model->jnt_dofadr[trnid]];

@@ -398,6 +398,7 @@ void RunMainLoop() {
                 float st = std::sin(g_input.pitch);
                 float ct = std::cos(g_input.pitch);
 
+                // NexusEngine uses Y-up right-handed system
                 float forwardX = ct * sf;
                 float forwardY = -st;
                 float forwardZ = -ct * cf;
@@ -407,15 +408,19 @@ void RunMainLoop() {
                     forwardX /= fLen; forwardY /= fLen; forwardZ /= fLen;
                 }
 
-                float rightX = forwardY * 0.0f - forwardZ * 1.0f;
-                float rightY = forwardZ * 0.0f - forwardX * 0.0f;
-                float rightZ = forwardX * 1.0f - forwardY * 0.0f;
+                // Global UP is (0, 1, 0)
+                // Right = Forward x Up = (forward.y*up.z - forward.z*up.y, forward.z*up.x - forward.x*up.z, forward.x*up.y - forward.y*up.x)
+                // Right = (-forwardZ, 0, forwardX)
+                float rightX = -forwardZ;
+                float rightY = 0.0f;
+                float rightZ = forwardX;
                 
                 float rLen = std::sqrt(rightX*rightX + rightY*rightY + rightZ*rightZ);
                 if (rLen > 0.0001f) {
                     rightX /= rLen; rightY /= rLen; rightZ /= rLen;
                 }
 
+                // Up = Right x Forward
                 float upX = rightY * forwardZ - rightZ * forwardY;
                 float upY = rightZ * forwardX - rightX * forwardZ;
                 float upZ = rightX * forwardY - rightY * forwardX;
@@ -477,10 +482,10 @@ void RunMainLoop() {
                 if (g_rosBridge && g_physicsSystem) {
                     g_rosBridge->applyIncomingCommands(g_physicsSystem);
                 }
-                // Hierarchy 先算好本地→世界矩阵
-                HierarchySystem::update(g_scene->getRegistry());
-                // Dynamics 再把 MuJoCo 世界坐标直接覆写到 worldMatrix（在 Hierarchy 之后）
+                // Dynamics 先用 MuJoCo 数据更新各 link 实体的 local position/rotation（Z-up）
                 RoboticsDynamicsSystem::update(g_scene->getRegistry(), g_physicsSystem);
+                // Hierarchy 再从更新后的 local 变换推算 worldMatrix，顺便带上 URDF 根 -90°X 转换
+                HierarchySystem::update(g_scene->getRegistry());
                 if (g_rosBridge) {
                     g_rosBridge->publishReplicas(g_scene->getRegistry());
                 }

@@ -21,13 +21,8 @@ static void processNode(TextureManager* textureManager, aiNode* node, const aiSc
         prefix = engineScene->getRegistry().get<TagComponent>(parentEntity.getHandle()).name + "_";
     }
 
-    Entity nodeEntity;
-    if (parentEntity.isValid() && node == aScene->mRootNode) {
-        nodeEntity = parentEntity;
-    } else {
-        nodeEntity = engineScene->createEntity(prefix + node->mName.C_Str());
-    }
-
+    Entity nodeEntity = engineScene->createEntity(prefix + node->mName.C_Str());
+    
     auto& transform = nodeEntity.getComponent<TransformComponent>();
     
     aiVector3D position, rotationEuler, scale;
@@ -45,7 +40,7 @@ static void processNode(TextureManager* textureManager, aiNode* node, const aiSc
                  rotationQuat.x, rotationQuat.y, rotationQuat.z, rotationQuat.w);
 
     // Build hierarchy
-    if (parentEntity.isValid() && nodeEntity != parentEntity) {
+    if (parentEntity.isValid()) {
         engineScene->setParent(nodeEntity, parentEntity);
     }
 
