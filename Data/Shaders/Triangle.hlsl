@@ -25,6 +25,7 @@ struct BindlessConstants {
     float2 padding;
 
     float4x4 mvp;
+    float4 highlightColor;
 };
 
 [[vk::push_constant]]
@@ -39,7 +40,7 @@ Texture2D textures[];
 PSInput VSMain(VSInput input) {
     PSInput output;
     output.Pos = float4(input.Pos, 1.0) * constants.mvp;
-    output.WorldPos = input.Pos; // Simplified world pos for light calculations
+    output.WorldPos = input.Pos;
     output.Normal = input.Normal;
     output.UV = input.UV;
     return output;
@@ -48,7 +49,6 @@ PSInput VSMain(VSInput input) {
 float4 PSMain(PSInput input) : SV_TARGET {
     float4 albedo = textures[constants.textureIndex].Sample(samplers[constants.samplerIndex], input.UV) * constants.albedoFactor;
 
-    // Basic PBR-ish lighting (simplified)
     float3 lightDir = normalize(float3(1.0, 1.0, 1.0));
     float3 viewDir = normalize(float3(0.0, 0.0, 1.0));
     float3 halfDir = normalize(lightDir + viewDir);
@@ -56,11 +56,15 @@ float4 PSMain(PSInput input) : SV_TARGET {
     float3 N = normalize(input.Normal);
     float diff = max(dot(N, lightDir), 0.0);
 
-    // Specular
     float spec = pow(max(dot(N, halfDir), 0.0), 32.0) * constants.metallicFactor;
 
     float ambient = 0.2;
     float3 finalColor = albedo.rgb * (diff + ambient) + spec;
+
+    // 选中高亮混合
+    if (constants.highlightColor.a > 0.0) {
+        finalColor = lerp(finalColor, constants.highlightColor.rgb, constants.highlightColor.a);
+    }
 
     return float4(finalColor, albedo.a);
 }
