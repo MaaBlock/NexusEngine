@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include "Base.h"
 #include "VK_Context.h"
 #include "VK_Swapchain.h"
@@ -111,18 +112,21 @@ private:
     uint32_t occlusionIndex;
     uint32_t emissiveIndex;
     uint32_t samplerIndex;
-    uint32_t _pad0[2]; // Padding to align albedoFactor to 16-byte boundary
+    uint32_t _pad0[2];
 
     std::array<float, 4> albedoFactor;
     float metallicFactor;
     float roughnessFactor;
-    float _pad1[2]; // Padding to align mvp to 16-byte boundary
+    float _pad1[2];
 
     std::array<float, 16> mvp;
+    std::array<float, 4> highlightColor; // (r,g,b,a) a>0 = highlighted
 };
 
     uint32_t m_currentFrame = 0;
     static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
+public:
+    std::atomic<uint32_t> m_selectedEntityId{0xFFFFFFFF};
 };
 
 } // namespace Nexus
