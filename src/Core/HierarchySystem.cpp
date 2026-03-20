@@ -43,18 +43,6 @@ void HierarchySystem::updateNode(Registry& registry, entt::entity entity, const 
 
     auto& transform = registry.get<TransformComponent>(entity);
 
-    // RigidBodyComponent 的实体及其子树已由 RoboticsDynamicsSystem 从 MuJoCo 数据设置了 worldMatrix，
-    // 这里跳过，避免用静态 localMatrix 覆盖物理仿真结果
-    if (registry.has<RigidBodyComponent>(entity)) {
-        if (registry.has<HierarchyComponent>(entity)) {
-            auto& hier = registry.get<HierarchyComponent>(entity);
-            for (auto child : hier.children) {
-                updateNode(registry, child, &transform.worldMatrix);
-            }
-        }
-        return;
-    }
-
     auto localMatrix = transform.computeLocalMatrix();
 
     if (parentWorldMatrix) {
