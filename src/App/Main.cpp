@@ -20,6 +20,7 @@
 #include "Core/RoboticsDynamicsSystem.h"
 #include "Core/RosBridgeSystem.h"
 #include "Core/SceneSerializer.h"
+#include "Core/SceneLoader.h"
 #include "Core/ModelLoader.h"
 #include "Core/TextureManager.h"
 
@@ -195,69 +196,21 @@ Status InitializeEngine(const EngineConfig& config) {
     g_textureManager = std::make_unique<TextureManager>(vkContext);
 #endif
 
-    g_scene = std::make_unique<Scene>("MainScene");
-    SceneSerializer deserializer(*g_scene);
-    if (!deserializer.deserialize("Data/main_scene.bin")) {
-        NX_CORE_INFO("No existing scene found, creating default entity.");
-        Entity camera = g_scene->createEntity("MainCamera");
-        camera.getComponent<TransformComponent>().position = {0.0f, 0.0f, 2.0f};
-        camera.addComponent<CameraComponent>();
-
-#if ENABLE_VULKAN
-        if (g_renderer && g_textureManager) {
-            // 加载 Go2 四足机器人 URDF
-            Entity go2Root = ModelLoader::loadURDF(g_textureManager.get(), g_scene.get(), g_renderer->getMeshManager(), "Data/Models/go2/go2_description.urdf");
-        }
-#endif
-    } else {
-        // Preload models to populate MeshManager offsets so restored components match valid geometry memory
-#if ENABLE_VULKAN
-        if (g_renderer && g_textureManager) {
-            Scene dummyScene("Preload");
-            ModelLoader::loadURDF(g_textureManager.get(), &dummyScene, g_renderer->getMeshManager(), "Data/Models/go2/go2_description.urdf");
-        }
-#endif
-
-        bool cameraPosFixed = false;
-        auto& registry = g_scene->getRegistry();
-        auto cameraView = registry.view<CameraComponent>();
-        if (cameraView.begin() == cameraView.end()) {
-            Entity camera = g_scene->createEntity("MainCamera");
-            camera.getComponent<TransformComponent>().position = {0.0f, 0.0f, 2.0f};
-            camera.addComponent<CameraComponent>();
-            cameraPosFixed = true;
-        } else {
-            for (auto entity : cameraView) {
-                if (registry.has<TransformComponent>(entity)) {
-                    auto& transform = registry.get<TransformComponent>(entity);
-                    if (transform.position[2] < 1.0f) {
-                        transform.position = {0.0f, 0.0f, 2.0f};
-                        cameraPosFixed = true;
-                    }
-                }
-                break;
-            }
-        }
-        if (cameraPosFixed) {
-            NX_CORE_INFO("Camera position forced to (0,0,2) to ensure viewport visibility.");
-        }
-        
-        auto boxView = registry.view<TagComponent>();
-        for (auto entity : boxView) {
-            Entity e(entity, &registry);
-            if (e.getComponent<TagComponent>().name == "DefaultBox") {
-                bool needsMesh = !e.hasComponent<MeshComponent>() || e.getComponent<MeshComponent>().indexCount == 0;
-                if (needsMesh) {
-                    if (e.hasComponent<MeshComponent>()) {
-                        registry.remove<MeshComponent>(entity);
-                    }
-                    e.addComponent<MeshComponent>(g_renderer->getCubeMeshComponent());
-                    NX_CORE_INFO("Restored MeshComponent for DefaultBox (indices fixed)");
-                }
-                break;
-            }
-        }
+    // 从 JSON 场景文件加载
+    std::string scenePath = "Data/Scenes/default_scene.json";
+    auto configResult = SceneLoader::parseSceneFile(scenePath);
+    if (!configResult.ok()) {
+        NX_CORE_WARN("场景文件加载失败: {}，使用默认配置", configResult.status().message());
     }
+    auto sceneConfig = configResult.ok() ? configResult.value() : SceneLoader::SceneConfig{};
+
+    g_scene = std::make_unique<Scene>(sceneConfig.sceneName);
+
+#if ENABLE_VULKAN
+    SceneLoader::createEntities(sceneConfig, g_scene.get(), g_renderer.get(), g_textureManager.get());
+#else
+    SceneLoader::createEntities(sceneConfig, g_scene.get(), nullptr, nullptr);
+#endif
 
     g_physicsSystem = new PhysicsSystem();
     auto physicsStatus = g_physicsSystem->initialize();
@@ -266,7 +219,8 @@ Status InitializeEngine(const EngineConfig& config) {
         delete g_physicsSystem;
         g_physicsSystem = nullptr;
     } else {
-        auto loadStatus = g_physicsSystem->loadModel("Data/Scenes/go2_mujoco/scene.xml");
+        std::string physicsPath = sceneConfig.robotPhysics.empty() ? "Data/Scenes/go2_mujoco/scene.xml" : "Data/" + sceneConfig.robotPhysics;
+        auto loadStatus = g_physicsSystem->loadModel(physicsPath);
         if (!loadStatus.ok()) {
             NX_CORE_WARN("Failed to load drone model: {}", loadStatus.message());
         }
@@ -303,8 +257,6 @@ void ShutdownEngine() {
         g_editorUIManager->saveLayout("Data/UI/editor_layout.json");
     }
     if (g_scene) {
-        SceneSerializer serializer(*g_scene);
-        serializer.serialize("Data/main_scene.bin");
         g_scene.reset();
     }
     g_editorUIManager.reset();
@@ -482,12 +434,13 @@ void RunMainLoop() {
                 if (g_rosBridge && g_physicsSystem) {
                     g_rosBridge->applyIncomingCommands(g_physicsSystem);
                 }
-                // Dynamics 先用 MuJoCo 数据更新各 link 实体的 local position/rotation（Z-up）
-                RoboticsDynamicsSystem::update(g_scene->getRegistry(), g_physicsSystem);
-                // Hierarchy 再从更新后的 local 变换推算 worldMatrix，顺便带上 URDF 根 -90°X 转换
+                // 1. Hierarchy 先从 URDF 本地变换计算 worldMatrix（静态帧正确显示）
                 HierarchySystem::update(g_scene->getRegistry());
+                // 2. Dynamics 用 MuJoCo 数据覆盖 worldMatrix（物理运行时覆盖静态结果）
+                RoboticsDynamicsSystem::update(g_scene->getRegistry(), g_physicsSystem);
                 if (g_rosBridge) {
                     g_rosBridge->publishReplicas(g_scene->getRegistry());
+                    if (g_physicsSystem) g_rosBridge->publishModelInfo(g_physicsSystem);
                 }
             }
             
