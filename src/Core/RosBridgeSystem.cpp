@@ -13,7 +13,6 @@ using json = nlohmann::json;
 namespace Nexus {
 namespace Core {
 
-// 存储从 ZMQ PULL socket 读取的单帧电机指令
 struct MotorCmd {
     std::string name;
     float q   = 0.0f;
@@ -25,22 +24,15 @@ struct MotorCmd {
 
 struct RosBridgeSystem::Impl {
     std::unique_ptr<zmq::context_t> context;
-
-    // 状态发布 (engine → WSL)
-    std::unique_ptr<zmq::socket_t> publisher;
-
-    // 指令接收 (WSL → engine)
-    std::unique_ptr<zmq::socket_t> cmdReceiver;
-
-    // 后台线程
+    std::unique_ptr<zmq::socket_t>  publisher;
+    std::unique_ptr<zmq::socket_t>  cmdReceiver;
     std::thread recvThread;
     std::atomic<bool> running{false};
-
-    // 最新指令缓冲（只保留最新一帧）
     std::mutex cmdMutex;
     std::vector<MotorCmd> latestCmds;
-
     bool initialized = false;
+    std::string robotId   = "robot_0";
+    std::string robotName = "unknown";
 
     void startRecvThread() {
         running = true;
@@ -101,12 +93,10 @@ Status RosBridgeSystem::initialize(int publishPort, int subscribePort) {
     try {
         m_impl->context = std::make_unique<zmq::context_t>(1);
 
-        // PUB 对外广播物理传感器状态
         m_impl->publisher = std::make_unique<zmq::socket_t>(*m_impl->context, zmq::socket_type::pub);
         std::string pubAddr = "tcp://*:" + std::to_string(publishPort);
         m_impl->publisher->bind(pubAddr);
 
-        // PULL 接收来自 WSL 桥接脚本的电机指令
         m_impl->cmdReceiver = std::make_unique<zmq::socket_t>(*m_impl->context, zmq::socket_type::pull);
         std::string subAddr = "tcp://*:" + std::to_string(subscribePort);
         m_impl->cmdReceiver->bind(subAddr);
@@ -185,16 +175,11 @@ void RosBridgeSystem::publishReplicas(Registry& registry) {
         j_state["bodies"].push_back(j_body);
     }
 
-    // 发布 MuJoCo 关节状态给 WSL 侧
-    json j_motors;
-    j_motors["type"]   = "state";
-    j_motors["motors"] = json::array();
-
-    // 预留：可从 PhysicsSystem 读取 qpos/qvel 填充 (后续实现)
-
     if (!j_state["bodies"].empty()) {
+        j_state["robot_id"] = m_impl->robotId;
         std::string payload = j_state.dump();
-        m_impl->publisher->send(zmq::message_t("state", 5), zmq::send_flags::sndmore);
+        std::string topic = "state:" + m_impl->robotId;
+        m_impl->publisher->send(zmq::message_t(topic.data(), topic.size()), zmq::send_flags::sndmore);
         m_impl->publisher->send(zmq::message_t(payload.data(), payload.size()), zmq::send_flags::none);
     }
 }
@@ -206,11 +191,11 @@ void RosBridgeSystem::publishModelInfo(IPhysicsSystem* physicsSystem) {
     auto now = std::chrono::steady_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastPublishTime).count();
 
-    // 每 2 秒广播一次
     if (elapsed < 2000) return;
     lastPublishTime = now;
 
     auto actuators = physicsSystem->getActuatorNames();
+
     json j;
     j["type"] = "model_info";
     j["actuators"] = actuators;
@@ -219,6 +204,24 @@ void RosBridgeSystem::publishModelInfo(IPhysicsSystem* physicsSystem) {
     std::string payload = j.dump();
     m_impl->publisher->send(zmq::message_t("model_info", 10), zmq::send_flags::sndmore);
     m_impl->publisher->send(zmq::message_t(payload.data(), payload.size()), zmq::send_flags::none);
+
+    json jList;
+    jList["robots"] = json::array();
+    json robot;
+    robot["robot_id"]   = m_impl->robotId;
+    robot["robot_name"] = m_impl->robotName;
+    robot["joints"]     = actuators;
+    jList["robots"].push_back(robot);
+
+    std::string listPayload = jList.dump();
+    m_impl->publisher->send(zmq::message_t("robot_list", 10), zmq::send_flags::sndmore);
+    m_impl->publisher->send(zmq::message_t(listPayload.data(), listPayload.size()), zmq::send_flags::none);
+}
+
+void RosBridgeSystem::setRobotInfo(const std::string& robotId, const std::string& robotName) {
+    m_impl->robotId = robotId;
+    m_impl->robotName = robotName;
+    NX_CORE_INFO("RosBridgeSystem 机器人: id={}, name={}", robotId, robotName);
 }
 
 } // namespace Core
