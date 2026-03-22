@@ -1,0 +1,770 @@
+Active code page: 65001
+**********************************************************************
+** Visual Studio 2022 Developer Command Prompt v17.14.21
+** Copyright (c) 2025 Microsoft Corporation
+**********************************************************************
+[vcvarsall.bat] Environment initialized for: 'x64'
+" Configuring NexusEngine..."
+-- Running vcpkg install
+Detecting compiler hash for triplet x64-windows...
+-- Automatically setting %HTTP(S)_PROXY% environment variables to "127.0.0.1:7890".
+Compiler found: E:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe
+Detecting compiler hash for triplet x64-windows-static...
+Compiler found: E:/Program Files/Microsoft Visual Studio/2022/Enterprise/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe
+The following packages are already installed:
+    abseil:x64-windows-static@20250127.0 -- git+https://github.com/microsoft/vcpkg@274bd7ad7d033b67d78f202b33b280904763c5c7
+    assimp:x64-windows-static@5.4.3 -- git+https://github.com/microsoft/vcpkg@3356e9c8083aae3cfcd24dd3269b45e2cae3173f
+  * brotli:x64-windows-static@1.1.0#1 -- git+https://github.com/microsoft/vcpkg@4e5b5ae1ad26c80535c893cc0307121f0398549e
+  * bzip2[core,tool]:x64-windows-static@1.0.8#6 -- git+https://github.com/microsoft/vcpkg@2d029da682847c5ebdc54e4dbea001331a02207e
+  * ccd[core,double-precision]:x64-windows-static@2.1#4 -- git+https://github.com/microsoft/vcpkg@a6cd46396151b69680100934c824c290c7057379
+  * cereal:x64-windows-static@1.3.2#1 -- git+https://github.com/microsoft/vcpkg@075869fcf5302c6dd11d564286d0dfa1d2d4d7a1
+    cppzmq:x64-windows-static@4.10.0 -- git+https://github.com/microsoft/vcpkg@8e7a8ca62f55304268afb4ddd9220cc39d6b4831
+  * draco:x64-windows-static@1.5.7 -- git+https://github.com/microsoft/vcpkg@06799add74da6e9e4634e4c7f27b82b1149a8bb6
+    entt:x64-windows-static@3.14.0 -- git+https://github.com/microsoft/vcpkg@2c9a2cb27bd1e5688b91c4ca0b4aedcc6f92e88f
+  * fmt:x64-windows-static@11.0.2#1 -- git+https://github.com/microsoft/vcpkg@07a73a7565e5de9eb42e90c16c133bdfdfebbcda
+  * freetype[brotli,bzip2,core,png,zlib]:x64-windows-static@2.13.3 -- git+https://github.com/microsoft/vcpkg@8a2c633dcc14eaabdb31cf4637242f4e3c2f3fa2
+  * glfw3:x64-windows-static@3.4#1 -- git+https://github.com/microsoft/vcpkg@d4bbd4f27c2ca619f57778985120cddcedadb1cc
+  * glm:x64-windows-static@1.0.1#3 -- git+https://github.com/microsoft/vcpkg@f8b09027afe97c717e95bd81d1d4f37c057d1c78
+  * glslang:x64-windows-static@15.1.0 -- git+https://github.com/microsoft/vcpkg@218e34707c9d9c77a6c853ac61f9df9fb91e2555
+    gtest:x64-windows-static@1.16.0 -- git+https://github.com/microsoft/vcpkg@7448391582abd4a7d61248894ef2979c8f065813
+  * jhasse-poly2tri:x64-windows-static@2023-12-27#1 -- git+https://github.com/microsoft/vcpkg@0e9832e9b7dce8bf8237d7a38639bf4e3a18da70
+  * kubazip:x64-windows-static@0.3.3 -- git+https://github.com/microsoft/vcpkg@f180298b3a29f98aee261face05569afcf1313e5
+  * libpng:x64-windows-static@1.6.46 -- git+https://github.com/microsoft/vcpkg@0074ace75112e0a4ff3465de21e692c07d6e6b5f
+  * lodepng:x64-windows-static@2021-12-04#1 -- git+https://github.com/microsoft/vcpkg@744376b1eace2fdab47d24858d7d1e79f32eefa3
+  * marchingcubecpp:x64-windows-static@2023-09-11 -- git+https://github.com/microsoft/vcpkg@905890d4ab4df5bbf4a358fb34c6fb4eb711477e
+  * minizip:x64-windows-static@1.3.1#1 -- git+https://github.com/microsoft/vcpkg@bb8016593efa5220d1b877c27cd8612862c13d81
+    mujoco:x64-windows-static@3.2.7 -- git+https://github.com/microsoft/vcpkg@5d1390fd33f3bf4d3b3a212a9cf7614b55aa5973
+    nlohmann-json:x64-windows-static@3.11.3#1 -- git+https://github.com/microsoft/vcpkg@324d32ddba70bc49650d1a067ddcf3d0bfc6c9b6
+  * polyclipping:x64-windows-static@6.4.2#12 -- git+https://github.com/microsoft/vcpkg@7de01c0a001bc72c4d934184b3bd4ae97f860c01
+  * pugixml:x64-windows-static@1.15 -- git+https://github.com/microsoft/vcpkg@a3181de4dee35567b45611a938eb0f44f5ee016d
+  * qhull:x64-windows-static@8.0.2#5 -- git+https://github.com/microsoft/vcpkg@0c30770c608574944db1c98437d356af3e64fe5b
+  * rapidjson:x64-windows-static@2023-07-17#2 -- git+https://github.com/microsoft/vcpkg@38b67535aa1b51fd521021ec77ccb36f01431bd2
+    rmlui[core,freetype]:x64-windows-static@6.0#1 -- git+https://github.com/microsoft/vcpkg@fdd8836a66e7c33d1454a1a1376ad32bf78da5f1
+  * robin-hood-hashing:x64-windows-static@3.11.5 -- git+https://github.com/microsoft/vcpkg@79b90adbe2f012facdd920fdb6454bc21c84399e
+  * sdflib:x64-windows-static@2025-01-25 -- git+https://github.com/microsoft/vcpkg@b15f316b5ce3e341ab53fb78a6259cc6a5a509c4
+    sdl3[core,vulkan]:x64-windows-static@3.2.4 -- git+https://github.com/microsoft/vcpkg@8f6fe1fdd4aeb45f5c0f0e02876f44e400f694f0
+    shaderc:x64-windows-static@2023.8 -- git+https://github.com/microsoft/vcpkg@2e5657c38583dba408c16a4d1cc7f624d01d7d3b
+    spdlog:x64-windows-static@1.15.1 -- git+https://github.com/microsoft/vcpkg@7eecd9f58a522cf0ed8f081356617dbd7b4947de
+  * spirv-headers:x64-windows-static@1.4.304.1 -- git+https://github.com/microsoft/vcpkg@31e7088416b817e44b57cab3a368a94e25a8a223
+  * spirv-tools:x64-windows-static@1.4.304.1 -- git+https://github.com/microsoft/vcpkg@04cccd11f516a8d7ec9645d5b79202b92867a4db
+    stb:x64-windows-static@2024-07-29#1 -- git+https://github.com/microsoft/vcpkg@c362152d1d02973e7b1ce777960f8a6876656560
+  * tinyobjloader:x64-windows-static@2.0.0rc13 -- git+https://github.com/microsoft/vcpkg@b008f82ac36e49a7ec655e02deaaaaf32121f997
+    tinyxml2:x64-windows-static@10.0.0 -- git+https://github.com/microsoft/vcpkg@e7763e8defdfa46b8d2e399756511f0c7ff00448
+  * utfcpp:x64-windows-static@4.0.6 -- git+https://github.com/microsoft/vcpkg@f73420a80f760312a45c40fce2b350009991c674
+  * vcpkg-cmake:x64-windows@2024-04-23 -- git+https://github.com/microsoft/vcpkg@e74aa1e8f93278a8e71372f1fa08c3df420eb840
+  * vcpkg-cmake-config:x64-windows@2024-05-23 -- git+https://github.com/microsoft/vcpkg@97a63e4bc1a17422ffe4eff71da53b4b561a7841
+  * vcpkg-cmake-get-vars:x64-windows@2024-09-22 -- git+https://github.com/microsoft/vcpkg@f23148add155147f3d95ae622d3b0031beb25acf
+    vulkan:x64-windows-static@2023-12-17 -- git+https://github.com/microsoft/vcpkg@3e8d64ec799440b97c7151f97dd00a53e8e1b5ea
+  * vulkan-headers:x64-windows-static@1.4.304.1 -- git+https://github.com/microsoft/vcpkg@2a602f3980b1aa7a402a6abec00c69d90cd10da2
+  * vulkan-loader:x64-windows-static@1.4.304.1 -- git+https://github.com/microsoft/vcpkg@289901bb5f8c0556eff1349905adefde912ee81d
+    zeromq:x64-windows-static@4.3.5#2 -- git+https://github.com/microsoft/vcpkg@454f5e2648cea10a305d0e781fd3093073153a2e
+  * zlib:x64-windows-static@1.3.1 -- git+https://github.com/microsoft/vcpkg@3f05e04b9aededb96786a911a16193cdb711f0c9
+abseil provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(absl CONFIG REQUIRED)
+  # note: 188 additional targets are not displayed.
+  target_link_libraries(main PRIVATE absl::any absl::log absl::base absl::bits)
+
+abseil provides pkg-config modules:
+
+  # Abseil absl_check library
+  absl_absl_check
+
+  # Abseil absl_log library
+  absl_absl_log
+
+  # Abseil absl_vlog_is_on library
+  absl_absl_vlog_is_on
+
+  # Abseil algorithm library
+  absl_algorithm
+
+  # Abseil algorithm_container library
+  absl_algorithm_container
+
+  # Abseil any library
+  absl_any
+
+  # Abseil any_invocable library
+  absl_any_invocable
+
+  # Abseil atomic_hook library
+  absl_atomic_hook
+
+  # Abseil bad_any_cast library
+  absl_bad_any_cast
+
+  # Abseil bad_any_cast_impl library
+  absl_bad_any_cast_impl
+
+  # Abseil bad_optional_access library
+  absl_bad_optional_access
+
+  # Abseil bad_variant_access library
+  absl_bad_variant_access
+
+  # Abseil base library
+  absl_base
+
+  # Abseil base_internal library
+  absl_base_internal
+
+  # Abseil bind_front library
+  absl_bind_front
+
+  # Abseil bits library
+  absl_bits
+
+  # Abseil bounded_utf8_length_sequence library
+  absl_bounded_utf8_length_sequence
+
+  # Abseil btree library
+  absl_btree
+
+  # Abseil charset library
+  absl_charset
+
+  # Abseil check library
+  absl_check
+
+  # Abseil city library
+  absl_city
+
+  # Abseil civil_time library
+  absl_civil_time
+
+  # Abseil cleanup library
+  absl_cleanup
+
+  # Abseil cleanup_internal library
+  absl_cleanup_internal
+
+  # Abseil common_policy_traits library
+  absl_common_policy_traits
+
+  # Abseil compare library
+  absl_compare
+
+  # Abseil compressed_tuple library
+  absl_compressed_tuple
+
+  # Abseil config library
+  absl_config
+
+  # Abseil container_common library
+  absl_container_common
+
+  # Abseil container_memory library
+  absl_container_memory
+
+  # Abseil cord library
+  absl_cord
+
+  # Abseil cord_internal library
+  absl_cord_internal
+
+  # Abseil cordz_functions library
+  absl_cordz_functions
+
+  # Abseil cordz_handle library
+  absl_cordz_handle
+
+  # Abseil cordz_info library
+  absl_cordz_info
+
+  # Abseil cordz_sample_token library
+  absl_cordz_sample_token
+
+  # Abseil cordz_statistics library
+  absl_cordz_statistics
+
+  # Abseil cordz_update_scope library
+  absl_cordz_update_scope
+
+  # Abseil cordz_update_tracker library
+  absl_cordz_update_tracker
+
+  # Abseil core_headers library
+  absl_core_headers
+
+  # Abseil crc32c library
+  absl_crc32c
+
+  # Abseil crc_cord_state library
+  absl_crc_cord_state
+
+  # Abseil crc_cpu_detect library
+  absl_crc_cpu_detect
+
+  # Abseil crc_internal library
+  absl_crc_internal
+
+  # Abseil debugging library
+  absl_debugging
+
+  # Abseil debugging_internal library
+  absl_debugging_internal
+
+  # Abseil decode_rust_punycode library
+  absl_decode_rust_punycode
+
+  # Abseil demangle_internal library
+  absl_demangle_internal
+
+  # Abseil demangle_rust library
+  absl_demangle_rust
+
+  # Abseil die_if_null library
+  absl_die_if_null
+
+  # Abseil dynamic_annotations library
+  absl_dynamic_annotations
+
+  # Abseil endian library
+  absl_endian
+
+  # Abseil errno_saver library
+  absl_errno_saver
+
+  # Abseil examine_stack library
+  absl_examine_stack
+
+  # Abseil exponential_biased library
+  absl_exponential_biased
+
+  # Abseil failure_signal_handler library
+  absl_failure_signal_handler
+
+  # Abseil fast_type_id library
+  absl_fast_type_id
+
+  # Abseil fixed_array library
+  absl_fixed_array
+
+  # Abseil flags library
+  absl_flags
+
+  # Abseil flags_commandlineflag library
+  absl_flags_commandlineflag
+
+  # Abseil flags_commandlineflag_internal library
+  absl_flags_commandlineflag_internal
+
+  # Abseil flags_config library
+  absl_flags_config
+
+  # Abseil flags_internal library
+  absl_flags_internal
+
+  # Abseil flags_marshalling library
+  absl_flags_marshalling
+
+  # Abseil flags_parse library
+  absl_flags_parse
+
+  # Abseil flags_path_util library
+  absl_flags_path_util
+
+  # Abseil flags_private_handle_accessor library
+  absl_flags_private_handle_accessor
+
+  # Abseil flags_program_name library
+  absl_flags_program_name
+
+  # Abseil flags_reflection library
+  absl_flags_reflection
+
+  # Abseil flags_usage library
+  absl_flags_usage
+
+  # Abseil flags_usage_internal library
+  absl_flags_usage_internal
+
+  # Abseil flat_hash_map library
+  absl_flat_hash_map
+
+  # Abseil flat_hash_set library
+  absl_flat_hash_set
+
+  # Abseil function_ref library
+  absl_function_ref
+
+  # Abseil graphcycles_internal library
+  absl_graphcycles_internal
+
+  # Abseil has_ostream_operator library
+  absl_has_ostream_operator
+
+  # Abseil hash library
+  absl_hash
+
+  # Abseil hash_container_defaults library
+  absl_hash_container_defaults
+
+  # Abseil hash_function_defaults library
+  absl_hash_function_defaults
+
+  # Abseil hash_policy_traits library
+  absl_hash_policy_traits
+
+  # Abseil hashtable_debug library
+  absl_hashtable_debug
+
+  # Abseil hashtable_debug_hooks library
+  absl_hashtable_debug_hooks
+
+  # Abseil hashtablez_sampler library
+  absl_hashtablez_sampler
+
+  # Abseil if_constexpr library
+  absl_if_constexpr
+
+  # Abseil inlined_vector library
+  absl_inlined_vector
+
+  # Abseil inlined_vector_internal library
+  absl_inlined_vector_internal
+
+  # Abseil int128 library
+  absl_int128
+
+  # Abseil kernel_timeout_internal library
+  absl_kernel_timeout_internal
+
+  # Abseil layout library
+  absl_layout
+
+  # Abseil leak_check library
+  absl_leak_check
+
+  # Abseil log library
+  absl_log
+
+  # Abseil log_entry library
+  absl_log_entry
+
+  # Abseil log_flags library
+  absl_log_flags
+
+  # Abseil log_globals library
+  absl_log_globals
+
+  # Abseil log_initialize library
+  absl_log_initialize
+
+  # Abseil log_internal_append_truncated library
+  absl_log_internal_append_truncated
+
+  # Abseil log_internal_check_impl library
+  absl_log_internal_check_impl
+
+  # Abseil log_internal_check_op library
+  absl_log_internal_check_op
+
+  # Abseil log_internal_conditions library
+  absl_log_internal_conditions
+
+  # Abseil log_internal_config library
+  absl_log_internal_config
+
+  # Abseil log_internal_flags library
+  absl_log_internal_flags
+
+  # Abseil log_internal_fnmatch library
+  absl_log_internal_fnmatch
+
+  # Abseil log_internal_format library
+  absl_log_internal_format
+
+  # Abseil log_internal_globals library
+  absl_log_internal_globals
+
+  # Abseil log_internal_log_impl library
+  absl_log_internal_log_impl
+
+  # Abseil log_internal_log_sink_set library
+  absl_log_internal_log_sink_set
+
+  # Abseil log_internal_message library
+  absl_log_internal_message
+
+  # Abseil log_internal_nullguard library
+  absl_log_internal_nullguard
+
+  # Abseil log_internal_nullstream library
+  absl_log_internal_nullstream
+
+  # Abseil log_internal_proto library
+  absl_log_internal_proto
+
+  # Abseil log_internal_strip library
+  absl_log_internal_strip
+
+  # Abseil log_internal_structured library
+  absl_log_internal_structured
+
+  # Abseil log_internal_structured_proto library
+  absl_log_internal_structured_proto
+
+  # Abseil log_internal_voidify library
+  absl_log_internal_voidify
+
+  # Abseil log_severity library
+  absl_log_severity
+
+  # Abseil log_sink library
+  absl_log_sink
+
+  # Abseil log_sink_registry library
+  absl_log_sink_registry
+
+  # Abseil log_streamer library
+  absl_log_streamer
+
+  # Abseil log_structured library
+  absl_log_structured
+
+  # Abseil low_level_hash library
+  absl_low_level_hash
+
+  # Abseil malloc_internal library
+  absl_malloc_internal
+
+  # Abseil memory library
+  absl_memory
+
+  # Abseil meta library
+  absl_meta
+
+  # Abseil no_destructor library
+  absl_no_destructor
+
+  # Abseil node_hash_map library
+  absl_node_hash_map
+
+  # Abseil node_hash_set library
+  absl_node_hash_set
+
+  # Abseil node_slot_policy library
+  absl_node_slot_policy
+
+  # Abseil non_temporal_arm_intrinsics library
+  absl_non_temporal_arm_intrinsics
+
+  # Abseil non_temporal_memcpy library
+  absl_non_temporal_memcpy
+
+  # Abseil nullability library
+  absl_nullability
+
+  # Abseil numeric library
+  absl_numeric
+
+  # Abseil numeric_representation library
+  absl_numeric_representation
+
+  # Abseil optional library
+  absl_optional
+
+  # Abseil overload library
+  absl_overload
+
+  # Abseil periodic_sampler library
+  absl_periodic_sampler
+
+  # Abseil poison library
+  absl_poison
+
+  # Abseil prefetch library
+  absl_prefetch
+
+  # Abseil pretty_function library
+  absl_pretty_function
+
+  # Abseil random_bit_gen_ref library
+  absl_random_bit_gen_ref
+
+  # Abseil random_distributions library
+  absl_random_distributions
+
+  # Abseil random_internal_distribution_caller library
+  absl_random_internal_distribution_caller
+
+  # Abseil random_internal_distribution_test_util library
+  absl_random_internal_distribution_test_util
+
+  # Abseil random_internal_fast_uniform_bits library
+  absl_random_internal_fast_uniform_bits
+
+  # Abseil random_internal_fastmath library
+  absl_random_internal_fastmath
+
+  # Abseil random_internal_generate_real library
+  absl_random_internal_generate_real
+
+  # Abseil random_internal_iostream_state_saver library
+  absl_random_internal_iostream_state_saver
+
+  # Abseil random_internal_mock_helpers library
+  absl_random_internal_mock_helpers
+
+  # Abseil random_internal_nonsecure_base library
+  absl_random_internal_nonsecure_base
+
+  # Abseil random_internal_pcg_engine library
+  absl_random_internal_pcg_engine
+
+  # Abseil random_internal_platform library
+  absl_random_internal_platform
+
+  # Abseil random_internal_pool_urbg library
+  absl_random_internal_pool_urbg
+
+  # Abseil random_internal_randen library
+  absl_random_internal_randen
+
+  # Abseil random_internal_randen_engine library
+  absl_random_internal_randen_engine
+
+  # Abseil random_internal_randen_hwaes library
+  absl_random_internal_randen_hwaes
+
+  # Abseil random_internal_randen_hwaes_impl library
+  absl_random_internal_randen_hwaes_impl
+
+  # Abseil random_internal_randen_slow library
+  absl_random_internal_randen_slow
+
+  # Abseil random_internal_salted_seed_seq library
+  absl_random_internal_salted_seed_seq
+
+  # Abseil random_internal_seed_material library
+  absl_random_internal_seed_material
+
+  # Abseil random_internal_traits library
+  absl_random_internal_traits
+
+  # Abseil random_internal_uniform_helper library
+  absl_random_internal_uniform_helper
+
+  # Abseil random_internal_wide_multiply library
+  absl_random_internal_wide_multiply
+
+  # Abseil random_random library
+  absl_random_random
+
+  # Abseil random_seed_gen_exception library
+  absl_random_seed_gen_exception
+
+  # Abseil random_seed_sequences library
+  absl_random_seed_sequences
+
+  # Abseil raw_hash_map library
+  absl_raw_hash_map
+
+  # Abseil raw_hash_set library
+  absl_raw_hash_set
+
+  # Abseil raw_logging_internal library
+  absl_raw_logging_internal
+
+  # Abseil sample_recorder library
+  absl_sample_recorder
+
+  # Abseil scoped_set_env library
+  absl_scoped_set_env
+
+  # Abseil span library
+  absl_span
+
+  # Abseil spinlock_wait library
+  absl_spinlock_wait
+
+  # Abseil stacktrace library
+  absl_stacktrace
+
+  # Abseil status library
+  absl_status
+
+  # Abseil statusor library
+  absl_statusor
+
+  # Abseil str_format library
+  absl_str_format
+
+  # Abseil str_format_internal library
+  absl_str_format_internal
+
+  # Abseil strerror library
+  absl_strerror
+
+  # Abseil string_view library
+  absl_string_view
+
+  # Abseil strings library
+  absl_strings
+
+  # Abseil strings_internal library
+  absl_strings_internal
+
+  # Abseil symbolize library
+  absl_symbolize
+
+  # Abseil synchronization library
+  absl_synchronization
+
+  # Abseil throw_delegate library
+  absl_throw_delegate
+
+  # Abseil time library
+  absl_time
+
+  # Abseil time_zone library
+  absl_time_zone
+
+  # Abseil tracing_internal library
+  absl_tracing_internal
+
+  # Abseil type_traits library
+  absl_type_traits
+
+  # Abseil utf8_for_code_point library
+  absl_utf8_for_code_point
+
+  # Abseil utility library
+  absl_utility
+
+  # Abseil variant library
+  absl_variant
+
+  # Abseil vlog_config_internal library
+  absl_vlog_config_internal
+
+  # Abseil vlog_is_on library
+  absl_vlog_is_on
+
+The package stb provides CMake targets:
+
+    find_package(Stb REQUIRED)
+    target_include_directories(main PRIVATE ${Stb_INCLUDE_DIR})
+assimp provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(assimp CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE assimp::assimp)
+
+assimp provides pkg-config modules:
+
+  # Import various well-known 3D model formats in an uniform manner.
+  assimp
+
+zeromq provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(ZeroMQ CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE libzmq libzmq-static)
+
+zeromq provides pkg-config modules:
+
+  # 0MQ c++ library
+  libzmq
+
+cppzmq provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(cppzmq CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE cppzmq cppzmq-static)
+
+cppzmq provides pkg-config modules:
+
+  # C++ binding for libzmq
+  cppzmq
+
+entt provides CMake targets:
+
+    find_package(EnTT CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE EnTT::EnTT)
+
+The package gtest is compatible with built-in CMake targets:
+
+    enable_testing()
+    
+    find_package(GTest CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE GTest::gtest GTest::gtest_main GTest::gmock GTest::gmock_main)
+    
+    add_test(AllTestsInMain main)
+
+tinyxml2 provides CMake targets:
+
+  # this is heuristically generated, and may not be correct
+  find_package(tinyxml2 CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE tinyxml2::tinyxml2)
+
+tinyxml2 provides pkg-config modules:
+
+  # simple, small, C++ XML parser
+  tinyxml2
+
+The package spdlog provides CMake targets:
+
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog)
+
+    # Or use the header-only version
+    find_package(spdlog CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE spdlog::spdlog_header_only)
+
+mujoco provides CMake targets:
+
+    find_package(mujoco CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE mujoco::mujoco)
+
+The package nlohmann-json provides CMake targets:
+
+    find_package(nlohmann_json CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE nlohmann_json::nlohmann_json)
+
+The package nlohmann-json can be configured to not provide implicit conversions via a custom triplet file:
+
+    set(nlohmann-json_IMPLICIT_CONVERSIONS OFF)
+
+For more information, see the docs here:
+    
+    https://json.nlohmann.me/api/macros/json_use_implicit_conversions/
+
+rmlui provides CMake targets:
+
+    find_package(RmlUi CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE RmlUi::RmlUi)
+
+sdl3 provides CMake targets:
+
+  find_package(SDL3 CONFIG REQUIRED)
+  target_link_libraries(main PRIVATE SDL3::SDL3)
+
+shaderc provides CMake targets:
+
+    find_package(unofficial-shaderc CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE unofficial::shaderc::shaderc)
+
+vulkan is compatible with built-in CMake targets:
+
+    # https://cmake.org/cmake/help/latest/module/FindVulkan.html
+    find_package(Vulkan REQUIRED)
+    target_link_libraries(main PRIVATE Vulkan::Vulkan)
+
+All requested installations completed successfully in: 658 us
+-- Running vcpkg install - done
+-- Found Freetype target Freetype::Freetype
+-- RapidJSON found. Headers: G:/nexus_workspace/NexusEngine/build-windows-debug/vcpkg_installed/x64-windows-static/share/rapidjson/../../include
+-- Configuring done (3.1s)
+-- Generating done (0.1s)
+-- Build files have been written to: G:/nexus_workspace/NexusEngine/build-windows-debug
+" Building NexusEngine..."
+[1/5] Building CXX object src\Core\CMakeFiles\Core.dir\RosBridgeSystem.cpp.obj
+[2/5] Linking CXX static library src\Core\Core.lib
+[3/5] Building CXX object CMakeFiles\NexusApp.dir\src\App\Main.cpp.obj
+G:\nexus_workspace\NexusEngine\src\App\Main.cpp(210): warning C4834: discarding return value of function with [[nodiscard]] attribute
+[4/5] Linking CXX executable tests\NexusTests.exe
+[5/5] Linking CXX executable NexusApp.exe
