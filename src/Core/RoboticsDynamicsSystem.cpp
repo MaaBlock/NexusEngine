@@ -1,6 +1,7 @@
 #include "RoboticsDynamicsSystem.h"
 #include "Components.h"
 #include "../Bridge/Log.h"
+#include <cassert>
 
 namespace Nexus {
 namespace Core {
@@ -34,17 +35,44 @@ static std::array<float, 16> multiplyMat4(const std::array<float, 16>& a, const 
     return r;
 }
 
-// 递归向下传播（纯Z-up空间）
-static void propagateZUp(entt::registry& reg, entt::entity entity, const std::array<float, 16>& parentMatZUp) {
-    if (!reg.all_of<HierarchyComponent>(entity)) return;
-    auto& hier = reg.get<HierarchyComponent>(entity);
-    for (auto child : hier.children) {
-        if (reg.all_of<RigidBodyComponent>(child)) continue; // 独立的 link 自己有纯正 MuJoCo 数据
-        if (reg.all_of<TransformComponent>(child)) {
-            auto& childTr = reg.get<TransformComponent>(child);
-            auto childLocalZUp = childTr.computeLocalMatrix(); // 从URDF读出的本来就是Z-up
-            childTr.worldMatrix = multiplyMat4(parentMatZUp, childLocalZUp); // 这里暂存 Z-up 世界矩阵
-            propagateZUp(reg, child, childTr.worldMatrix);
+// 递归向下获取和传播 Z-up 空间矩阵
+static void propagatePhysicsZUp(entt::registry& reg, entt::entity entity, const std::array<float, 16>& parentMatZUp, MuJoCo_PhysicsSystem* mj) {
+    if (!reg.all_of<TransformComponent>(entity)) return;
+    
+    auto& tr = reg.get<TransformComponent>(entity);
+    std::array<float, 16> currentMatZUp = parentMatZUp;
+    
+    bool gotMuJoCo = false;
+    if (reg.all_of<RigidBodyComponent>(entity)) {
+        const auto& rb = reg.get<RigidBodyComponent>(entity);
+        int bodyId = mj_name2id(mj->m_model, mjOBJ_BODY, rb.bodyName.c_str());
+        if (bodyId < 0) {
+            bodyId = mj_name2id(mj->m_model, mjOBJ_BODY, (rb.bodyName + "_link").c_str());
+        }
+        if (bodyId < 0 && rb.bodyName.size() > 5 && rb.bodyName.substr(rb.bodyName.size() - 5) == "_link") {
+            bodyId = mj_name2id(mj->m_model, mjOBJ_BODY, rb.bodyName.substr(0, rb.bodyName.size() - 5).c_str());
+        }
+        
+        if (bodyId >= 0) {
+            const double* pos = mj->m_data->xpos + 3 * bodyId;
+            const double* quat = mj->m_data->xquat + 4 * bodyId;
+            tr.worldMatrix = buildZUpMatrix(pos, quat);
+            currentMatZUp = tr.worldMatrix;
+            gotMuJoCo = true;
+        }
+    }
+    
+    // 如果没有在 MuJoCo 找到对应的 body（比如 fixed joint 被合并，或者是纯 visual 节点）
+    if (!gotMuJoCo) {
+        auto localZUp = tr.computeLocalMatrix();
+        tr.worldMatrix = multiplyMat4(parentMatZUp, localZUp);
+        currentMatZUp = tr.worldMatrix;
+    }
+    
+    if (reg.all_of<HierarchyComponent>(entity)) {
+        const auto& hier = reg.get<HierarchyComponent>(entity);
+        for (auto child : hier.children) {
+            propagatePhysicsZUp(reg, child, currentMatZUp, mj);
         }
     }
 }
@@ -69,32 +97,32 @@ void RoboticsDynamicsSystem::update(Registry& registry, IPhysicsSystem* physicsS
     if (!mj || !mj->m_model || !mj->m_data) return;
 
     auto& reg = registry.getInternal();
-    auto view = reg.view<TransformComponent, RigidBodyComponent>();
+    auto view = reg.view<RigidBodyComponent>();
 
-    entt::entity rootEntity = entt::null;
+    std::vector<entt::entity> rootEntities;
 
-    // 1. 获取所有 link 的绝对位置，构造 Z-up 矩阵，并传播给自己的非物理视觉子节点
+    // 找到树的根节点 (body_parentid == 0)
     for (auto entity : view) {
-        auto& transform = view.get<TransformComponent>(entity);
         const auto& rb = view.get<RigidBodyComponent>(entity);
-
-        int bodyId = mj_name2id(mj->m_model, mjOBJ_BODY, (rb.bodyName == "base") ? "base_link" : rb.bodyName.c_str());
-        if (bodyId < 0) continue;
-
-        if (rb.bodyName == "base") rootEntity = entity;
-
-        const double* pos = mj->m_data->xpos + 3 * bodyId;
-        const double* quat = mj->m_data->xquat + 4 * bodyId;
-
-        // 暂存纯正的 Z-up世界矩阵
-        transform.worldMatrix = buildZUpMatrix(pos, quat);
-
-        // 传播给子节点（比如视觉mesh） -> 这些子节点因为不在view里，所以就在这里更新成了纯Z-up世界坐标
-        propagateZUp(reg, entity, transform.worldMatrix);
+        int bodyId = mj_name2id(mj->m_model, mjOBJ_BODY, rb.bodyName.c_str());
+        if (bodyId < 0) bodyId = mj_name2id(mj->m_model, mjOBJ_BODY, (rb.bodyName + "_link").c_str());
+        if (bodyId < 0 && rb.bodyName.size() > 5 && rb.bodyName.substr(rb.bodyName.size() - 5) == "_link") {
+            bodyId = mj_name2id(mj->m_model, mjOBJ_BODY, rb.bodyName.substr(0, rb.bodyName.size() - 5).c_str());
+        }
+        if (bodyId >= 0 && mj->m_model->body_parentid[bodyId] == 0) {
+            rootEntities.push_back(entity);
+        }
     }
 
-    // 2. 如果找到了根节点，全局应用一次 -90°X 变换，把所有 Z-up worldMatrix 翻成 Y-up
-    if (rootEntity != entt::null) {
+    for (entt::entity rootEntity : rootEntities) {
+        std::array<float, 16> identityMat = {
+            1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1
+        };
+        
+        // 传递物理绝对坐标或 fallback 计算
+        propagatePhysicsZUp(reg, rootEntity, identityMat, mj);
+
+        // 最终 Z-UP 转 Y-UP 坐标系映射 (+90度 X轴 旋转)
         std::array<float, 16> zToY = {
             1,  0,  0,  0,
             0,  0, -1,  0,

@@ -193,6 +193,11 @@ static std::optional<Model> parseDocument(tinyxml2::XMLDocument& doc) {
     Model model;
     if (auto* n = robot->Attribute("name")) model.name = n;
 
+    for (auto* elem = robot->FirstChildElement("material"); elem; elem = elem->NextSiblingElement("material")) {
+        auto mat = parseMaterial(elem);
+        model.materials[mat.name] = mat;
+    }
+
     for (auto* elem = robot->FirstChildElement("link"); elem; elem = elem->NextSiblingElement("link")) {
         model.linkIndex[std::string(elem->Attribute("name"))] = model.links.size();
         model.links.push_back(parseLink(elem));
@@ -252,14 +257,15 @@ std::string resolveMeshPath(std::string_view uri, std::string_view packageBasePa
     constexpr std::string_view prefix = "package://";
     if (uri.substr(0, prefix.size()) == prefix) {
         auto rest = uri.substr(prefix.size());
-        // 跳过 package 名称 (例如 "go2_description/")
         auto slash = rest.find('/');
         if (slash != std::string_view::npos) {
-            rest = rest.substr(slash);  // "/dae/base.dae"
+            rest = rest.substr(slash);
         }
         return std::string(packageBasePath) + std::string(rest);
     }
-    // 非 package:// URI，原样返回
+    if (!uri.empty() && uri[0] != '/' && uri.find(':') == std::string_view::npos) {
+        return std::string(packageBasePath) + "/" + std::string(uri);
+    }
     return std::string(uri);
 }
 

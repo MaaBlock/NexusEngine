@@ -124,6 +124,9 @@ struct Model {
     // 便捷索引 (name -> vector index)
     std::unordered_map<std::string, size_t> linkIndex;
     std::unordered_map<std::string, size_t> jointIndex;
+    
+    // 全局材质字典 (name -> Material)
+    std::unordered_map<std::string, Material> materials;
 
     // 查找辅助
     const Link*  findLink(std::string_view name) const;
