@@ -70,6 +70,16 @@ void MuJoCo_PhysicsSystem::shutdown() {
     NX_CORE_INFO("MuJoCo Physics System Shutdown");
 }
 
+void MuJoCo_PhysicsSystem::resetSimulation() {
+    if (!m_model || !m_data) return;
+    std::lock_guard<std::mutex> lock(m_cmdMutex);
+    mj_resetData(m_model, m_data);
+    mj_forward(m_model, m_data);
+    m_pendingCommands.clear();
+    m_timeStepAccumulator = 0.0;
+    NX_CORE_INFO("MuJoCo 仿真已重置到初始状态");
+}
+
 void MuJoCo_PhysicsSystem::update(float deltaTime) {
     if (m_model && m_data) {
         // 等到至少收到一次电机指令再开始步进，防止机器人在连接前自由倒塌
@@ -78,11 +88,11 @@ void MuJoCo_PhysicsSystem::update(float deltaTime) {
             if (m_pendingCommands.empty()) return;
         }
 
-        m_timeStepAccumulator += deltaTime;
-        
-        while (m_timeStepAccumulator >= m_model->opt.timestep) {
-            {
-                std::lock_guard<std::mutex> lock(m_cmdMutex);
+        // PD 扭矩只在收到新指令时计算一次，匹配 RL 策略训练时的行为：
+        // 策略算一次 tau = kp*(target-q) + kd*(0-dq)，然后 ctrl 在 decimation 步内保持不变
+        {
+            std::lock_guard<std::mutex> lock(m_cmdMutex);
+            if (m_cmdDirty) {
                 for(const auto& [actuatorId, cmd] : m_pendingCommands) {
                     int trnid = m_model->actuator_trnid[actuatorId * 2];
                     
@@ -92,8 +102,13 @@ void MuJoCo_PhysicsSystem::update(float deltaTime) {
                     float generated_torque = cmd.kp * (cmd.q - current_q) + cmd.kd * (cmd.dq - current_dq) + cmd.tau;
                     m_data->ctrl[actuatorId] = generated_torque;
                 }
+                m_cmdDirty = false;
             }
-            
+        }
+
+        m_timeStepAccumulator += deltaTime;
+        
+        while (m_timeStepAccumulator >= m_model->opt.timestep) {
             mj_step(m_model, m_data);
             m_timeStepAccumulator -= m_model->opt.timestep;
         }
@@ -118,6 +133,7 @@ void MuJoCo_PhysicsSystem::setJointControl(const std::string& jointName, float q
     if (it != m_actuatorName2Id.end()) {
         std::lock_guard<std::mutex> lock(m_cmdMutex);
         m_pendingCommands[it->second] = {q, dq, kp, kd, tau};
+        m_cmdDirty = true;
     } else {
         static int s_missCount = 0;
         if (++s_missCount <= 3) {
