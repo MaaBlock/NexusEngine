@@ -15,3 +15,14 @@
 #ifdef ENABLE_RMLUI
 #include <RmlUi/Core.h>
 #endif
+
+// HTTP Client
+#include <httplib.h>
+
+#ifdef _WIN32
+#undef OPAQUE
+#undef TRANSPARENT
+#undef ERROR
+#endif
+
+
