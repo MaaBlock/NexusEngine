@@ -5,6 +5,7 @@
 #include "Log.h"
 #include "PhysicsThread.h"
 #include "ResourceLoader.h"
+#include "MuJoCo/MuJoCo_PhysicsSystem.h"
 #include <cmath>
 #include <filesystem>
 
@@ -252,6 +253,16 @@ Status InitializeEngine(const EngineConfig& config) {
 
         g_rosBridge->setRobotInfo(folderName + "_0", robotName);
         g_rosBridge->setPhysicsSystem(g_physicsSystem);
+
+        // 注册高频状态发布回调：每 7 个物理子步 (~48Hz) 直接从物理线程发送状态
+        auto* mjPhys = dynamic_cast<MuJoCo_PhysicsSystem*>(g_physicsSystem);
+        if (mjPhys) {
+            auto* bridge = g_rosBridge.get();
+            mjPhys->setStateCallback([bridge](mjModel* m, mjData* d) {
+                bridge->publishPhysicsState(m, d);
+            }, 7);  // control_decimation = 7
+            NX_CORE_INFO("已注册物理线程高频状态发布回调 (decimation=7, ~{:.0f}Hz)", 1.0 / (7 * 0.003));
+        }
     }
 
     return OkStatus();
