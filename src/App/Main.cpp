@@ -25,6 +25,18 @@
 #include "Core/SceneLoader.h"
 #include "Core/ModelLoader.h"
 #include "Core/TextureManager.h"
+#include "Core/Cesium3DTilesetSystem.h"
+#include "Core/CesiumComponents.h"
+
+// Fix for libjpeg-turbo static / dynamic CRT linking mismatch for POSIX compatibility functions
+#if defined(_MSC_VER)
+extern "C" {
+    #include <string.h>
+    #include <stdlib.h>
+    int (__cdecl *__imp_stricmp)(const char *, const char *) = _stricmp;
+    errno_t (__cdecl *__imp__putenv_s)(const char *, const char *) = _putenv_s;
+}
+#endif
 
 using namespace Nexus;
 using namespace Nexus::Core;
@@ -99,7 +111,8 @@ struct InputState {
     std::atomic<bool> w{false}, a{false}, s{false}, d{false}, q{false}, e{false};
     std::atomic<bool> mouseRightDown{false};
     std::atomic<float> mouseDeltaX{0.0f}, mouseDeltaY{0.0f};
-    float yaw{0.0f}, pitch{0.0f}; 
+    float yaw{0.0f}, pitch{0.0f};
+    float cameraSpeedMultiplier{1.0f};
 } g_input;
 
 void OnWindowEvent(const void* event) {
@@ -157,6 +170,13 @@ void ProcessEventSync(const SDL_Event& sdlEvent) {
                 g_input.mouseDeltaX = g_input.mouseDeltaX + (float)sdlEvent.motion.xrel;
                 g_input.mouseDeltaY = g_input.mouseDeltaY + (float)sdlEvent.motion.yrel;
             }
+            break;
+        }
+        case SDL_EVENT_MOUSE_WHEEL: {
+            float scrollAmt = sdlEvent.wheel.y;
+            g_input.cameraSpeedMultiplier *= (1.0f + scrollAmt * 0.1f);
+            if (g_input.cameraSpeedMultiplier < 0.01f) g_input.cameraSpeedMultiplier = 0.01f;
+            if (g_input.cameraSpeedMultiplier > 10000000.0f) g_input.cameraSpeedMultiplier = 10000000.0f;
             break;
         }
         default: break;
@@ -220,6 +240,33 @@ Status InitializeEngine(const EngineConfig& config) {
 
 #if ENABLE_VULKAN
     SceneLoader::createEntities(sceneConfig, g_scene.get(), g_renderer.get(), g_textureManager.get());
+    
+    // 初始化 Cesium 渲染资源调度器
+    Cesium3DTilesetSystem::initialize(g_scene.get(), g_context, g_textureManager.get());
+
+    // --- Cesium 3D Tiles Test Injection ---
+    Entity cesiumEnt = g_scene->createEntity("Cesium_Test_Tileset");
+    auto& georef = cesiumEnt.addComponent<CesiumGeoreference>();
+    georef.m_longitude = 121.5; // Taipei 101
+    georef.m_latitude = 25.0;
+    georef.m_height = 50.0;
+
+    auto cameraView = g_scene->getRegistry().view<CameraComponent, TransformComponent>();
+    for (auto c : cameraView) {
+        // 移除硬编码的 farPlane = 50000.0f，使用 Components.h 中预设的 25484.0km
+        auto& cam = cameraView.get<CameraComponent>(c);
+    }
+
+    auto& tileset = cesiumEnt.addComponent<Cesium3DTileset>();
+    tileset.m_ionAssetId = 2275207; // Google Photorealistic 3D Tiles
+    const char* ionToken = getenv("CESIUM_ION_TOKEN");
+    if (ionToken) {
+        tileset.m_ionAccessToken = ionToken;
+    } else {
+        // Hardcode fallback token so it works instantly in RenderDoc without setting env vars
+        tileset.m_ionAccessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiI2ODZjNzM1MC1lOTk1LTQzOTYtODNlMS00OTNiYzhlMjQ5MDEiLCJpZCI6MzY5NzM2LCJpYXQiOjE3NzQ4ODQ1MzN9.F10cy24sBXYMC6qa-_n-buDP-0YPck-qmNow-lC6LnQ";
+        NX_CORE_WARN("CESIUM_ION_TOKEN not set in environment, using fallback token.");
+    }
 #else
     SceneLoader::createEntities(sceneConfig, g_scene.get(), nullptr, nullptr);
 #endif
@@ -359,12 +406,12 @@ void RunMainLoop() {
             }
         }
 
+        static auto lastFrameTime = std::chrono::high_resolution_clock::now();
+        auto now = std::chrono::high_resolution_clock::now();
+        float deltaTime = std::chrono::duration<float>(now - lastFrameTime).count();
+        lastFrameTime = now;
+
         if (g_scene) {
-            static auto lastFrameTime = std::chrono::high_resolution_clock::now();
-            auto now = std::chrono::high_resolution_clock::now();
-            float deltaTime = std::chrono::duration<float>(now - lastFrameTime).count();
-            lastFrameTime = now;
-            
             static auto fpsStartTime = now;
             static int frameCount = 0;
             frameCount++;
@@ -393,7 +440,7 @@ void RunMainLoop() {
 
             auto& registry = g_scene->getRegistry();
             auto view = registry.view<CameraComponent, TransformComponent>();
-            float speed = 5.0f * deltaTime;
+            float speed = 5.0f * deltaTime * g_input.cameraSpeedMultiplier;
             float sensitivity = 0.5f * deltaTime;
 
             for (auto entity : view) {
@@ -420,7 +467,7 @@ void RunMainLoop() {
                 float st = std::sin(g_input.pitch);
                 float ct = std::cos(g_input.pitch);
 
-                // NexusEngine uses Y-up right-handed system
+                // NexusEngine Y-up right-handed system
                 float forwardX = ct * sf;
                 float forwardY = -st;
                 float forwardZ = -ct * cf;
@@ -431,8 +478,6 @@ void RunMainLoop() {
                 }
 
                 // Global UP is (0, 1, 0)
-                // Right = Forward x Up = (forward.y*up.z - forward.z*up.y, forward.z*up.x - forward.x*up.z, forward.x*up.y - forward.y*up.x)
-                // Right = (-forwardZ, 0, forwardX)
                 float rightX = -forwardZ;
                 float rightY = 0.0f;
                 float rightZ = forwardX;
@@ -514,6 +559,10 @@ void RunMainLoop() {
                 }
                 // 1. Hierarchy 先从 URDF 本地变换计算 worldMatrix（静态帧正确显示）
                 HierarchySystem::update(g_scene->getRegistry());
+                
+                // Cesium 3D Tiles 视野更新
+                Cesium3DTilesetSystem::update(g_scene->getRegistry(), deltaTime);
+
                 // 2. Dynamics 用 MuJoCo 数据覆盖 worldMatrix（物理运行时覆盖静态结果）
                 RoboticsDynamicsSystem::update(g_scene->getRegistry(), g_physicsSystem);
                 if (g_rosBridge) {

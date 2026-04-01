@@ -17,6 +17,9 @@
 #endif
 
 // HTTP Client
+#ifndef CPPHTTPLIB_OPENSSL_SUPPORT
+#define CPPHTTPLIB_OPENSSL_SUPPORT
+#endif
 #include <httplib.h>
 
 #ifdef _WIN32
