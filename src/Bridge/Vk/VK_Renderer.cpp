@@ -3,7 +3,6 @@
 #include "ResourceLoader.h"
 #include "Log.h"
 #include "VK_UIBridge.h"
-// #include "../../Editor/EditorUIManager.h" // Removed to break circular dependency
 
 namespace Nexus {
 
