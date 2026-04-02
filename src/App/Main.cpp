@@ -553,10 +553,6 @@ void RunMainLoop() {
 
             auto prepStartTime = std::chrono::high_resolution_clock::now();
             if (g_scene) {
-                // 先把 ZMQ 收到的电机指令喂给物理系统
-                if (g_rosBridge && g_physicsSystem) {
-                    g_rosBridge->applyIncomingCommands(g_physicsSystem);
-                }
                 // 1. Hierarchy 先从 URDF 本地变换计算 worldMatrix（静态帧正确显示）
                 HierarchySystem::update(g_scene->getRegistry());
                 
@@ -566,7 +562,6 @@ void RunMainLoop() {
                 // 2. Dynamics 用 MuJoCo 数据覆盖 worldMatrix（物理运行时覆盖静态结果）
                 RoboticsDynamicsSystem::update(g_scene->getRegistry(), g_physicsSystem);
                 if (g_rosBridge) {
-                    g_rosBridge->publishReplicas(g_scene->getRegistry(), g_physicsSystem);
                     if (g_physicsSystem) g_rosBridge->publishModelInfo(g_physicsSystem);
                 }
             }
