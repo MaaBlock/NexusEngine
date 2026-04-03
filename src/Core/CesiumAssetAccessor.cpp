@@ -53,7 +53,6 @@ static void autoDetectProxy(std::string& host, int& port) {
                     std::string proxyStr(proxyServer);
                     
                     auto parseHostPort = [&](const std::string& str) {
-                        // find the last colon because it might be an IP or a hostname
                         size_t colon = str.find_last_of(':');
                         if (colon != std::string::npos && colon < str.size() - 1) {
                             host = str.substr(0, colon);
@@ -73,7 +72,6 @@ static void autoDetectProxy(std::string& host, int& port) {
                             std::string httpProxy = proxyStr.substr(httpPos + 5, endPos == std::string::npos ? std::string::npos : endPos - (httpPos + 5));
                             parseHostPort(httpProxy);
                         } else {
-                            // If there is no specific http= proxy, just use the first one
                             size_t eqPos = proxyStr.find('=');
                             size_t endPos = proxyStr.find(';');
                             std::string proxy = proxyStr.substr(eqPos + 1, endPos == std::string::npos ? std::string::npos : endPos - (eqPos + 1));
@@ -88,18 +86,50 @@ static void autoDetectProxy(std::string& host, int& port) {
         RegCloseKey(hKey);
     }
 }
+#else
+#include <cstdlib>
+
+static void autoDetectProxy(std::string& host, int& port) {
+    const char* envProxy = std::getenv("all_proxy");
+    if (!envProxy) envProxy = std::getenv("http_proxy");
+    if (!envProxy) envProxy = std::getenv("https_proxy");
+    if (!envProxy) envProxy = std::getenv("HTTP_PROXY");
+    if (!envProxy) envProxy = std::getenv("HTTPS_PROXY");
+
+    if (envProxy) {
+        std::string proxyStr(envProxy);
+        
+        size_t prefixPos = proxyStr.find("://");
+        if (prefixPos != std::string::npos) {
+            proxyStr = proxyStr.substr(prefixPos + 3);
+        }
+        
+        if (!proxyStr.empty() && proxyStr.back() == '/') {
+            proxyStr.pop_back();
+        }
+
+        size_t colon = proxyStr.find_last_of(':');
+        if (colon != std::string::npos && colon < proxyStr.size() - 1) {
+            host = proxyStr.substr(0, colon);
+            try {
+                port = std::stoi(proxyStr.substr(colon + 1));
+            } catch (...) {
+                port = -1;
+                host = "";
+            }
+        }
+    }
+}
 #endif
 
 CesiumAssetAccessor::CesiumAssetAccessor(const std::string& proxyHost, int proxyPort)
     : m_proxyHost(proxyHost), m_proxyPort(proxyPort) {
-#ifdef _WIN32
     if (m_proxyHost.empty() && m_proxyPort <= 0) {
         autoDetectProxy(m_proxyHost, m_proxyPort);
         if (!m_proxyHost.empty()) {
-            NX_LOG_INFO("Auto-detected Windows Proxy: {}:{}", m_proxyHost, m_proxyPort);
+            NX_LOG_INFO("Auto-detected System Proxy: {}:{}", m_proxyHost, m_proxyPort);
         }
     }
-#endif
 }
 
 CesiumAsync::Future<std::shared_ptr<CesiumAsync::IAssetRequest>> CesiumAssetAccessor::get(
