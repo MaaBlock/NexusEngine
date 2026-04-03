@@ -110,7 +110,7 @@ private:
                     if (m_renderer) (void)m_renderer->onResize(cmd.width, cmd.height);
                     break;
                 case RenderCommandType::SyncPoint:
-                    m_context->sync(); 
+                    // Removed m_context->sync(); to prevent GPU pipeline stalls!
                     m_isAtSyncPoint = true;
                     while (m_syncRequested) {
                         std::this_thread::yield();
