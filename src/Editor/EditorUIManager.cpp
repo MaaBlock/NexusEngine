@@ -434,10 +434,14 @@ void EditorUIManager::update(Scene* scene) {
                 auto& tag = entity.getComponent<TagComponent>();
                 
                 bool hasChildren = false;
+                int childCount = 0;
                 if (entity.hasComponent<HierarchyComponent>()) {
                     auto& hc = entity.getComponent<HierarchyComponent>();
                     hasChildren = !hc.children.empty();
+                    childCount = (int)hc.children.size();
                 }
+
+                bool isCesiumRoot = (tag.name == "CesiumTiles");
                 
                 uint32_t entId = static_cast<uint32_t>(ent);
                 bool isExpanded = m_expandedEntities.count(entId) > 0;
@@ -453,19 +457,21 @@ void EditorUIManager::update(Scene* scene) {
                     nodePtr->SetProperty("padding-left", std::to_string(10 + depth * 15) + "dp");
                 }
                 
-                // 构建节点文本：展开/折叠标记 + 名称
                 std::string prefix;
-                if (hasChildren) {
+                if (isCesiumRoot && hasChildren) {
                     prefix = isExpanded ? "[-] " : "[+] ";
+                    nodePtr->SetInnerRML(prefix + tag.name + " (" + std::to_string(childCount) + " tiles)");
+                } else if (hasChildren) {
+                    prefix = isExpanded ? "[-] " : "[+] ";
+                    nodePtr->SetInnerRML(prefix + tag.name);
                 } else {
                     prefix = "    ";
+                    nodePtr->SetInnerRML(prefix + tag.name);
                 }
-                nodePtr->SetInnerRML(prefix + tag.name);
                 nodePtr->SetAttribute("entity-id", std::to_string(entId));
                 treeParent->AppendChild(std::move(nodePtr));
                 
-                // 只有展开状态才渲染子节点
-                if (hasChildren && isExpanded) {
+                if (hasChildren && isExpanded && !isCesiumRoot) {
                     auto& hc = entity.getComponent<HierarchyComponent>();
                     for (auto child : hc.children) {
                         if (registry.getInternal().valid(child)) {
