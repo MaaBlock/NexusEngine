@@ -11,6 +11,7 @@
 #include "VK_CommandBuffer.h"
 #include "VK_IndirectBuffer.h"
 #include "VK_UIBridge.h"
+#include "../RenderProxy.h"
 #include "../ECS.h"
 #include "../../Core/Components.h"
 #include "VK_Buffer.h"
@@ -24,17 +25,17 @@ namespace Nexus {
 class VK_Renderer : public IRenderer {
 public:
     VK_Renderer(VK_Context* context, VK_Swapchain* swapchain);
-    ~VK_Renderer();
+    ~VK_Renderer() override;
 
     /**
      * @brief 初始化渲染资源
      */
-    Status initialize();
+    Status initialize() override;
 
     /**
-     * @brief 执行渲染一帧 (传入 Registry 用于 ECS 渲染)
+     * @brief 执行渲染一帧 (传入 RenderSnapshot 用于渲染)
      */
-    Status renderFrame(Registry* registry = nullptr) override;
+    Status renderFrame(RenderSnapshot* snapshot = nullptr) override;
 
     /**
      * @brief 处理系统事件
@@ -78,7 +79,7 @@ private:
     Status createGraphicsPipeline();
     Status createCommandBuffers();
     Status createSyncObjects();
-    void recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex, Registry* registry);
+    void recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex, RenderSnapshot* snapshot);
 
     VK_Context* m_context;
     VK_Swapchain* m_swapchain;
@@ -106,28 +107,9 @@ private:
     SPSCQueue<SDL_Event, 256> m_eventQueue;
 #endif
 
-    struct ObjectData {
-        uint32_t textureIndex; // Albedo
-        uint32_t normalIndex;
-        uint32_t metallicRoughnessIndex;
-        uint32_t occlusionIndex;
-        uint32_t emissiveIndex;
-        uint32_t samplerIndex;
-        uint32_t _pad0[2];
-
-        std::array<float, 4> albedoFactor;
-        float metallicFactor;
-        float roughnessFactor;
-        float _pad1[2];
-
-        std::array<float, 16> mvp;
-        std::array<float, 16> worldMatrix;
-        std::array<float, 4> highlightColor; // (r,g,b,a) a>0 = highlighted
-    };
-
     std::unique_ptr<VK_Buffer> m_objectDataBuffer;
     uint32_t m_currentFrame = 0;
-    static constexpr int MAX_FRAMES_IN_FLIGHT = 2;
+    static constexpr int MAX_FRAMES_IN_FLIGHT = 3;
 public:
     std::atomic<uint32_t> m_selectedEntityId{0xFFFFFFFF};
 };

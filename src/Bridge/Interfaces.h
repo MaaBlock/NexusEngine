@@ -126,6 +126,7 @@ public:
 };
 
 class Registry;
+class RenderSnapshot;
 
 /**
  * @brief 渲染器接口
@@ -134,7 +135,7 @@ class IRenderer {
 public:
     virtual ~IRenderer() = default;
     virtual Status initialize() = 0;
-    virtual Status renderFrame(Registry* registry = nullptr) = 0;
+    virtual Status renderFrame(RenderSnapshot* snapshot = nullptr) = 0;
     virtual void processEvent(const void* event) = 0;
     virtual Status onResize(uint32_t width, uint32_t height) = 0;
     virtual ICommandBuffer* getCurrentCommandBuffer() = 0;

@@ -11,6 +11,7 @@
 namespace Nexus {
     std::atomic<float> g_RenderStats_FPS{0.0f};
     std::atomic<float> g_RenderStats_FrameTime{0.0f};
+    std::atomic<float> g_RenderStats_UITime{0.0f};
     
     std::atomic<float> g_RenderStats_LogicTime{0.0f};
     std::atomic<float> g_RenderStats_RenderSyncTime{0.0f};
@@ -116,8 +117,8 @@ Nexus::MeshComponent RenderSystem::getCubeMeshComponent() const {
     return mesh;
 }
 
-Status RenderSystem::renderFrame(Registry* registry) {
-    return m_bridgeRenderer->renderFrame(registry);
+Status RenderSystem::renderFrame(RenderSnapshot* snapshot) {
+    return m_bridgeRenderer->renderFrame(snapshot);
 }
 
 void RenderSystem::processEvent(const void* event) {
