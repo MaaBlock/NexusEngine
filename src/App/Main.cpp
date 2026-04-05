@@ -283,8 +283,8 @@ Status InitializeEngine(const EngineConfig& config) {
     auto& vsCam = vsEnt.addComponent<CameraComponent>();
     vsCam.fov = 60.0f;
     auto& vsTr = vsEnt.getComponent<TransformComponent>();
-    vsTr.position = {0.3f, 0.0f, 0.1f}; // Offset from base_link
-    vsEnt.addComponent<RigidBodyComponent>("base_link"); 
+    vsTr.position = {0.0f, 0.0f, 0.0f}; // Offset cleared, use directly front_camera
+    vsEnt.addComponent<RigidBodyComponent>("front_camera"); 
     g_renderer->getBridgeRenderer()->setVisionSensorCamera((entt::entity)vsEnt);
 
 #else
@@ -448,7 +448,7 @@ void buildSnapshotFromRegistry(Registry& registry, RenderSnapshot* snapshot) {
              target[1] = pos[1] + fwd_y;
              target[2] = pos[2] + fwd_z;
              
-             upVector[0] = transform.worldMatrix[8]; // Local Z in world space is up
+             upVector[0] = transform.worldMatrix[8]; // Restore local Z (Dog Up)
              upVector[1] = transform.worldMatrix[9];
              upVector[2] = transform.worldMatrix[10];
         }
@@ -472,6 +472,15 @@ void buildSnapshotFromRegistry(Registry& registry, RenderSnapshot* snapshot) {
             right[2]*fwd[0] - right[0]*fwd[2],
             right[0]*fwd[1] - right[1]*fwd[0]
         };
+        
+        // Ensure image maps correctly by forcing a 90-degree CCW roll to compensate for hardware orientation
+        if (isVisionSensor) {
+            float old_r[3] = { right[0], right[1], right[2] };
+            float old_u[3] = { up[0], up[1], up[2] };
+            // CCW Roll: New right = old up, New up = -old right
+            right[0] = old_u[0]; right[1] = old_u[1]; right[2] = old_u[2];
+            up[0] = -old_r[0];   up[1] = -old_r[1];   up[2] = -old_r[2];
+        }
         
         std::array<float, 16> view = {
             right[0], up[0], -fwd[0], 0.0f,
