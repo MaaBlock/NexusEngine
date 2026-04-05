@@ -50,6 +50,15 @@ struct RenderSnapshot {
     uint32_t totalTriangles = 0;
     uint32_t meshCount = 0;
 
+    // Vision Sensor
+    std::array<float, 16> visionSensorViewProj = {
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    };
+    bool visionSensorValid = false;
+
     void clear() {
         frameObjects.clear();
         for (auto& b : batches) {
@@ -58,6 +67,7 @@ struct RenderSnapshot {
         batches.clear();
         totalTriangles = 0;
         meshCount = 0;
+        visionSensorValid = false;
     }
 };
 
