@@ -150,6 +150,12 @@ void Cesium3DTilesetSystem::update(Nexus::Registry& registry, float dt) {
             };
             
             Cesium3DTilesSelection::TilesetOptions options;
+            //options.mainThreadLoadingTimeLimit = 3.0; 
+            // 【空间换时间策略】：极大扩张缓存上限，避免频繁释放和重建 GPU 资源
+            options.maximumCachedBytes = 4ULL * 1024 * 1024 * 1024; // 缓存上限设为 4GB，只要不超上限就不会从内存和显存中释放瓦片
+            options.maximumSimultaneousTileLoads = 64; // 拉高同时加载的瓦片数，最大化网络和磁盘IO利用率
+            options.preloadAncestors = true;
+            options.preloadSiblings = true;
 
             if (!tilesetComponent.m_url.empty()) {
                 tilesetComponent.m_tileset = std::make_unique<Cesium3DTilesSelection::Tileset>(
