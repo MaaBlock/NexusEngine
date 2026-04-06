@@ -1,6 +1,7 @@
 #include "TextureManager.h"
 #include "ResourceLoader.h"
 #include "Log.h"
+#include "RenderSystem.h"
 
 namespace Nexus {
 namespace Core {
@@ -105,7 +106,9 @@ void TextureManager::removeTexture(const std::string& key) {
     if (it != m_textures.end()) {
         it->second.refCount--;
         if (it->second.refCount <= 0) {
-            m_gcQueue.push_back({std::move(it->second.texture), 3});
+            uint64_t currentFrame = m_renderer ? m_renderer->getFrameCount() : 0;
+            // Target frame = current rendering frame + MAX_FRAMES_IN_FLIGHT (3)
+            m_gcQueue.push_back({std::move(it->second.texture), currentFrame + 3});
             m_textures.erase(it);
         }
     }
@@ -113,8 +116,10 @@ void TextureManager::removeTexture(const std::string& key) {
 
 void TextureManager::performGarbageCollection() {
     std::lock_guard<std::mutex> lock(m_mutex);
+    uint64_t currentFrame = m_renderer ? m_renderer->getFrameCount() : 0;
+    
     for (auto it = m_gcQueue.begin(); it != m_gcQueue.end();) {
-        if (--it->framesRemaining <= 0) {
+        if (currentFrame >= it->targetFrame) {
             it = m_gcQueue.erase(it);
         } else {
             ++it;

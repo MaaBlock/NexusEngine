@@ -429,6 +429,7 @@ void* CesiumPrepareRendererResources::prepareInMainThread(Cesium3DTilesSelection
                 if (tex) {
                     renderData.albedoTexture = tex->getBindlessTextureIndex();
                     renderData.samplerIndex = tex->getBindlessSamplerIndex();
+                    pRenderResources->textureKeys.push_back(prim.textureKey);
                 }
             }
         }
@@ -538,7 +539,17 @@ void CesiumPrepareRendererResources::free(
                 m_textureManager->removeTexture(key);
             }
         }
-        delete pRenderResources;
+        m_deferredDeletions.push_back({DEFERRED_FRAMES, pRenderResources});
+    }
+}
+
+void CesiumPrepareRendererResources::pumpDeferredDeletion() {
+    for (auto& d : m_deferredDeletions) {
+        d.framesRemaining--;
+    }
+    while (!m_deferredDeletions.empty() && m_deferredDeletions.front().framesRemaining <= 0) {
+        delete m_deferredDeletions.front().resources;
+        m_deferredDeletions.pop_front();
     }
 }
 

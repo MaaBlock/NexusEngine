@@ -141,26 +141,16 @@ Status VK_Renderer::createSwapchainTextures() {
 }
 
 Status VK_Renderer::createOffscreenResources() {
-    ImageData dummyData;
-    dummyData.width = m_offscreenExtent.width;
-    dummyData.height = m_offscreenExtent.height;
-    dummyData.channels = 4;
-    dummyData.pixels.resize(dummyData.width * dummyData.height * 4, 128); // Gray
-
     m_offscreenColor = std::make_unique<VK_Texture>(m_context);
-    // Note: RenderTarget texture creation requires eColorAttachment bit.
-    // If VK_Texture::create limits usages, we might need a custom create method, but TextureUsage::Attachment usually sets it.
-    NX_RETURN_IF_ERROR(m_offscreenColor->create(dummyData, TextureUsage::Attachment));
-    
-    // We need depth too
-    // But since VK_Texture might not support Depth creation easily via create(), we will rely on a generic way, or just create it directly.
-    // Wait, let's look at how VK_Swapchain creates its depth image. We can just use VK_Texture::createDepth
+    TextureFormat offscreenFormat = (m_swapchain->getImageFormat() == vk::Format::eB8G8R8A8Unorm)
+        ? TextureFormat::BGRA8_UNORM : TextureFormat::RGBA8_UNORM;
+    NX_RETURN_IF_ERROR(m_offscreenColor->create(m_offscreenExtent.width, m_offscreenExtent.height, offscreenFormat, TextureUsage::Attachment));
+
     m_offscreenDepth = std::make_unique<VK_Texture>(m_context);
     NX_RETURN_IF_ERROR(m_offscreenDepth->createDepth(m_offscreenExtent.width, m_offscreenExtent.height, m_swapchain->getDepthFormat()));
 
     m_offscreenReadback = std::make_unique<VK_Buffer>(m_context);
     size_t size = m_offscreenExtent.width * m_offscreenExtent.height * 4;
-    // We need dst bit for vkCmdCopyImageToBuffer
     NX_RETURN_IF_ERROR(m_offscreenReadback->create(size, vk::BufferUsageFlagBits::eTransferDst, vk::MemoryPropertyFlagBits::eHostVisible | vk::MemoryPropertyFlagBits::eHostCoherent));
     m_offscreenReadbackMapped = m_offscreenReadback->map();
 
@@ -738,7 +728,7 @@ Status VK_Renderer::renderFrame(RenderSnapshot* snapshot) {
     
     recordCommandBuffer(m_commandBuffers[m_currentFrame], imageIndex, snapshot);
 
-    m_commandBuffers[m_currentFrame].end();
+    (void)m_commandBuffers[m_currentFrame].end();
     
     endFrame(imageIndex);
     return OkStatus();
@@ -796,11 +786,11 @@ void VK_Renderer::endFrame(uint32_t imageIndex) {
 
     auto t0 = std::chrono::high_resolution_clock::now();
     {
-        std::lock_guard<std::mutex> lock(m_context->getQueueMutex());
         vk::Result submitResult = m_context->getGraphicsQueue().submit(1, &submitInfo, m_inFlightFences[m_currentFrame]);
         if (submitResult != vk::Result::eSuccess) {
             NX_CORE_ERROR("QueueSubmit in endFrame failed with result: {}", vk::to_string(submitResult));
         }
+
         vk::Result presentResult = m_context->getGraphicsQueue().presentKHR(&presentInfo);
         if (presentResult != vk::Result::eSuccess && presentResult != vk::Result::eSuboptimalKHR) {
             NX_CORE_ERROR("QueuePresent in endFrame failed with result: {}", vk::to_string(presentResult));
@@ -819,6 +809,7 @@ void VK_Renderer::endFrame(uint32_t imageIndex) {
     }
     
     m_currentFrame = (m_currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
+    m_absoluteFrameCount++;
 }
 uint32_t VK_Renderer::acquireNextImage() {
     uint32_t imageIndex;
