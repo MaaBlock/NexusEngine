@@ -119,7 +119,11 @@ void TextureManager::performGarbageCollection() {
     uint64_t currentFrame = m_renderer ? m_renderer->getFrameCount() : 0;
     
     for (auto it = m_gcQueue.begin(); it != m_gcQueue.end();) {
-        if (currentFrame >= it->targetFrame) {
+        if (it->texture->isUploading()) {
+            // Extend the lifetime until uploading finishes + 3 frames buffer
+            it->targetFrame = currentFrame + 3;
+            ++it;
+        } else if (currentFrame >= it->targetFrame) {
             it = m_gcQueue.erase(it);
         } else {
             ++it;
