@@ -252,7 +252,7 @@ Status InitializeEngine(const EngineConfig& config, bool onlineMode) {
     NX_CORE_INFO("Main: Calling Cesium3DTilesetSystem::initialize");
     // 初始化 Cesium 渲染资源调度器
     std::string cesiumCachePath = ResourceLoader::getBasePath() + ".cache/cesium";
-    Cesium3DTilesetSystem::initialize(g_scene.get(), g_context, g_textureManager.get(), cesiumCachePath, onlineMode);
+    Cesium3DTilesetSystem::initialize(g_scene.get(), g_context, g_textureManager.get(), static_cast<Core::RenderSystem*>(g_renderer.get())->getMeshManager(), cesiumCachePath, onlineMode);
 
     NX_CORE_INFO("Main: Creating Cesium Test Entity");
     // --- Cesium 3D Tiles Test Injection ---

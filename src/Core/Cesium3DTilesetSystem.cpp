@@ -27,13 +27,15 @@ namespace Core {
 static Scene* g_tilesetScene = nullptr;
 static Nexus::IContext* g_tilesetContext = nullptr;
 static TextureManager* g_tilesetTextureManager = nullptr;
+static Core::MeshManager* g_tilesetMeshManager = nullptr;
 static std::shared_ptr<CesiumAsync::IAssetAccessor> g_assetAccessor = nullptr;
 static std::shared_ptr<CesiumPrepareRendererResources> g_prepareRes = nullptr;
 
-void Cesium3DTilesetSystem::initialize(Scene* scene, Nexus::IContext* context, TextureManager* textureManager, const std::string& cachePath, bool onlineMode) {
+void Cesium3DTilesetSystem::initialize(Scene* scene, Nexus::IContext* context, TextureManager* textureManager, Core::MeshManager* meshManager, const std::string& cachePath, bool onlineMode) {
     g_tilesetScene = scene;
     g_tilesetContext = context;
     g_tilesetTextureManager = textureManager;
+    g_tilesetMeshManager = meshManager;
     auto accessor = std::make_shared<CesiumAssetAccessor>();
     if (!cachePath.empty()) {
         accessor->setCachePath(cachePath);
@@ -139,7 +141,7 @@ void Cesium3DTilesetSystem::update(Nexus::Registry& registry, float dt) {
 
             NX_CORE_INFO("Cesium3DTilesetSystem: Initializing Tileset...");
 
-            g_prepareRes = std::make_shared<CesiumPrepareRendererResources>(g_tilesetScene, g_tilesetContext, g_tilesetTextureManager);
+            g_prepareRes = std::make_shared<CesiumPrepareRendererResources>(g_tilesetScene, g_tilesetContext, g_tilesetTextureManager, g_tilesetMeshManager);
 
             Cesium3DTilesSelection::TilesetExternals externals{
                 g_assetAccessor,
@@ -150,10 +152,9 @@ void Cesium3DTilesetSystem::update(Nexus::Registry& registry, float dt) {
             };
             
             Cesium3DTilesSelection::TilesetOptions options;
-            //options.mainThreadLoadingTimeLimit = 3.0; 
-            // 【空间换时间策略】：极大扩张缓存上限，避免频繁释放和重建 GPU 资源
-            options.maximumCachedBytes = 4ULL * 1024 * 1024 * 1024; // 缓存上限设为 4GB，只要不超上限就不会从内存和显存中释放瓦片
-            options.maximumSimultaneousTileLoads = 64; // 拉高同时加载的瓦片数，最大化网络和磁盘IO利用率
+            // 恢复缓存上限设为 4GB，因为重构了全局共享 Sampler 机制，不再受制于 maxSamplerAllocationCount(4000)
+            options.maximumCachedBytes = 4ULL * 1024 * 1024 * 1024; 
+            options.maximumSimultaneousTileLoads = 64; 
             options.preloadAncestors = true;
             options.preloadSiblings = true;
 
