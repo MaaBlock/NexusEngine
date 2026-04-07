@@ -61,6 +61,28 @@ void VK_Renderer::shutdown() {
     m_offscreenReadback.reset();
     m_offscreenDepth.reset();
     m_offscreenColor.reset();
+
+    if (m_cullPipeline) {
+        m_device.destroyPipeline(m_cullPipeline);
+        m_cullPipeline = nullptr;
+    }
+    if (m_cullPipelineLayout) {
+        m_device.destroyPipelineLayout(m_cullPipelineLayout);
+        m_cullPipelineLayout = nullptr;
+    }
+    if (m_cullSetLayout) {
+        m_device.destroyDescriptorSetLayout(m_cullSetLayout);
+        m_cullSetLayout = nullptr;
+    }
+    if (m_cullDescriptorPool) {
+        m_device.destroyDescriptorPool(m_cullDescriptorPool);
+        m_cullDescriptorPool = nullptr;
+    }
+
+    m_objectDataBuffer.reset();
+    m_persistentCommandBuffer.reset();
+    m_countBuffer.reset();
+    m_indirectBuffers.clear();
 }
 
 Status VK_Renderer::initialize() {
@@ -199,7 +221,7 @@ ITexture* VK_Renderer::getSwapchainTexture(uint32_t index) {
 }
 
 uint32_t VK_Renderer::allocatePersistentSlot() {
-    std::lock_guard<std::mutex> lock(m_slotMutex);
+    std::lock_guard<std::recursive_mutex> lock(m_slotMutex);
     if (!m_freeSlots.empty()) {
         uint32_t slot = m_freeSlots.back();
         m_freeSlots.pop_back();
@@ -216,33 +238,29 @@ void VK_Renderer::freePersistentSlot(uint32_t slot) {
     DrawIndexedIndirectCommand emptyCmd = {};
     updatePersistentSlot(slot, emptyObj, emptyCmd);
 
-    std::lock_guard<std::mutex> lock(m_slotMutex);
+    std::lock_guard<std::recursive_mutex> lock(m_slotMutex);
     m_freeSlots.push_back(slot);
 }
 
 void VK_Renderer::updatePersistentSlot(uint32_t slot, const ObjectData& obj, const DrawIndexedIndirectCommand& cmd) {
-    if (!m_objectDataBuffer || !m_persistentCommandBuffer) return;
-    size_t objCap = 100000;
+    std::lock_guard<std::recursive_mutex> lock(m_slotMutex);
     
-    // We duplicate the update into all frame buffers because Cesium only calls this once upon entity creation
-    // (In-flight frame won't read it yet since maxEntities is captured at frame start)
-    for (int i = 0; i < MAX_FRAMES_IN_FLIGHT; ++i) {
-        size_t objOffset = (i * objCap + slot) * sizeof(ObjectData);
-        size_t cmdOffset = (i * objCap + slot) * sizeof(DrawIndexedIndirectCommand);
-        
-        m_objectDataBuffer->uploadData(&obj, sizeof(ObjectData), objOffset);
-        m_persistentCommandBuffer->uploadData(&cmd, sizeof(DrawIndexedIndirectCommand), cmdOffset);
+    if (m_localObjectData.size() <= slot) {
+        m_localObjectData.resize(slot + 1000, ObjectData{});
+        m_localIndirectCommands.resize(slot + 1000, DrawIndexedIndirectCommand{});
     }
+    m_localObjectData[slot] = obj;
+    m_localIndirectCommands[slot] = cmd;
 }
 
 void VK_Renderer::setPersistentSlotVisibility(uint32_t slot, bool visible) {
-    if (!m_objectDataBuffer) return;
-    size_t objCap = 100000;
-    uint32_t isVisible = visible ? 1 : 0;
-    // ONLY update the current frame to avoid tearing on the GPU frame actively in flight!
-    size_t objOffset = (m_currentFrame * objCap + slot) * sizeof(ObjectData);
-    size_t isVisibleOffset = objOffset + offsetof(ObjectData, isVisible);
-    m_objectDataBuffer->uploadData(&isVisible, sizeof(uint32_t), isVisibleOffset);
+    std::lock_guard<std::recursive_mutex> lock(m_slotMutex);
+    
+    if (m_localObjectData.size() <= slot) {
+        m_localObjectData.resize(slot + 1000, ObjectData{});
+        m_localIndirectCommands.resize(slot + 1000, DrawIndexedIndirectCommand{});
+    }
+    m_localObjectData[slot].isVisible = visible ? 1 : 0;
 }
 
 Status VK_Renderer::createGraphicsPipeline() {
@@ -541,10 +559,7 @@ Status VK_Renderer::createSyncObjects() {
     return OkStatus();
 }
 
-void VK_Renderer::recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex, RenderSnapshot* snapshot) {
-    // We moved commandBuffer.begin() and end() out to renderFrame()
-    vk::Extent2D extent = m_swapchain->getExtent();
-
+void VK_Renderer::recordComputeCulling(vk::CommandBuffer commandBuffer) {
     uint32_t activeEntitiesCount = m_maxEntityIndex.load(std::memory_order_relaxed);
     if (activeEntitiesCount > 0) {
         commandBuffer.fillBuffer(m_countBuffer->getHandle(), m_currentFrame * sizeof(uint32_t), sizeof(uint32_t), 0);
@@ -591,6 +606,12 @@ void VK_Renderer::recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t 
         vk::BufferMemoryBarrier cullBarriers[] = { indirectBarrier, countReadBarrier };
         commandBuffer.pipelineBarrier(vk::PipelineStageFlagBits::eComputeShader, vk::PipelineStageFlagBits::eDrawIndirect, {}, 0, nullptr, 2, cullBarriers, 0, nullptr);
     }
+}
+
+void VK_Renderer::recordCommandBuffer(vk::CommandBuffer commandBuffer, uint32_t imageIndex, RenderSnapshot* snapshot) {
+    // We moved commandBuffer.begin() and end() out to renderFrame()
+    vk::Extent2D extent = m_swapchain->getExtent();
+    uint32_t activeEntitiesCount = m_maxEntityIndex.load(std::memory_order_relaxed);
 
     vk::ImageMemoryBarrier colorBarrier;
     colorBarrier.srcAccessMask = {};
@@ -949,6 +970,28 @@ Status VK_Renderer::renderFrame(RenderSnapshot* snapshot) {
     if (m_commandBuffers[m_currentFrame].begin(&beginInfo) != vk::Result::eSuccess) {
         return InternalError("Failed to begin cmd buffer");
     }
+
+    // Safely upload shadow buffers to current frame memory
+    // (This guarantees we don't tear the GPU memory while it is executing)
+    uint32_t activeCount = m_maxEntityIndex.load(std::memory_order_relaxed);
+    if (activeCount > 0 && m_objectDataBuffer && m_persistentCommandBuffer) {
+        std::lock_guard<std::recursive_mutex> lock(m_slotMutex);
+        size_t objCap = 100000;
+        size_t objOffset = (m_currentFrame * objCap) * sizeof(ObjectData);
+        size_t cmdOffset = (m_currentFrame * objCap) * sizeof(DrawIndexedIndirectCommand);
+        
+        if (m_localObjectData.size() < activeCount) {
+            m_localObjectData.resize(activeCount, ObjectData{});
+            m_localIndirectCommands.resize(activeCount, DrawIndexedIndirectCommand{});
+        }
+        
+        m_objectDataBuffer->uploadData(m_localObjectData.data(), activeCount * sizeof(ObjectData), objOffset);
+        m_persistentCommandBuffer->uploadData(m_localIndirectCommands.data(), activeCount * sizeof(DrawIndexedIndirectCommand), cmdOffset);
+    }
+
+    // Guarantee we have correctly processed the Culling Shader exactly ONCE per frame
+    // before any pass (Offscreen or Main) tries to consume the DrawIndexedIndirectCommands.
+    recordComputeCulling(m_commandBuffers[m_currentFrame]);
 
     if (m_visionSensorEntity != entt::null && snapshot) {
         recordOffscreenCommandBuffer(m_commandBuffers[m_currentFrame], snapshot);
