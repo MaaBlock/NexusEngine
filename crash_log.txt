@@ -1,0 +1,594 @@
+[2026-04-07 08:19:38.011] [NEXUS] [info] Nexus Engine Starting...
+[2026-04-07 08:19:38.011] [NEXUS] [info] 鍙敤鍦烘櫙:
+[2026-04-07 08:19:38.011] [NEXUS] [info]   --scene default  (default_scene.json)
+[2026-04-07 08:19:38.011] [NEXUS] [info]   --scene g1  (g1_scene.json)
+[2026-04-07 08:19:38.011] [NEXUS] [info]   --scene go1  (go1_scene.json)
+[2026-04-07 08:19:38.032] [NEXUS] [info] SDL Initialized successfully
+[2026-04-07 08:19:38.212] [NEXUS] [info] SDL Window created: Nexus Engine (1280x720)
+[2026-04-07 08:19:38.212] [NEXUS] [info] SDL_Window 0x1f58319d430: Registering event callback
+[2026-04-07 08:19:38.219] [NEXUS] [info] Vulkan Validation Layers: ENABLED (force=false)
+[2026-04-07 08:19:38.219] [NEXUS] [info] Initializing Vulkan Context - Creating Instance
+[2026-04-07 08:19:38.219] [NEXUS] [info] Requested Vulkan API Version: 1.3.0
+[2026-04-07 08:19:38.220] [NEXUS] [info] System Supported Vulkan Instance Version: 1.4.304
+[2026-04-07 08:19:38.220] [NEXUS] [info] Fetching SDL Instance Extensions
+[2026-04-07 08:19:38.225] [NEXUS] [info]   - Extension Enabled: VK_KHR_surface
+[2026-04-07 08:19:38.225] [NEXUS] [info]   - Extension Enabled: VK_KHR_win32_surface
+[2026-04-07 08:19:38.225] [NEXUS] [info]   - Extension Enabled: VK_EXT_debug_utils
+[2026-04-07 08:19:38.235] [NEXUS] [info]   - Layer Enabled: VK_LAYER_KHRONOS_validation
+[2026-04-07 08:19:38.375] [NEXUS] [info] Vulkan Instance created successfully
+[2026-04-07 08:19:38.375] [NEXUS] [info] Vulkan Debug Messenger 宸插垱寤?
+[2026-04-07 08:19:38.376] [NEXUS] [info] Found GPU: NVIDIA GeForce RTX 4060 Laptop GPU (MDI: Yes)
+[2026-04-07 08:19:38.377] [NEXUS] [info] Mesh Shader Extensions Enqueueing.
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation] Inserted device layer "VK_LAYER_KHRONOS_validation" (G:\VulkanSDK\1.4.304.1\Bin\.\VkLayer_khronos_validation.dll)
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation] Inserted device layer "VK_LAYER_OBS_HOOK" (C:\ProgramData\obs-studio-hook\.\graphics-hook64.dll)
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation] Inserted device layer "VK_LAYER_NV_present" (C:\Windows\System32\DriverStore\FileRepository\nvtfi.inf_amd64_b05964174e35f148\.\nvoglv64.dll)
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation] Inserted device layer "VK_LAYER_NV_optimus" (C:\Windows\System32\DriverStore\FileRepository\nvtfi.inf_amd64_b05964174e35f148\.\nvoglv64.dll)
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation] vkCreateDevice layer callstack setup to:
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]    <Application>
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]      ||
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]    <Loader>
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]      ||
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]    VK_LAYER_NV_optimus
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Type: Implicit
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Enabled By: Implicit Layer
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]                Disable Env Var:  DISABLE_LAYER_NV_OPTIMUS_1
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Manifest: C:\Windows\System32\DriverStore\FileRepository\nvtfi.inf_amd64_b05964174e35f148\nv-vk64.json
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Library:  C:\Windows\System32\DriverStore\FileRepository\nvtfi.inf_amd64_b05964174e35f148\.\nvoglv64.dll
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]      ||
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]    VK_LAYER_NV_present
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Type: Implicit
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Enabled By: Implicit Layer
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]                Disable Env Var:  DISABLE_LAYER_NV_PRESENT_1
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Manifest: C:\Windows\System32\DriverStore\FileRepository\nvtfi.inf_amd64_b05964174e35f148\nv-vk64.json
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Library:  C:\Windows\System32\DriverStore\FileRepository\nvtfi.inf_amd64_b05964174e35f148\.\nvoglv64.dll
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]      ||
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]    VK_LAYER_OBS_HOOK
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Type: Implicit
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Enabled By: Implicit Layer
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]                Disable Env Var:  DISABLE_VULKAN_OBS_CAPTURE
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Manifest: C:\ProgramData\obs-studio-hook\obs-vulkan64.json
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Library:  C:\ProgramData\obs-studio-hook\.\graphics-hook64.dll
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]      ||
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]    VK_LAYER_KHRONOS_validation
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Type: Explicit
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Enabled By: By the Application
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Manifest: G:\VulkanSDK\1.4.304.1\Bin\VkLayer_khronos_validation.json
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]            Library:  G:\VulkanSDK\1.4.304.1\Bin\.\VkLayer_khronos_validation.dll
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]      ||
+[2026-04-07 08:19:38.377] [NEXUS] [info] [Vulkan Validation]    <Device>
+[2026-04-07 08:19:38.378] [NEXUS] [info] [Vulkan Validation]        Using "NVIDIA GeForce RTX 4060 Laptop GPU" with driver: "C:\Windows\System32\DriverStore\FileRepository\nvtfi.inf_amd64_b05964174e35f148\.\nvoglv64.dll"
+[2026-04-07 08:19:38.511] [NEXUS] [info] Vulkan Logical Device created successfully (Graphics Family: 0), Transfer Queue Dedicated: true
+[2026-04-07 08:19:38.512] [NEXUS] [info] Bindless Descriptor Pool created successfully.
+[2026-04-07 08:19:38.512] [NEXUS] [info] Bindless Descriptor Set Layout created successfully.
+[2026-04-07 08:19:38.514] [NEXUS] [info] Bindless Descriptor Set allocated successfully.
+[2026-04-07 08:19:38.597] [NEXUS] [info] Initializing Core RenderSystem...
+[2026-04-07 08:19:38.597] [NEXUS] [info] RenderSystem: initializing m_meshManager
+[2026-04-07 08:19:38.598] [NEXUS] [info] Initializing MeshManager SubAllocators: VBO=1024MB (33554432 verts), IBO=512MB (134217728 idx)
+[2026-04-07 08:19:39.723] [NEXUS] [info] RenderSystem: initializing m_commandGenerator
+[2026-04-07 08:19:40.331] [NEXUS] [info] RenderSystem: Setting up cube vertices
+[2026-04-07 08:19:40.332] [NEXUS] [info] RenderSystem: calling setGlobalVertexBuffer
+[2026-04-07 08:19:40.332] [NEXUS] [info] RenderSystem: updating command generator
+[2026-04-07 08:19:40.332] [NEXUS] [info] RenderSystem: Creating VK_Renderer
+[2026-04-07 08:19:40.332] [NEXUS] [info] RenderSystem: Calling VK_Renderer::initialize
+[2026-04-07 08:19:40.332] [NEXUS] [info] VK_Renderer::initialize - 1: createCommandPool
+[2026-04-07 08:19:40.332] [NEXUS] [info] VK_Renderer::initialize - 2: createGraphicsPipeline
+[2026-04-07 08:19:40.573] [NEXUS] [info] Dumped SPIR-V: Data/Shaders/dump_VSMain.spv (2220 bytes)
+[2026-04-07 08:19:40.778] [NEXUS] [info] Dumped SPIR-V: Data/Shaders/dump_PSMain.spv (2568 bytes)
+[2026-04-07 08:19:40.805] [NEXUS] [info] Pipeline Rendering Formats: Color=B8G8R8A8Unorm, Depth=D32Sfloat
+[2026-04-07 08:19:40.813] [NEXUS] [info] VK_Renderer::initialize - 2.5: createComputePipeline
+[2026-04-07 08:19:40.977] [NEXUS] [info] Dumped SPIR-V: Data/Shaders/dump_CSMain.spv (2236 bytes)
+[2026-04-07 08:19:40.989] [NEXUS] [info] VK_Renderer::initialize - 3: createCommandBuffers
+[2026-04-07 08:19:40.990] [NEXUS] [info] VK_Renderer::initialize - 4: createSyncObjects
+[2026-04-07 08:19:40.990] [NEXUS] [info] VK_Renderer::initialize - 5: createSwapchainTextures
+[2026-04-07 08:19:40.993] [NEXUS] [info] VK_Renderer::initialize - 6: create default textures
+[2026-04-07 08:19:40.993] [NEXUS] [info] VK_Renderer::initialize - 6.1: createOffscreenResources
+[2026-04-07 08:19:40.994] [NEXUS] [info] VK_Renderer::initialize - 7: alloc indirect buffers
+[2026-04-07 08:19:40.994] [NEXUS] [info] VK_Renderer::initialize - 8: alloc objectDataBuffer
+[2026-04-07 08:19:41.033] [NEXUS] [info] VK_Renderer::initialize - 9: updateStorageBuffer in BindlessManager
+[2026-04-07 08:19:41.033] [NEXUS] [info] VK_Renderer::initialize - 9.1: Update Cull Descriptor Sets
+[2026-04-07 08:19:41.046] [NEXUS] [error] [Vulkan Validation] Validation Error: [ VUID-VkWriteDescriptorSet-descriptorType-00328 ] | MessageID = 0xea08144e | vkUpdateDescriptorSets(): pDescriptorWrites[2].pBufferInfo[0].offset (4) must be a multiple of device limit minStorageBufferOffsetAlignment (16) when descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER.
+The Vulkan spec states: If descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the offset member of each element of pBufferInfo must be a multiple of VkPhysicalDeviceLimits::minStorageBufferOffsetAlignment (https://vulkan.lunarg.com/doc/view/1.4.304.1/windows/antora/spec/latest/chapters/descriptorsets.html#VUID-VkWriteDescriptorSet-descriptorType-00328)
+[2026-04-07 08:19:41.046] [NEXUS] [error] [Vulkan Validation] Validation Error: [ VUID-VkWriteDescriptorSet-descriptorType-00328 ] | MessageID = 0xea08144e | vkUpdateDescriptorSets(): pDescriptorWrites[2].pBufferInfo[0].offset (8) must be a multiple of device limit minStorageBufferOffsetAlignment (16) when descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER.
+The Vulkan spec states: If descriptorType is VK_DESCRIPTOR_TYPE_STORAGE_BUFFER or VK_DESCRIPTOR_TYPE_STORAGE_BUFFER_DYNAMIC, the offset member of each element of pBufferInfo must be a multiple of VkPhysicalDeviceLimits::minStorageBufferOffsetAlignment (https://vulkan.lunarg.com/doc/view/1.4.304.1/windows/antora/spec/latest/chapters/descriptorsets.html#VUID-VkWriteDescriptorSet-descriptorType-00328)
+[2026-04-07 08:19:41.046] [NEXUS] [info] VK_Renderer::initialize - 10: RML UI Init
+[2026-04-07 08:19:41.202] [NEXUS] [info] Dumped SPIR-V: Data/Shaders/dump_VSMain.spv (1068 bytes)
+[2026-04-07 08:19:41.365] [NEXUS] [info] Dumped SPIR-V: Data/Shaders/dump_PSMain.spv (1104 bytes)
+[2026-04-07 08:19:41.378] [NEXUS] [info] RmlUi: Loaded font face 'Arial' [regular] from 'G:\nexus_workspace\NexusEngine\build-windows-debug\Data/UI/arial.ttf'.
+[2026-04-07 08:19:41.380] [NEXUS] [info] RmlUi Bridge Initialized.
+[2026-04-07 08:19:41.380] [NEXUS] [info] VK_Renderer::initialize - DONE
+[2026-04-07 08:19:41.380] [NEXUS] [info] RenderSystem: Initialized successfully
+[2026-04-07 08:19:41.423] [NEXUS] [info] RmlUi Loaded document: G:\nexus_workspace\NexusEngine\build-windows-debug\Data/UI/editor_layout.rml
+[2026-04-07 08:19:41.424] [NEXUS] [info] EditorUIManager 鍒濆鍖栨垚鍔?
+[2026-04-07 08:19:41.424] [NEXUS] [info] EditorUIManager: 甯冨眬宸叉仮澶? G:\nexus_workspace\NexusEngine\build-windows-debug\Data/UI/editor_layout.json
+[2026-04-07 08:19:41.424] [NEXUS] [info] Main: Initializing TextureManager
+[2026-04-07 08:19:41.425] [NEXUS] [info] 鍦烘櫙閰嶇疆: 'go2_training', robot='Models/go2/go2_description.urdf', 鐗╀綋鏁?0
+[2026-04-07 08:19:41.425] [NEXUS] [info] Scene 鍒涘缓: go2_training
+[2026-04-07 08:19:41.425] [NEXUS] [info] Main: Calling SceneLoader::createEntities
+[2026-04-07 08:19:41.427] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/base.dae
+[2026-04-07 08:19:41.427] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/hip.dae
+[2026-04-07 08:19:41.427] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/thigh.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/calf.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/foot.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/hip.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/thigh_mirror.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/calf_mirror.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/foot.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/hip.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/thigh.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/calf.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/foot.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/hip.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/thigh_mirror.dae
+[2026-04-07 08:19:41.428] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/calf_mirror.dae
+[2026-04-07 08:19:41.429] [NEXUS] [info] NxURDF Debug: Parsed visual mesh: package://go2_description/dae/foot.dae
+[2026-04-07 08:19:41.429] [NEXUS] [info] NxURDF: 瑙ｆ瀽鎴愬姛 'go2_description' 鈥?42 links, 41 joints
+[2026-04-07 08:19:41.431] [NEXUS] [info] NxURDF: 鑷姩绔欑珛楂樺害 = 0.426m (鏈€浣嶼 = -0.426)
+[2026-04-07 08:19:41.823] [NEXUS] [info] NxURDF: processing visual Mesh for Link=base (ext=dae, fallback=false)
+[2026-04-07 08:19:41.824] [NEXUS] [info] [NodeDebug] Node: base_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:41.824] [NEXUS] [info] [NodeDebug] Node: base_visual_Scene_base_006, Pos: (0,0,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:41.875] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: 娣辫壊姗¤兌.001
+[2026-04-07 08:19:41.875] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:41.878] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 鐧借壊logo.001
+[2026-04-07 08:19:41.878] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:41.879] [NEXUS] [info] [TextureDebug] Submesh Material: 3, Name: 榛戣壊璐寸焊.007
+[2026-04-07 08:19:41.879] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:41.883] [NEXUS] [info] [TextureDebug] Submesh Material: 4, Name: 榛戣壊閲戝睘.007
+[2026-04-07 08:19:41.883] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:41.891] [NEXUS] [info] [TextureDebug] Submesh Material: 2, Name: 榛戣壊濉戞枡.003
+[2026-04-07 08:19:41.891] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.078] [NEXUS] [info] NxURDF: processing visual Mesh for Link=FL_hip (ext=dae, fallback=false)
+[2026-04-07 08:19:42.078] [NEXUS] [info] [NodeDebug] Node: FL_hip_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:42.078] [NEXUS] [info] [NodeDebug] Node: FL_hip_visual_Scene_hipFL0831, Pos: (0,0,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:42.095] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 娣辫壊姗¤兌.001
+[2026-04-07 08:19:42.095] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.110] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: Material
+[2026-04-07 08:19:42.110] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.255] [NEXUS] [info] NxURDF: processing visual Mesh for Link=FL_thigh (ext=dae, fallback=false)
+[2026-04-07 08:19:42.256] [NEXUS] [info] [NodeDebug] Node: FL_thigh_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:42.256] [NEXUS] [info] [NodeDebug] Node: FL_thigh_visual_Scene_thigh_FL0815, Pos: (0,0,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:42.266] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 娣辫壊姗¤兌.003
+[2026-04-07 08:19:42.266] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.283] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: Material.009
+[2026-04-07 08:19:42.283] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.326] [NEXUS] [info] NxURDF: processing visual Mesh for Link=FL_calf (ext=dae, fallback=false)
+[2026-04-07 08:19:42.326] [NEXUS] [info] [NodeDebug] Node: FL_calf_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:42.326] [NEXUS] [info] [NodeDebug] Node: FL_calf_visual_Scene_FLcalf_0901, Pos: (0.00049999997,-0.00084999995,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:42.328] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 榛戣壊瓒崇.005
+[2026-04-07 08:19:42.328] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.334] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: 娣辫壊姗¤兌.005
+[2026-04-07 08:19:42.334] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.354] [NEXUS] [info] NxURDF: processing visual Mesh for Link=FL_foot (ext=dae, fallback=false)
+[2026-04-07 08:19:42.354] [NEXUS] [info] [NodeDebug] Node: FL_foot_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:42.354] [NEXUS] [info] [NodeDebug] Node: FL_foot_visual_Scene_FL_foot0901, Pos: (0.00024999998,0,0.0039), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:42.358] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: 榛戣壊瓒崇.007
+[2026-04-07 08:19:42.358] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.532] [NEXUS] [info] NxURDF: processing visual Mesh for Link=FR_hip (ext=dae, fallback=false)
+[2026-04-07 08:19:42.532] [NEXUS] [info] [NodeDebug] Node: FR_hip_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:42.532] [NEXUS] [info] [NodeDebug] Node: FR_hip_visual_Scene_hipFL0831, Pos: (0,0,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:42.549] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 娣辫壊姗¤兌.001
+[2026-04-07 08:19:42.549] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.565] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: Material
+[2026-04-07 08:19:42.565] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.712] [NEXUS] [info] NxURDF: processing visual Mesh for Link=FR_thigh (ext=dae, fallback=false)
+[2026-04-07 08:19:42.712] [NEXUS] [info] [NodeDebug] Node: FR_thigh_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:42.712] [NEXUS] [info] [NodeDebug] Node: FR_thigh_visual_Scene_thigh_FR0815, Pos: (0,0,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:42.724] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 娣辫壊姗¤兌.012
+[2026-04-07 08:19:42.724] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.742] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: Material.011
+[2026-04-07 08:19:42.742] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.787] [NEXUS] [info] NxURDF: processing visual Mesh for Link=FR_calf (ext=dae, fallback=false)
+[2026-04-07 08:19:42.787] [NEXUS] [info] [NodeDebug] Node: FR_calf_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:42.787] [NEXUS] [info] [NodeDebug] Node: FR_calf_visual_Scene_FRcalf0901, Pos: (0.00049999997,0.00084999995,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:42.789] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 榛戣壊瓒崇.006
+[2026-04-07 08:19:42.789] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.795] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: 娣辫壊姗¤兌.007
+[2026-04-07 08:19:42.795] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.813] [NEXUS] [info] NxURDF: processing visual Mesh for Link=FR_foot (ext=dae, fallback=false)
+[2026-04-07 08:19:42.813] [NEXUS] [info] [NodeDebug] Node: FR_foot_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:42.813] [NEXUS] [info] [NodeDebug] Node: FR_foot_visual_Scene_FL_foot0901, Pos: (0.00024999998,0,0.0039), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:42.817] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: 榛戣壊瓒崇.007
+[2026-04-07 08:19:42.817] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:42.995] [NEXUS] [info] NxURDF: processing visual Mesh for Link=RL_hip (ext=dae, fallback=false)
+[2026-04-07 08:19:42.995] [NEXUS] [info] [NodeDebug] Node: RL_hip_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:42.996] [NEXUS] [info] [NodeDebug] Node: RL_hip_visual_Scene_hipFL0831, Pos: (0,0,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:43.013] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 娣辫壊姗¤兌.001
+[2026-04-07 08:19:43.013] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.029] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: Material
+[2026-04-07 08:19:43.030] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.180] [NEXUS] [info] NxURDF: processing visual Mesh for Link=RL_thigh (ext=dae, fallback=false)
+[2026-04-07 08:19:43.180] [NEXUS] [info] [NodeDebug] Node: RL_thigh_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:43.180] [NEXUS] [info] [NodeDebug] Node: RL_thigh_visual_Scene_thigh_FL0815, Pos: (0,0,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:43.191] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 娣辫壊姗¤兌.003
+[2026-04-07 08:19:43.191] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.207] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: Material.009
+[2026-04-07 08:19:43.207] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.251] [NEXUS] [info] NxURDF: processing visual Mesh for Link=RL_calf (ext=dae, fallback=false)
+[2026-04-07 08:19:43.251] [NEXUS] [info] [NodeDebug] Node: RL_calf_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:43.251] [NEXUS] [info] [NodeDebug] Node: RL_calf_visual_Scene_FLcalf_0901, Pos: (0.00049999997,-0.00084999995,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:43.253] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 榛戣壊瓒崇.005
+[2026-04-07 08:19:43.253] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.260] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: 娣辫壊姗¤兌.005
+[2026-04-07 08:19:43.260] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.282] [NEXUS] [info] NxURDF: processing visual Mesh for Link=RL_foot (ext=dae, fallback=false)
+[2026-04-07 08:19:43.282] [NEXUS] [info] [NodeDebug] Node: RL_foot_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:43.282] [NEXUS] [info] [NodeDebug] Node: RL_foot_visual_Scene_FL_foot0901, Pos: (0.00024999998,0,0.0039), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:43.286] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: 榛戣壊瓒崇.007
+[2026-04-07 08:19:43.286] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.480] [NEXUS] [info] NxURDF: processing visual Mesh for Link=RR_hip (ext=dae, fallback=false)
+[2026-04-07 08:19:43.480] [NEXUS] [info] [NodeDebug] Node: RR_hip_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:43.480] [NEXUS] [info] [NodeDebug] Node: RR_hip_visual_Scene_hipFL0831, Pos: (0,0,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:43.497] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 娣辫壊姗¤兌.001
+[2026-04-07 08:19:43.497] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.514] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: Material
+[2026-04-07 08:19:43.514] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.676] [NEXUS] [info] NxURDF: processing visual Mesh for Link=RR_thigh (ext=dae, fallback=false)
+[2026-04-07 08:19:43.676] [NEXUS] [info] [NodeDebug] Node: RR_thigh_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:43.676] [NEXUS] [info] [NodeDebug] Node: RR_thigh_visual_Scene_thigh_FR0815, Pos: (0,0,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:43.687] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 娣辫壊姗¤兌.012
+[2026-04-07 08:19:43.687] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.703] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: Material.011
+[2026-04-07 08:19:43.703] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.747] [NEXUS] [info] NxURDF: processing visual Mesh for Link=RR_calf (ext=dae, fallback=false)
+[2026-04-07 08:19:43.747] [NEXUS] [info] [NodeDebug] Node: RR_calf_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:43.747] [NEXUS] [info] [NodeDebug] Node: RR_calf_visual_Scene_FRcalf0901, Pos: (0.00049999997,0.00084999995,0), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:43.749] [NEXUS] [info] [TextureDebug] Submesh Material: 1, Name: 榛戣壊瓒崇.006
+[2026-04-07 08:19:43.749] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.755] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: 娣辫壊姗¤兌.007
+[2026-04-07 08:19:43.755] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.776] [NEXUS] [info] NxURDF: processing visual Mesh for Link=RR_foot (ext=dae, fallback=false)
+[2026-04-07 08:19:43.776] [NEXUS] [info] [NodeDebug] Node: RR_foot_visual_Scene, Pos: (0,0,0), Rot: (0,0,0,1)
+[2026-04-07 08:19:43.776] [NEXUS] [info] [NodeDebug] Node: RR_foot_visual_Scene_FL_foot0901, Pos: (0.00024999998,0,0.0039), Rot: (0.7071068,0,0,0.7071067)
+[2026-04-07 08:19:43.780] [NEXUS] [info] [TextureDebug] Submesh Material: 0, Name: 榛戣壊瓒崇.007
+[2026-04-07 08:19:43.780] [NEXUS] [info] [TextureDebug] Submesh entity assigned: Albedo=0, Sampler=0
+[2026-04-07 08:19:43.780] [NEXUS] [info] NxURDF: 鏍?Link='base', 鍏卞垱寤?42 涓?link 瀹炰綋
+[2026-04-07 08:19:43.780] [NEXUS] [info] 鍔犺浇鏈哄櫒浜? Data/Models/go2/go2_description.urdf
+[2026-04-07 08:19:43.780] [NEXUS] [info] Main: Calling Cesium3DTilesetSystem::initialize
+[2026-04-07 08:19:43.782] [NEXUS] [info] Auto-detected System Proxy: 127.0.0.1:7890
+[2026-04-07 08:19:43.782] [NEXUS] [info] Main: Creating Cesium Test Entity
+[2026-04-07 08:19:43.782] [NEXUS] [info] Main: Init Physics System
+[2026-04-07 08:19:43.783] [NEXUS] [info] MuJoCo Physics System Initialized (No model loaded yet)
+[2026-04-07 08:19:43.783] [NEXUS] [info] Main: Loading Physics model Data/Scenes/go2_mujoco/scene.xml
+[2026-04-07 08:19:46.763] [NEXUS] [info] MuJoCo Physics System Loaded model: G:\nexus_workspace\NexusEngine\build-windows-debug\Data/Scenes/go2_mujoco/scene.xml
+[2026-04-07 08:19:46.763] [NEXUS] [info] Main: Starting PhysicsThread
+[2026-04-07 08:19:46.763] [NEXUS] [info] Starting Physics Thread...
+[2026-04-07 08:19:46.763] [NEXUS] [info] Main: Starting ROS Bridge
+[2026-04-07 08:19:46.769] [NEXUS] [info] RosBridgeSystem 宸插惎鍔?| 鐘舵€佸箍鎾? tcp://*:5555 | 鎸囦护鎺ユ敹: tcp://*:5556
+[2026-04-07 08:19:46.769] [NEXUS] [info] RosBridgeSystem 鏈哄櫒浜? id=go2_mujoco_0, name=unitree_go2
+[2026-04-07 08:19:46.769] [NEXUS] [info] 宸叉敞鍐岀墿鐞嗙嚎绋嬮珮棰戠姸鎬佸彂甯冨洖璋?(decimation=7, ~48Hz)
+[HierarchyDiag] roots=3
+[HierarchyDiag]   e=124 ch=0
+[HierarchyDiag]   e=1 ch=1
+[HierarchyDiag]   e=0 ch=0
+[2026-04-07 08:19:46.770] [NEXUS] [info] Cesium3DTilesetSystem: Initializing Tileset...
+[2026-04-07 08:19:46.770] [NEXUS] [warning] [Physics] URDF Link 'Head_upper' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.770] [NEXUS] [warning] [Physics] URDF Link 'Head_lower' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.770] [NEXUS] [warning] [Physics] URDF Link 'FL_calflower' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.770] [NEXUS] [warning] [Physics] URDF Link 'FL_calflower1' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.770] [NEXUS] [warning] [Physics] URDF Link 'FL_calf_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'FL_thigh_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'FL_hip_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'FR_calflower' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'FR_calflower1' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'FR_calf_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'FR_thigh_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'FR_hip_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'RL_calflower' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'RL_calflower1' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'RL_calf_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'RL_thigh_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'RL_hip_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'RR_calflower' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'RR_calflower1' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'RR_calf_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'RR_thigh_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'RR_hip_rotor' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'imu' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.771] [NEXUS] [warning] [Physics] URDF Link 'radar' 鍦?MuJoCo 涓湭鎵惧埌瀵瑰簲鐨勭墿鐞?Body锛屽皢浣跨敤鐖惰妭鐐圭殑鐩稿鍙樻崲銆?
+[2026-04-07 08:19:46.784] [NEXUS] [info] Recorded 33 mesh draw calls (398632 triangles) in this command buffer.
+[2026-04-07 08:19:46.809] [NEXUS] [info] VK_RmlUi_Renderer::GenerateTexture - Size: 64x128, Data Size: 32768 bytes
+[2026-04-07 08:19:46.809] [NEXUS] [info] VK_RmlUi_Renderer::GenerateTexture - Generated handle: 0x1f640259ed0
+[2026-04-07 08:19:46.809] [NEXUS] [info] VK_RmlUi_Renderer::GenerateTexture - Size: 128x128, Data Size: 65536 bytes
+[2026-04-07 08:19:46.810] [NEXUS] [info] VK_RmlUi_Renderer::GenerateTexture - Generated handle: 0x1f63fdec5a0
+[2026-04-07 08:19:46.814] [NEXUS] [info] VK_RmlUi_Renderer::GenerateTexture - Size: 64x128, Data Size: 32768 bytes
+[2026-04-07 08:19:46.814] [NEXUS] [info] VK_RmlUi_Renderer::GenerateTexture - Generated handle: 0x1f63fdec280
+[2026-04-07 08:19:47.201] [NEXUS] [info] Logic Profile: Hier=1.42ms, Cesium=0.08ms, Phys=2.73ms, UIMgr=1.08ms
+[2026-04-07 08:19:47.201] [NEXUS] [info] GPU Wait Profile: waitForFences=2.05ms, acquireNextImage=0.03ms
+[2026-04-07 08:19:47.203] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.04ms, UI=2.80ms
+[2026-04-07 08:19:47.203] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.49ms
+[2026-04-07 08:19:47.552] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:47.552] [NEXUS] [info] Logic Profile: Hier=1.45ms, Cesium=0.05ms, Phys=2.57ms, UIMgr=1.18ms
+[2026-04-07 08:19:47.553] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:47.554] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=2.08ms
+[2026-04-07 08:19:47.554] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.31ms
+[2026-04-07 08:19:47.865] [NEXUS] [info] Logic Profile: Hier=1.37ms, Cesium=0.05ms, Phys=2.45ms, UIMgr=1.00ms
+[2026-04-07 08:19:47.869] [NEXUS] [info] GPU Wait Profile: waitForFences=0.09ms, acquireNextImage=0.02ms
+[2026-04-07 08:19:47.881] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=1.79ms
+[2026-04-07 08:19:47.882] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.35ms
+[2026-04-07 08:19:49.297] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:49.297] [NEXUS] [info] Logic Profile: Hier=2.46ms, Cesium=0.64ms, Phys=3.45ms, UIMgr=15.74ms
+[2026-04-07 08:19:49.297] [NEXUS] [info] GPU Wait Profile: waitForFences=0.30ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:49.298] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=3.73ms
+[2026-04-07 08:19:49.298] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.26ms
+[2026-04-07 08:19:49.537] [NEXUS] [info] Logic Profile: Hier=1.26ms, Cesium=0.29ms, Phys=2.13ms, UIMgr=0.21ms
+[2026-04-07 08:19:49.537] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:49.539] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=0.97ms
+[2026-04-07 08:19:49.539] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.25ms
+[2026-04-07 08:19:49.560] [NEXUS] [info] Cesium3DTilesetSystem: visible=1, cesiumEntities=0, rendered=0, notDone=0, noContent=1, noResources=0
+[2026-04-07 08:19:49.924] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:49.926] [NEXUS] [info] Logic Profile: Hier=1.41ms, Cesium=0.42ms, Phys=2.59ms, UIMgr=1.48ms
+[2026-04-07 08:19:49.926] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:49.930] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=2.25ms
+[2026-04-07 08:19:49.931] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.29ms
+[2026-04-07 08:19:50.428] [NEXUS] [info] Logic Profile: Hier=1.42ms, Cesium=2.51ms, Phys=2.65ms, UIMgr=1.54ms
+[2026-04-07 08:19:50.428] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:50.430] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=2.33ms
+[2026-04-07 08:19:50.430] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.30ms
+[2026-04-07 08:19:50.925] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:50.925] [NEXUS] [info] Logic Profile: Hier=1.39ms, Cesium=2.73ms, Phys=2.31ms, UIMgr=1.67ms
+[2026-04-07 08:19:50.925] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:50.926] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=2.10ms
+[2026-04-07 08:19:50.927] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.28ms
+[2026-04-07 08:19:51.456] [NEXUS] [info] Logic Profile: Hier=1.47ms, Cesium=2.59ms, Phys=2.25ms, UIMgr=2.33ms
+[2026-04-07 08:19:51.457] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:51.458] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=1.99ms
+[2026-04-07 08:19:51.458] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.26ms
+[2026-04-07 08:19:51.565] [NEXUS] [info] Cesium3DTilesetSystem: visible=3, cesiumEntities=19, rendered=3, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:19:51.908] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:51.909] [NEXUS] [info] Logic Profile: Hier=1.42ms, Cesium=2.26ms, Phys=2.14ms, UIMgr=1.43ms
+[2026-04-07 08:19:51.909] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[HierarchyDiag] roots=4
+[HierarchyDiag]   e=126 ch=21
+[HierarchyDiag]   e=124 ch=0
+[HierarchyDiag]   e=1 ch=1
+[HierarchyDiag]   e=0 ch=0
+[2026-04-07 08:19:51.910] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=2.30ms
+[2026-04-07 08:19:51.910] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.25ms
+[2026-04-07 08:19:51.915] [NEXUS] [info] Recorded 33 mesh draw calls (398632 triangles) in this command buffer.
+[2026-04-07 08:19:52.356] [NEXUS] [info] Logic Profile: Hier=1.46ms, Cesium=1.92ms, Phys=2.23ms, UIMgr=1.49ms
+[2026-04-07 08:19:52.357] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:52.370] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=2.18ms
+[2026-04-07 08:19:52.370] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.25ms
+[2026-04-07 08:19:52.669] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:52.669] [NEXUS] [info] Logic Profile: Hier=1.41ms, Cesium=1.28ms, Phys=2.11ms, UIMgr=0.21ms
+[2026-04-07 08:19:52.669] [NEXUS] [info] GPU Wait Profile: waitForFences=0.09ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:52.671] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=1.02ms
+[2026-04-07 08:19:52.671] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.23ms
+[2026-04-07 08:19:53.066] [NEXUS] [info] Logic Profile: Hier=1.53ms, Cesium=1.45ms, Phys=2.42ms, UIMgr=0.99ms
+[2026-04-07 08:19:53.066] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:53.068] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=1.90ms
+[2026-04-07 08:19:53.068] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.26ms
+[2026-04-07 08:19:53.493] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:53.493] [NEXUS] [info] Logic Profile: Hier=1.55ms, Cesium=1.70ms, Phys=2.20ms, UIMgr=1.49ms
+[2026-04-07 08:19:53.494] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:53.495] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=1.83ms
+[2026-04-07 08:19:53.495] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.24ms
+[2026-04-07 08:19:53.571] [NEXUS] [info] Cesium3DTilesetSystem: visible=3, cesiumEntities=23, rendered=3, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:19:53.929] [NEXUS] [info] Logic Profile: Hier=1.41ms, Cesium=1.86ms, Phys=2.06ms, UIMgr=1.57ms
+[2026-04-07 08:19:53.929] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:53.939] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=2.00ms
+[2026-04-07 08:19:53.939] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.25ms
+[2026-04-07 08:19:54.468] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:54.469] [NEXUS] [info] Logic Profile: Hier=1.50ms, Cesium=2.70ms, Phys=2.50ms, UIMgr=1.90ms
+[2026-04-07 08:19:54.469] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:54.470] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=3.00ms
+[2026-04-07 08:19:54.470] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.26ms
+[2026-04-07 08:19:54.995] [NEXUS] [info] Logic Profile: Hier=1.57ms, Cesium=2.06ms, Phys=2.27ms, UIMgr=2.60ms
+[2026-04-07 08:19:54.996] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:55.009] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.03ms (Tex=0.87ms, VertTransform=0.09ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:19:55.010] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=2.24ms
+[2026-04-07 08:19:55.010] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.26ms
+[2026-04-07 08:19:55.030] [NEXUS] [error] HTTP Request failed: https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2wOAnZJ7jpgf1oCxs0-KOF6O0Gu85rJAl4Xm8PrIKItuJoJWxyWvkv2-o_OwMCyGVrsBxUF0O-dx1ru2rChllqxfNM2va_7ZZn4Ar5-bHCKLdblmuUwplYD9byAtq_tnRz8qtI2Vu74UNTwxoYRl351bMKQmQ.json?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg - Err: SSLConnection
+[2026-04-07 08:19:55.050] [error] [TilesetJsonLoader.cpp:691] Error when parsing tileset JSON, error code 1 at byte offset 0
+Snippet: 
+[2026-04-07 08:19:55.405] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:55.405] [NEXUS] [info] Logic Profile: Hier=1.54ms, Cesium=1.46ms, Phys=2.24ms, UIMgr=1.12ms
+[2026-04-07 08:19:55.407] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:55.408] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=2.33ms
+[2026-04-07 08:19:55.409] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.25ms
+[2026-04-07 08:19:55.571] [NEXUS] [info] Cesium3DTilesetSystem: visible=3, cesiumEntities=33, rendered=3, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:19:55.768] [NEXUS] [info] Logic Profile: Hier=1.57ms, Cesium=1.44ms, Phys=2.07ms, UIMgr=0.68ms
+[2026-04-07 08:19:55.768] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:55.769] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=1.51ms
+[2026-04-07 08:19:55.769] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.25ms
+[2026-04-07 08:19:56.222] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:56.222] [NEXUS] [info] Logic Profile: Hier=1.58ms, Cesium=1.48ms, Phys=2.20ms, UIMgr=1.89ms
+[2026-04-07 08:19:56.223] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.01ms
+[HierarchyDiag] roots=4
+[HierarchyDiag]   e=126 ch=35
+[HierarchyDiag]   e=124 ch=0
+[HierarchyDiag]   e=1 ch=1
+[HierarchyDiag]   e=0 ch=0
+[2026-04-07 08:19:56.224] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=2.42ms
+[2026-04-07 08:19:56.224] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.26ms
+[2026-04-07 08:19:56.229] [NEXUS] [info] Recorded 33 mesh draw calls (398632 triangles) in this command buffer.
+[2026-04-07 08:19:56.656] [NEXUS] [info] Logic Profile: Hier=1.57ms, Cesium=1.44ms, Phys=2.24ms, UIMgr=1.61ms
+[2026-04-07 08:19:56.656] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:56.658] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=2.37ms
+[2026-04-07 08:19:56.658] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.25ms
+[2026-04-07 08:19:57.077] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:57.077] [NEXUS] [info] Logic Profile: Hier=1.55ms, Cesium=1.44ms, Phys=2.25ms, UIMgr=1.39ms
+[2026-04-07 08:19:57.077] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:57.079] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=2.23ms
+[2026-04-07 08:19:57.080] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.27ms
+[2026-04-07 08:19:57.546] [NEXUS] [info] Logic Profile: Hier=1.63ms, Cesium=1.44ms, Phys=2.31ms, UIMgr=2.05ms
+[2026-04-07 08:19:57.546] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:57.547] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=1.96ms
+[2026-04-07 08:19:57.547] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.25ms
+[2026-04-07 08:19:57.573] [NEXUS] [info] Cesium3DTilesetSystem: visible=4, cesiumEntities=37, rendered=4, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:19:57.958] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:57.958] [NEXUS] [info] Logic Profile: Hier=1.62ms, Cesium=1.41ms, Phys=2.18ms, UIMgr=1.35ms
+[2026-04-07 08:19:57.968] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:57.969] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=1.93ms
+[2026-04-07 08:19:57.969] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.27ms
+[2026-04-07 08:19:58.331] [NEXUS] [info] Logic Profile: Hier=1.62ms, Cesium=1.47ms, Phys=2.21ms, UIMgr=0.66ms
+[2026-04-07 08:19:58.337] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:58.338] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=1.27ms
+[2026-04-07 08:19:58.338] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.26ms
+[2026-04-07 08:19:58.747] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:58.747] [NEXUS] [info] Logic Profile: Hier=1.65ms, Cesium=1.99ms, Phys=2.28ms, UIMgr=0.66ms
+[2026-04-07 08:19:58.747] [NEXUS] [info] GPU Wait Profile: waitForFences=0.09ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:58.748] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.02ms, UI=1.74ms
+[2026-04-07 08:19:58.748] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.27ms
+[2026-04-07 08:19:58.846] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=2.58ms (Tex=2.43ms, VertTransform=0.06ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:19:59.272] [NEXUS] [info] Logic Profile: Hier=1.74ms, Cesium=2.72ms, Phys=2.47ms, UIMgr=1.53ms
+[2026-04-07 08:19:59.273] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:59.274] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=2.69ms
+[2026-04-07 08:19:59.275] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.32ms
+[2026-04-07 08:19:59.578] [NEXUS] [info] Cesium3DTilesetSystem: visible=5, cesiumEntities=44, rendered=5, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:19:59.810] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:19:59.811] [NEXUS] [info] Logic Profile: Hier=1.79ms, Cesium=2.95ms, Phys=2.39ms, UIMgr=1.51ms
+[2026-04-07 08:19:59.811] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:19:59.813] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=2.96ms
+[2026-04-07 08:19:59.814] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.29ms
+[2026-04-07 08:20:00.585] [NEXUS] [info] Logic Profile: Hier=1.96ms, Cesium=3.47ms, Phys=2.82ms, UIMgr=4.34ms
+[2026-04-07 08:20:00.592] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.02ms
+[2026-04-07 08:20:00.593] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.51ms
+[2026-04-07 08:20:00.594] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.36ms
+[2026-04-07 08:20:00.889] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.04ms (Tex=0.90ms, VertTransform=0.08ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:01.180] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:20:01.180] [NEXUS] [info] Logic Profile: Hier=1.92ms, Cesium=3.40ms, Phys=2.53ms, UIMgr=1.77ms
+[2026-04-07 08:20:01.180] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.02ms
+[HierarchyDiag] roots=4
+[HierarchyDiag]   e=126 ch=51
+[HierarchyDiag]   e=124 ch=0
+[HierarchyDiag]   e=1 ch=1
+[HierarchyDiag]   e=0 ch=0
+[2026-04-07 08:20:01.181] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.24ms
+[2026-04-07 08:20:01.182] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.34ms
+[2026-04-07 08:20:01.187] [NEXUS] [info] Recorded 33 mesh draw calls (398632 triangles) in this command buffer.
+[2026-04-07 08:20:01.589] [NEXUS] [info] Cesium3DTilesetSystem: visible=6, cesiumEntities=52, rendered=6, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:20:02.008] [NEXUS] [info] Logic Profile: Hier=2.00ms, Cesium=3.46ms, Phys=2.64ms, UIMgr=5.40ms
+[2026-04-07 08:20:02.009] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.02ms
+[2026-04-07 08:20:02.019] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.77ms
+[2026-04-07 08:20:02.020] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.32ms
+[2026-04-07 08:20:02.597] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:20:02.598] [NEXUS] [info] Logic Profile: Hier=1.97ms, Cesium=3.34ms, Phys=2.43ms, UIMgr=1.85ms
+[2026-04-07 08:20:02.598] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.02ms
+[2026-04-07 08:20:02.599] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=2.32ms
+[2026-04-07 08:20:02.600] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.28ms
+[2026-04-07 08:20:02.902] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.16ms (Tex=1.02ms, VertTransform=0.07ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:03.205] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=3.37ms (Tex=3.23ms, VertTransform=0.09ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:03.298] [NEXUS] [info] Logic Profile: Hier=1.91ms, Cesium=3.71ms, Phys=2.79ms, UIMgr=2.86ms
+[2026-04-07 08:20:03.298] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.02ms
+[2026-04-07 08:20:03.300] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.72ms
+[2026-04-07 08:20:03.300] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.32ms
+[2026-04-07 08:20:03.600] [NEXUS] [info] Cesium3DTilesetSystem: visible=6, cesiumEntities=59, rendered=6, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:20:03.635] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.06ms (Tex=0.76ms, VertTransform=0.17ms, VulkanBufferCreate&Upload=0.02ms)
+[2026-04-07 08:20:04.216] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:20:04.216] [NEXUS] [info] Logic Profile: Hier=2.30ms, Cesium=4.79ms, Phys=2.95ms, UIMgr=4.98ms
+[2026-04-07 08:20:04.216] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.02ms
+[2026-04-07 08:20:04.217] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.76ms
+[2026-04-07 08:20:04.218] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.37ms
+[2026-04-07 08:20:04.565] [NEXUS] [error] HTTP Request failed: https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2z0V4bcApcDuChtv3BlFqNALrp7T8Pc_pCdbhDBD4qVASFKszdp2sXMZy8k9j1xAZOvSjjM54LTlSrcX7_RSu7zoxkMCqh2Qvdm9Z_h7Ee4L1Ic6u8UBMjSh6GYPHwdTzojuz4CDejRUIy0ahEO3fhsIIay058b7IW8tqaD.json?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg - Err: SSLConnection
+[2026-04-07 08:20:04.609] [error] [TilesetJsonLoader.cpp:691] Error when parsing tileset JSON, error code 1 at byte offset 0
+Snippet: 
+[2026-04-07 08:20:05.266] [NEXUS] [info] Logic Profile: Hier=2.08ms, Cesium=5.42ms, Phys=2.82ms, UIMgr=6.89ms
+[2026-04-07 08:20:05.266] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.02ms
+[2026-04-07 08:20:05.268] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.95ms
+[2026-04-07 08:20:05.269] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.34ms
+[2026-04-07 08:20:05.497] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.07ms (Tex=0.95ms, VertTransform=0.07ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:05.791] [NEXUS] [info] Cesium3DTilesetSystem: visible=6, cesiumEntities=66, rendered=6, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:20:06.229] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:20:06.230] [NEXUS] [info] Logic Profile: Hier=2.11ms, Cesium=6.22ms, Phys=2.69ms, UIMgr=4.77ms
+[2026-04-07 08:20:06.230] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.02ms
+[2026-04-07 08:20:06.243] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.04ms, UI=4.14ms
+[2026-04-07 08:20:06.244] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.30ms
+[2026-04-07 08:20:06.555] [NEXUS] [error] HTTP Request failed: https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2ycwJ6MDUE1wIG7EUAlovThAkUby9w5zqm5HqeP-24FcQTZ3c7iaXR4zjTXIgonl5VMP7-G78LGoRL-ZuvHLBhlmPFMEy5SA0YZ9s8qmO34PMCRFznv64iZNxPCjLqBR5fwL0p9FtVWGgDygLIPglgOit1R_IpItxgl9osN.json?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg - Err: SSLConnection
+[2026-04-07 08:20:06.558] [error] [TilesetJsonLoader.cpp:691] Error when parsing tileset JSON, error code 1 at byte offset 0
+Snippet: 
+[2026-04-07 08:20:06.973] [NEXUS] [info] Logic Profile: Hier=1.92ms, Cesium=5.58ms, Phys=2.31ms, UIMgr=2.34ms
+[2026-04-07 08:20:06.979] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.01ms
+[2026-04-07 08:20:06.980] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.10ms
+[2026-04-07 08:20:06.980] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.27ms
+[2026-04-07 08:20:07.779] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:20:07.779] [NEXUS] [info] Logic Profile: Hier=2.05ms, Cesium=5.48ms, Phys=2.32ms, UIMgr=3.34ms
+[2026-04-07 08:20:07.783] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.01ms
+[2026-04-07 08:20:07.786] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.45ms
+[2026-04-07 08:20:07.786] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.28ms
+[2026-04-07 08:20:07.795] [NEXUS] [info] Cesium3DTilesetSystem: visible=6, cesiumEntities=76, rendered=6, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:20:08.147] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.33ms (Tex=0.74ms, VertTransform=0.35ms, VulkanBufferCreate&Upload=0.12ms)
+[2026-04-07 08:20:08.508] [NEXUS] [info] Logic Profile: Hier=1.91ms, Cesium=5.34ms, Phys=2.33ms, UIMgr=2.29ms
+[2026-04-07 08:20:08.508] [NEXUS] [info] GPU Wait Profile: waitForFences=0.29ms, acquireNextImage=0.01ms
+[2026-04-07 08:20:08.510] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.03ms
+[2026-04-07 08:20:08.511] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.27ms
+[2026-04-07 08:20:09.277] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:20:09.277] [NEXUS] [info] Logic Profile: Hier=2.10ms, Cesium=5.80ms, Phys=2.39ms, UIMgr=2.27ms
+[2026-04-07 08:20:09.277] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[HierarchyDiag] roots=4
+[HierarchyDiag]   e=126 ch=82
+[HierarchyDiag]   e=124 ch=0
+[HierarchyDiag]   e=1 ch=1
+[HierarchyDiag]   e=0 ch=0
+[2026-04-07 08:20:09.278] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=2.88ms
+[2026-04-07 08:20:09.279] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.30ms
+[2026-04-07 08:20:09.312] [NEXUS] [info] Recorded 33 mesh draw calls (398632 triangles) in this command buffer.
+[2026-04-07 08:20:09.730] [NEXUS] [error] HTTP Request failed: https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2xID5qoyZrGVtEhKCqEKQs-0M7j-oJsE6cpLncvceRJ60ccN37VFbQU88rja1ICfYNn9fLu1qXlg8UWfBIqOvlYYRHGMx_ejjTnYrLyERHGVD08Ejk0p--74eWtNx5eMwCc96Bx_2JtWlpegJ3dxJMp9dh6YlRjPTWaUwRA.json?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg - Err: Read
+[2026-04-07 08:20:09.735] [error] [TilesetJsonLoader.cpp:691] Error when parsing tileset JSON, error code 1 at byte offset 0
+Snippet: 
+[2026-04-07 08:20:09.803] [NEXUS] [info] Cesium3DTilesetSystem: visible=6, cesiumEntities=85, rendered=6, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:20:09.967] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=7.83ms (Tex=0.76ms, VertTransform=6.95ms, VulkanBufferCreate&Upload=0.04ms)
+[2026-04-07 08:20:10.147] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.13ms (Tex=0.73ms, VertTransform=0.32ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:10.158] [NEXUS] [info] Logic Profile: Hier=2.22ms, Cesium=6.52ms, Phys=2.61ms, UIMgr=3.04ms
+[2026-04-07 08:20:10.162] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.02ms
+[2026-04-07 08:20:10.164] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.90ms
+[2026-04-07 08:20:10.164] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.32ms
+[2026-04-07 08:20:10.535] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=2.27ms (Tex=0.73ms, VertTransform=1.47ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:10.726] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.42ms (Tex=1.00ms, VertTransform=0.33ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:10.728] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=2.55ms (Tex=1.31ms, VertTransform=1.11ms, VulkanBufferCreate&Upload=0.02ms)
+[2026-04-07 08:20:11.074] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:20:11.074] [NEXUS] [info] Logic Profile: Hier=2.10ms, Cesium=7.87ms, Phys=2.41ms, UIMgr=2.60ms
+[2026-04-07 08:20:11.074] [NEXUS] [info] GPU Wait Profile: waitForFences=0.06ms, acquireNextImage=0.01ms
+[2026-04-07 08:20:11.076] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.53ms
+[2026-04-07 08:20:11.077] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.31ms
+[2026-04-07 08:20:11.187] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.16ms (Tex=0.59ms, VertTransform=0.50ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:11.222] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.03ms (Tex=0.83ms, VertTransform=0.15ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:11.415] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.31ms (Tex=0.68ms, VertTransform=0.53ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:11.809] [NEXUS] [info] Cesium3DTilesetSystem: visible=6, cesiumEntities=102, rendered=6, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:20:12.130] [NEXUS] [info] Logic Profile: Hier=2.29ms, Cesium=9.28ms, Phys=2.23ms, UIMgr=3.48ms
+[2026-04-07 08:20:12.130] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.01ms
+[2026-04-07 08:20:12.132] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.90ms
+[2026-04-07 08:20:12.132] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.31ms
+[2026-04-07 08:20:13.165] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:20:13.191] [NEXUS] [info] Logic Profile: Hier=2.18ms, Cesium=9.05ms, Phys=2.32ms, UIMgr=3.82ms
+[2026-04-07 08:20:13.191] [NEXUS] [info] GPU Wait Profile: waitForFences=0.07ms, acquireNextImage=0.01ms
+[2026-04-07 08:20:13.200] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=4.09ms
+[2026-04-07 08:20:13.200] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.30ms
+[2026-04-07 08:20:13.527] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.09ms (Tex=0.89ms, VertTransform=0.11ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:13.815] [NEXUS] [info] Cesium3DTilesetSystem: visible=27, cesiumEntities=117, rendered=27, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:20:14.104] [NEXUS] [error] HTTP Request failed: https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2zbh4eYWyuORfUWrsQz_LLSi76iqZIMQcrQJs1EyF4BuUALxSCWY-EX-WbLLo-ZIu5rwd_YRGC-tw5Hl9J_eoA9120I-50m-C-Fgg_5Tw_8LYkWewtEnI6iurJ0iK4qoGUOhrTetqlMtLjWNVx_PchdOxS5wtxeRWsyY736l5ggqQ.json?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg - Err: Read
+[2026-04-07 08:20:14.107] [error] [TilesetJsonLoader.cpp:691] Error when parsing tileset JSON, error code 1 at byte offset 0
+Snippet: 
+[2026-04-07 08:20:14.282] [NEXUS] [info] Logic Profile: Hier=2.31ms, Cesium=9.65ms, Phys=2.42ms, UIMgr=3.49ms
+[2026-04-07 08:20:14.282] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.01ms
+[2026-04-07 08:20:14.283] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=3.81ms
+[2026-04-07 08:20:14.284] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.29ms
+[2026-04-07 08:20:14.602] [NEXUS] [error] HTTP Request failed: https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2woXsZ8sVOVEg5VDKPhXP6ctmaowWLl43UbTxXs7uvw9cM9nTdbrSDE2NbO8wQ7c7ckE2HWUgWCLsrhSIIMpQ3QHtKGDp8zNUbDfYCJUAgvIxvG_-GqxQp3EVDWtSCWdYpOe8WOnZAZDnwwFRsUIC8ZClbSToJIirA.glb?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg - Err: SSLConnection
+[2026-04-07 08:20:14.605] [error] [ErrorList.h:72] Failed to load https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2woXsZ8sVOVEg5VDKPhXP6ctmaowWLl43UbTxXs7uvw9cM9nTdbrSDE2NbO8wQ7c7ckE2HWUgWCLsrhSIIMpQ3QHtKGDp8zNUbDfYCJUAgvIxvG_-GqxQp3EVDWtSCWdYpOe8WOnZAZDnwwFRsUIC8ZClbSToJIirA.glb?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg:
+- JSON parsing error at byte offset 0: The document is empty.
+[2026-04-07 08:20:15.293] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=2.69ms (Tex=2.54ms, VertTransform=0.09ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:15.401] [NEXUS] [info] RoboticsDynamicsSystem: base_link MuJoCo pos=(0.000, -30.000, -23.310), Engine WorldMat trans=(0.000, -23.736, 30.000)
+[2026-04-07 08:20:15.401] [NEXUS] [info] Logic Profile: Hier=2.44ms, Cesium=10.13ms, Phys=2.38ms, UIMgr=3.38ms
+[2026-04-07 08:20:15.402] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.02ms
+[2026-04-07 08:20:15.403] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=4.04ms
+[2026-04-07 08:20:15.404] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.31ms
+[2026-04-07 08:20:15.703] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=5.82ms (Tex=5.62ms, VertTransform=0.13ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:15.808] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=6.38ms (Tex=6.22ms, VertTransform=0.09ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:15.832] [NEXUS] [info] Cesium3DTilesetSystem: visible=27, cesiumEntities=132, rendered=27, notDone=0, noContent=0, noResources=0
+[2026-04-07 08:20:16.149] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.04ms (Tex=0.83ms, VertTransform=0.13ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:16.265] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=6.44ms (Tex=6.29ms, VertTransform=0.09ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:16.665] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=2.76ms (Tex=2.57ms, VertTransform=0.11ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:16.713] [NEXUS] [info] Logic Profile: Hier=2.62ms, Cesium=10.81ms, Phys=2.53ms, UIMgr=5.51ms
+[2026-04-07 08:20:16.731] [NEXUS] [info] GPU Wait Profile: waitForFences=0.08ms, acquireNextImage=0.02ms
+[2026-04-07 08:20:16.735] [NEXUS] [info] GPU Wait Profile: CMD_Draw=0.03ms, UI=6.05ms
+[2026-04-07 08:20:16.735] [NEXUS] [info] GPU Wait Profile: Submit+Present=0.32ms
+[2026-04-07 08:20:16.804] [NEXUS] [error] HTTP Request failed: https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2wHUKfMSrmC8JGfjDrQTfLo2TrLm55dJ2KHsSZmBzwv16f82Sa1E1ppdHl5MsmGo3Nnbw5sHrAmnE16V_yj4gvaytT-NgSf3OeJVjezmJhKaNsfGRgOpwOy9A1pch9ovU_309uOxMAD0ehIGhKFVf_YHc30IRDP_j1jUsgD.glb?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg - Err: Read
+[2026-04-07 08:20:16.812] [error] [ErrorList.h:72] Failed to load https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2wHUKfMSrmC8JGfjDrQTfLo2TrLm55dJ2KHsSZmBzwv16f82Sa1E1ppdHl5MsmGo3Nnbw5sHrAmnE16V_yj4gvaytT-NgSf3OeJVjezmJhKaNsfGRgOpwOy9A1pch9ovU_309uOxMAD0ehIGhKFVf_YHc30IRDP_j1jUsgD.glb?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg:
+- JSON parsing error at byte offset 0: The document is empty.
+[2026-04-07 08:20:16.934] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=5.62ms (Tex=0.89ms, VertTransform=4.64ms, VulkanBufferCreate&Upload=0.02ms)
+[2026-04-07 08:20:17.165] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.42ms (Tex=1.25ms, VertTransform=0.08ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:17.186] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=1.55ms (Tex=1.03ms, VertTransform=0.45ms, VulkanBufferCreate&Upload=0.01ms)
+[2026-04-07 08:20:17.300] [NEXUS] [info] [CesiumMainThread_Profile] Tile 2 prims: Total=4.14ms (Tex=1.31ms, VertTransform=2.74ms, VulkanBufferCreate&Upload=0.02ms)
+[2026-04-07 08:20:17.313] [NEXUS] [error] HTTP Request failed: https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2zLzwkQ4wStEF7HqXXia37-j7y8m3lJYYJBuq0Kpyi3bPLP6lQy6iq5ISqq6oANXNXQZwdQs6Eixqi10NSV3Kx5nep857BQKeXXpxgl0GyY2PE7W9Wr2TSO7TcROF2NKWC8xaJSRlkUd-KES2y2SstOCTT0fp6PpuWESwcx.glb?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg - Err: Read
+[2026-04-07 08:20:17.321] [error] [ErrorList.h:72] Failed to load https://tile.googleapis.com/v1/3dtiles/datasets/CgIYAQ/files/AJVsH2zLzwkQ4wStEF7HqXXia37-j7y8m3lJYYJBuq0Kpyi3bPLP6lQy6iq5ISqq6oANXNXQZwdQs6Eixqi10NSV3Kx5nep857BQKeXXpxgl0GyY2PE7W9Wr2TSO7TcROF2NKWC8xaJSRlkUd-KES2y2SstOCTT0fp6PpuWESwcx.glb?session=CJusn8Wlj9HFIhD7i9LOBg&key=AIzaSyAuJtuLbQ1mMTDg9aEAbYP0HQJLYTbjybg:
+- JSON parsing error at byte offset 0: The document is empty.
+[2026-04-07 08:20:17.329] [NEXUS] [info] [CesiumMainThread_Profile] Tile 1 prims: Total=18.77ms (Tex=0.38ms, VertTransform=18.26ms, VulkanBufferCreate&Upload=0.07ms)

@@ -18,7 +18,8 @@ struct ObjectData {
     uint32_t occlusionIndex;
     uint32_t emissiveIndex;
     uint32_t samplerIndex;
-    uint32_t _pad0[2];
+    uint32_t isVisible;
+    uint32_t _pad0;
 
     std::array<float, 4> albedoFactor;
     float metallicFactor;
@@ -58,6 +59,14 @@ struct RenderSnapshot {
         0.0f, 0.0f, 0.0f, 1.0f
     };
     bool visionSensorValid = false;
+    
+    // Main Camera
+    std::array<float, 16> mainCameraViewProj = {
+        1.0f, 0.0f, 0.0f, 0.0f,
+        0.0f, 1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 1.0f, 0.0f,
+        0.0f, 0.0f, 0.0f, 1.0f
+    };
 
     void clear() {
         frameObjects.clear();

@@ -80,6 +80,7 @@ public:
 private:
     Status createCommandPool();
     Status createGraphicsPipeline();
+    Status createComputePipeline();
     Status createCommandBuffers();
     Status createSyncObjects();
     Status createOffscreenResources();
@@ -95,6 +96,13 @@ private:
     // TODO: We will move these into Material class
     vk::PipelineLayout m_pipelineLayout;
     vk::Pipeline m_graphicsPipeline;
+
+    vk::PipelineLayout m_cullPipelineLayout;
+    vk::Pipeline m_cullPipeline;
+
+    vk::DescriptorSetLayout m_cullSetLayout;
+    vk::DescriptorPool m_cullDescriptorPool;
+    std::vector<vk::DescriptorSet> m_cullDescriptorSets;
     
     std::vector<vk::CommandBuffer> m_commandBuffers;
     std::vector<std::unique_ptr<VK_CommandBuffer>> m_wrapperCommandBuffers;
@@ -107,6 +115,10 @@ private:
     std::unique_ptr<VK_Texture> m_whiteTexture;
     std::unique_ptr<VK_Texture> m_testTexture;
     std::vector<std::unique_ptr<VK_IndirectBuffer>> m_indirectBuffers;
+
+    std::unique_ptr<VK_Buffer> m_countBuffer;
+    std::unique_ptr<VK_Buffer> m_persistentCommandBuffer;
+
 
 #ifdef ENABLE_RMLUI
     std::unique_ptr<VK_UIBridge> m_uiBridge;
@@ -127,8 +139,18 @@ private:
     bool m_offscreenReady = false;
 public:
     std::atomic<uint32_t> m_selectedEntityId{0xFFFFFFFF};
+    std::atomic<uint32_t> m_maxEntityIndex{0};
     uint64_t getFrameCount() const { return m_absoluteFrameCount.load(); }
+
+    uint32_t allocatePersistentSlot();
+    void freePersistentSlot(uint32_t slot);
+    void updatePersistentSlot(uint32_t slot, const ObjectData& obj, const DrawIndexedIndirectCommand& cmd);
+    void setPersistentSlotVisibility(uint32_t slot, bool visible);
+
 private:
+    std::mutex m_slotMutex;
+    std::vector<uint32_t> m_freeSlots;
+
     std::atomic<uint64_t> m_absoluteFrameCount{0};
 };
 

@@ -2,6 +2,8 @@
 #include "CesiumComponents.h"
 #include "Components.h"
 #include "../Bridge/Log.h"
+#include "RenderSystem.h"
+#include "../Bridge/Vk/VK_Renderer.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
@@ -27,15 +29,15 @@ namespace Core {
 static Scene* g_tilesetScene = nullptr;
 static Nexus::IContext* g_tilesetContext = nullptr;
 static TextureManager* g_tilesetTextureManager = nullptr;
-static Core::MeshManager* g_tilesetMeshManager = nullptr;
+static Core::RenderSystem* g_tilesetRenderSystem = nullptr;
 static std::shared_ptr<CesiumAsync::IAssetAccessor> g_assetAccessor = nullptr;
 static std::shared_ptr<CesiumPrepareRendererResources> g_prepareRes = nullptr;
 
-void Cesium3DTilesetSystem::initialize(Scene* scene, Nexus::IContext* context, TextureManager* textureManager, Core::MeshManager* meshManager, const std::string& cachePath, bool onlineMode) {
+void Cesium3DTilesetSystem::initialize(Scene* scene, Nexus::IContext* context, TextureManager* textureManager, Core::RenderSystem* renderSystem, const std::string& cachePath, bool onlineMode) {
     g_tilesetScene = scene;
     g_tilesetContext = context;
     g_tilesetTextureManager = textureManager;
-    g_tilesetMeshManager = meshManager;
+    g_tilesetRenderSystem = renderSystem;
     auto accessor = std::make_shared<CesiumAssetAccessor>();
     if (!cachePath.empty()) {
         accessor->setCachePath(cachePath);
@@ -141,7 +143,7 @@ void Cesium3DTilesetSystem::update(Nexus::Registry& registry, float dt) {
 
             NX_CORE_INFO("Cesium3DTilesetSystem: Initializing Tileset...");
 
-            g_prepareRes = std::make_shared<CesiumPrepareRendererResources>(g_tilesetScene, g_tilesetContext, g_tilesetTextureManager, g_tilesetMeshManager);
+            g_prepareRes = std::make_shared<CesiumPrepareRendererResources>(g_tilesetScene, g_tilesetContext, g_tilesetTextureManager, g_tilesetRenderSystem);
 
             Cesium3DTilesSelection::TilesetExternals externals{
                 g_assetAccessor,
@@ -227,33 +229,32 @@ void Cesium3DTilesetSystem::update(Nexus::Registry& registry, float dt) {
             
             // 1. 获取 ECEF 到 ENU 本地坐标系的转换矩阵
             glm::dmat4 ecefToEnu = geoRef.m_localCoordinateSystem->getEcefToLocalTransformation();
-
-            // ENU (Z-Up) → Engine (Y-Up) 转换矩阵 （绕X轴旋转-90度）
-            // Engine.X = ENU.X, Engine.Y = ENU.Z, Engine.Z = -ENU.Y
-            // GLM 列主序: (col0), (col1), (col2), (col3)
             glm::dmat4 enuToYUp(
-                glm::dvec4(1.0,  0.0,  0.0, 0.0),   // col0
-                glm::dvec4(0.0,  0.0, -1.0, 0.0),   // col1
-                glm::dvec4(0.0,  1.0,  0.0, 0.0),   // col2
-                glm::dvec4(0.0,  0.0,  0.0, 1.0)    // col3
+                glm::dvec4(1.0,  0.0,  0.0, 0.0),   
+                glm::dvec4(0.0,  0.0, -1.0, 0.0),   
+                glm::dvec4(0.0,  1.0,  0.0, 0.0),   
+                glm::dvec4(0.0,  0.0,  0.0, 1.0)    
             );
-            
             glm::dmat4 ecefToLocalYUp = enuToYUp * ecefToEnu;
             
             if (g_prepareRes) {
                 g_prepareRes->setEcefToLocalYUp(ecefToLocalYUp);
             }
 
-            // 2. 将所有的 Cesium Tile 实体先隐藏起来（缩放设为0，比移动到无穷远更高效，并彻底丢弃几何体）
-            auto viewMeshes = registry.view<CesiumGltfComponent, TransformComponent>();
+            auto bridge = g_tilesetRenderSystem ? g_tilesetRenderSystem->getBridgeRenderer() : nullptr;
+
+            // 2. 将所有的 Cesium Tile 实体先隐藏起来
+            auto viewMeshes = registry.view<CesiumGltfComponent, MeshComponent>();
             size_t cesiumEntityCount = 0;
             for (auto e : viewMeshes) {
-                auto& trans = viewMeshes.get<TransformComponent>(e);
-                trans.worldMatrix = {0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,1};
+                auto& mesh = viewMeshes.get<MeshComponent>(e);
+                if (bridge && mesh.persistentSlot != 0xFFFFFFFF) {
+                    bridge->setPersistentSlotVisibility(mesh.persistentSlot, false);
+                }
                 cesiumEntityCount++;
             }
 
-            // 3. 将本帧需要渲染的可见瓦片更新矩阵并放回原地
+            // 3. 将本帧需要渲染的可见瓦片更新为可见
             for (const auto* pTile : result.tilesToRenderThisFrame) {
                 if (pTile->getState() != Cesium3DTilesSelection::TileLoadState::Done) {
                     tilesNotDone++;
@@ -274,13 +275,13 @@ void Cesium3DTilesetSystem::update(Nexus::Registry& registry, float dt) {
 
                 auto pRenderRes = static_cast<CesiumTileRenderResources*>(pMainResult);
                 
-                // Note: 顶点已在 prepareInMainThread 中用 double 精度预变换到本地空间
-                // worldMatrix 设为单位矩阵
                 for (auto e : pRenderRes->entities) {
-                    if (registry.valid(e)) {
-                        auto& trans = registry.get<TransformComponent>(e);
-                        trans.worldMatrix = {1,0,0,0, 0,1,0,0, 0,0,1,0, 0,0,0,1};
-                        tilesRendered++;
+                    if (registry.valid(e) && registry.has<MeshComponent>(e)) {
+                        auto& mesh = registry.get<MeshComponent>(e);
+                        if (bridge && mesh.persistentSlot != 0xFFFFFFFF) {
+                            bridge->setPersistentSlotVisibility(mesh.persistentSlot, true);
+                            tilesRendered++;
+                        }
                     }
                 }
             }
